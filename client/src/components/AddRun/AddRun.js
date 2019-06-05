@@ -2,14 +2,9 @@ import React, { useState, useContext } from 'react';
 import '../../../node_modules/bulma/css/bulma.css';
 // import moment from '../../../../moment';
 // need to build event to handle form submission
-import { AppContext } from '../../App';
 
 
-function AddRun() {
-
-  const { isModalActive, toggleAddRun } = useContext(AppContext);
-  console.log(isModalActive);
-  console.log(toggleAddRun);
+function AddRun({ isModalActive, handleClick }) {
 
   const [distance, setDistance] = useState('');
   const [date, setDate] = useState(Date.now());
@@ -34,7 +29,7 @@ function AddRun() {
   }
 
   return (
-    <div className={`modal has-background-white-ter ${isModalActive}`}>
+    <div className={`modal has-background-white-ter ${isModalActive ? 'is-active' : ''}`}>
     <div className='modal-background'></div>
       <div className='modal-card'>
         <h1 className='modal-card-head has-text-centered modal-card-title'>Log New Run</h1>
@@ -100,7 +95,7 @@ function AddRun() {
         </form>
       </div>
     <button className="modal-close is-large" aria-label="close"
-    onClick={toggleAddRun}></button>
+    onClick={handleClick}></button>
     </div>
   )
 }
