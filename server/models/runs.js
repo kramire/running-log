@@ -4,10 +4,10 @@ const Schema = mongoose.Schema;
 
 const RunSchema = new Schema({
   distance: {type: Number, required: true, min: 0},
-  runDate: {type: Date, required: true, default: Date.now},
+  date: {type: Date, required: true, default: Date.now},
   location: String,
-  notes: String,
-  desc: [String]
+  note: String,
+  runType: [String]
 });
 
 const UserSchema = new Schema({

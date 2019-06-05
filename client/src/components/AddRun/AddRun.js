@@ -12,6 +12,8 @@ function AddRun({ isModalActive, handleClick }) {
   const [note, setNote] = useState('');
   const [runType, setRunType] = useState([]);
 
+  const serverUrl = 'http://localhost:3001';
+
   const runTypeEvent = function (e) {
     const desc = e.target.value;
     if (!runType.includes(desc)) {
@@ -23,9 +25,17 @@ function AddRun({ isModalActive, handleClick }) {
   }
 
   const saveForm = function (e) {
-    // not working lol
-    console.log('Clicked save on form');
     e.preventDefault();
+    const data = {distance, date, location, note, runType};
+    fetch(serverUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data)
+    })
+    .then(res => res.json())
+    .then(data => console.log(data));
   }
 
   return (
@@ -33,69 +43,68 @@ function AddRun({ isModalActive, handleClick }) {
     <div className='modal-background'></div>
       <div className='modal-card'>
         <h1 className='modal-card-head has-text-centered modal-card-title'>Log New Run</h1>
-        <form className='modal-card-body'>
+        <form className='modal-card-body' onSubmit={(e) => saveForm(e)}>
         <div className='field is-horizontal'>
             <label className='label field-label'>Distance</label>
               <div className='control field-body'>
                 <input className='input' type='text' value={distance} required
-                onChange={(e) => setDistance(e.target.value)}></input>
+                  onChange={(e) => setDistance(e.target.value)}></input>
                 <span>Miles</span>
               </div>
           </div>
           <div className='field is-horizontal'>
             <label className='label field-label'>Date</label>
               <div className='control field-body'>
-                <input className='input' type='date' value={date} required
-                onChange={(e) => setDate(e.target.value)}></input>
+                <input className='input' type='date' value={date}
+                  onChange={(e) => setDate(e.target.value)}></input>
               </div>
           </div>
           <div className='field is-horizontal'>
             <label className='label field-label'>Location</label>
               <div className='control field-body'>
                 <input className='input' type='text' value={location} placeholder='e.g. "New York, NY" or "10021"'
-                onChange={(e) => setLocation(e.target.value)}></input>
+                  onChange={(e) => setLocation(e.target.value)}></input>
               </div>
           </div>
           <div className='field is-horizontal'>
             <label className='label field-label'>Notes</label>
               <div className='control field-body'>
                 <textarea className='textarea' value={note} placeholder="Anything to note?"
-                onChange={(e) => setNote(e.target.value)}/>
+                  onChange={(e) => setNote(e.target.value)}/>
               </div>
           </div>
           <div className='field is-horizontal'>
             <label className='label field-label'>Type of Run</label>
               <div className='control field-body buttons'>
                 <input className='button' type='button' value='Speed'
-                onClick={(e) => runTypeEvent(e)}/>
+                  onClick={(e) => runTypeEvent(e)}/>
                 <input className='button' type='button' value='Distance'
-                onClick={(e) => runTypeEvent(e)}/>
+                  onClick={(e) => runTypeEvent(e)}/>
                 <input className='button' type='button' value='Tempo'
-                onClick={(e) => runTypeEvent(e)}/>
+                  onClick={(e) => runTypeEvent(e)}/>
                 <input className='button' type='button' value='Easy'
-                onClick={(e) => runTypeEvent(e)}/>
+                  onClick={(e) => runTypeEvent(e)}/>
                 <input className='button' type='button' value='Intervals'
-                onClick={(e) => runTypeEvent(e)}/>
+                  onClick={(e) => runTypeEvent(e)}/>
                 <input className='button' type='button' value='Hills'
-                onClick={(e) => runTypeEvent(e)}/>
+                  onClick={(e) => runTypeEvent(e)}/>
                 <input className='button' type='button' value='Recovery'
-                onClick={(e) => runTypeEvent(e)}/>
+                  onClick={(e) => runTypeEvent(e)}/>
                 <input className='button' type='button' value='Fartlek'
-                onClick={(e) => runTypeEvent(e)}/>
+                  onClick={(e) => runTypeEvent(e)}/>
                 <input className='button' type='button' value='Progression'
-                onClick={(e) => runTypeEvent(e)}/>
+                  onClick={(e) => runTypeEvent(e)}/>
               </div>
           </div>
           <div className='field'>
             <div className='control has-text-centered'>
-                <input className='button is-success' type='submit' value='Save Run'
-                onSubmit={(e) => saveForm(e)}></input>
+                <input className='button is-success' type='submit' value='Save Run'></input>
             </div>
           </div>
         </form>
       </div>
     <button className="modal-close is-large" aria-label="close"
-    onClick={handleClick}></button>
+      onClick={handleClick}></button>
     </div>
   )
 }
