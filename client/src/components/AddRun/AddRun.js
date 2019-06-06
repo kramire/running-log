@@ -4,15 +4,13 @@ import '../../../node_modules/bulma/css/bulma.css';
 // need to build event to handle form submission
 
 
-function AddRun({ user, isModalActive, handleClick }) {
+function AddRun({ serverUrl, user, isModalActive, handleClick }) {
 
   const [distance, setDistance] = useState('');
   const [date, setDate] = useState(Date.now());
   const [location, setLocation] = useState('');
   const [note, setNote] = useState('');
   const [runType, setRunType] = useState([]);
-
-  const serverUrl = 'http://localhost:3001';
 
   const runTypeEvent = function (e) {
     const desc = e.target.value;
@@ -32,7 +30,7 @@ function AddRun({ user, isModalActive, handleClick }) {
     fetch(serverUrl, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify({'_id': user['_id'], run: runData})
     })

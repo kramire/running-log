@@ -4,11 +4,13 @@ import './App.css';
 import '../node_modules/bulma/css/bulma.css';
 
 import { AddRun } from './components';
+import { Dashboard } from './containers';
 
 
 function App() {
 
   const [isModalActive, setModal] = useState(false);
+  const serverUrl = 'http://localhost:3001';
 
   const [user, setUser] = useState({
     '_id': '5cf8c113155f6c20cc13d56a',
@@ -21,9 +23,10 @@ function App() {
   });
 
   return (
-    <div className="App">Hi there
+    <div className="App">
+      <Dashboard serverUrl={serverUrl} user={user}></Dashboard>
       <button onClick={() => setModal(true)}>Add Run +</button>
-      <AddRun user={user} isModalActive={isModalActive} handleClick={() => setModal('')}></AddRun>
+      <AddRun serverUrl={serverUrl} user={user} isModalActive={isModalActive} handleClick={() => setModal('')}></AddRun>
     </div>
   );
 }

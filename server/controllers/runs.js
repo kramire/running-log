@@ -18,6 +18,28 @@ exports.postOneRun = (req, res) => {
         }
       );
   });
-}
+};
+
+
+exports.getRuns = (req, res) => {
+  console.log(req.headers['_id']);
+  model.User.findById(req.headers['_id'], 
+    (err, user) => {
+      if(err) {
+        res.status(404).send(err);
+      }
+      const d = new Date();
+      const daysBack = 1 + 1;
+
+      d.setDate(d.getDate()-daysBack);
+
+      const runs = user.runs.filter(run => run.date >= d);
+      if (!runs) {
+        res.status(401).send({});
+      }
+      res.status(201).send(runs);
+    }
+  )
+};
 
  
