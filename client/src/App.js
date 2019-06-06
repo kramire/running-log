@@ -24,8 +24,8 @@ function App() {
 
   return (
     <div className="App">
-      <Dashboard serverUrl={serverUrl} user={user}></Dashboard>
       <button onClick={() => setModal(true)}>Add Run +</button>
+      <Dashboard serverUrl={serverUrl} user={user}></Dashboard>
       <AddRun serverUrl={serverUrl} user={user} isModalActive={isModalActive} handleClick={() => setModal('')}></AddRun>
     </div>
   );

@@ -22,14 +22,13 @@ exports.postOneRun = (req, res) => {
 
 
 exports.getRuns = (req, res) => {
-  console.log(req.headers['_id']);
   model.User.findById(req.headers['_id'], 
     (err, user) => {
       if(err) {
         res.status(404).send(err);
       }
       const d = new Date();
-      const daysBack = 1 + 1;
+      const daysBack = req.headers.history;
 
       d.setDate(d.getDate()-daysBack);
 

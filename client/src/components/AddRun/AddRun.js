@@ -36,6 +36,7 @@ function AddRun({ serverUrl, user, isModalActive, handleClick }) {
     })
     .then(res => res.json())
     .then(data => console.log(data));
+    handleClick();
   }
 
   return (

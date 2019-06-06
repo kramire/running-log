@@ -3,16 +3,23 @@ import '../../../node_modules/bulma/css/bulma.css';
 
 import { Calendar } from '../../components';
 
+// think about how we want to render the dates.
+// for now just hard coding 28
+// will need to update the calendar component depending
+// maybe the get request too
+
 function Dashboard({ serverUrl, user }) {
 
   const [runData, setRunData] = useState([]);
+  const [history, setHistory] = useState(28);
 
   useEffect(() => { 
       fetch(serverUrl, {
       'method': 'GET',
       'headers': {
         'Content-Type': 'application/json',
-        '_id': user['_id']
+        '_id': user['_id'],
+        history
       }
     })
       .then(res => res.json())
@@ -23,8 +30,7 @@ function Dashboard({ serverUrl, user }) {
 
   return (
     <div>
-      <h2> Here is the dashboard </h2>
-      <Calendar runData={runData}></Calendar>
+      <Calendar user={user} runData={runData} history={history}></Calendar>
     </div>
   )
 
