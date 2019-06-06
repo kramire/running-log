@@ -4,7 +4,7 @@ import '../../../node_modules/bulma/css/bulma.css';
 // need to build event to handle form submission
 
 
-function AddRun({ isModalActive, handleClick }) {
+function AddRun({ user, isModalActive, handleClick }) {
 
   const [distance, setDistance] = useState('');
   const [date, setDate] = useState(Date.now());
@@ -24,15 +24,17 @@ function AddRun({ isModalActive, handleClick }) {
     }
   }
 
+
   const saveForm = function (e) {
     e.preventDefault();
-    const data = {distance, date, location, note, runType};
+    const runData = {distance, date, location, note, runType};
+
     fetch(serverUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(data)
+      body: JSON.stringify({'_id': user['_id'], run: runData})
     })
     .then(res => res.json())
     .then(data => console.log(data));
