@@ -26,8 +26,6 @@ function Dashboard({ serverUrl, user }) {
       .then(data => setRunData(data));
   }, [])
 
-  console.log(runData);
-
   return (
     <div>
       <Calendar user={user} runData={runData} history={history}></Calendar>
