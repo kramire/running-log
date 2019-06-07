@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import '../../../node_modules/bulma/css/bulma.css';
 
+import styled from 'styled-components';
+
 import { Calendar, Kpi, LineChart } from '../../components';
 
 // think about how we want to render the dates.
@@ -10,8 +12,13 @@ import { Calendar, Kpi, LineChart } from '../../components';
 
 function Dashboard({ serverUrl, user }) {
 
+  const H2 = styled.h2`
+    font-size: 40px;
+    color: #CDDDDD;
+  `;
+
   const [runData, setRunData] = useState([]);
-  const [history, setHistory] = useState(35);
+  const [history, setHistory] = useState(49);
   const [acrData, setAcrData] = useState(0);
   const [weeklyData, setWeeklyData] = useState([]);
 
@@ -53,10 +60,19 @@ function Dashboard({ serverUrl, user }) {
   }, []);
 
   return (
-    <div>
-      <Kpi user={user} runData={runData} acrData={acrData}></Kpi>
-      <Calendar user={user} runData={runData} history={history}></Calendar>
-      <LineChart weeklyData={weeklyData} unitOfMeasure={user.unitOfMeasure} width={500} height={500}></LineChart>
+    <div className='tile is-ancestor'>
+      <div className='tile is-parent is-3'>
+        <div className='tile'>
+          <Kpi user={user} runData={runData} acrData={acrData}></Kpi>
+        </div>
+      </div>
+      <div className='tile is-parent is-vertical'>
+        <div className='tile is-parent is-vertical'>
+          <H2 className='tile is-child'>Calendar</H2>
+          <Calendar className='tile is-child' user={user} runData={runData} history={history}></Calendar>
+        </div>
+        <LineChart className='tile is-child' weeklyData={weeklyData} unitOfMeasure={user.unitOfMeasure} width={500} height={500}></LineChart>
+      </div>
     </div>
   )
 

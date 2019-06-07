@@ -72,24 +72,12 @@ exports.getCurrentAcr = (req, res) => {
 };
 
 
-exports.getWeeklyData = (req, res) => {
-  const periodStart = moment().subtract(12, 'weeks').day(0);
-  model.User.aggregate([
-      {$match: {'_id':new mongoose.Types.ObjectId(req.headers['_id'])}},
-      {$unwind: '$runs'}, 
-      {$match: {'runs.date': {$gte: periodStart.toDate()}}},
-      {$group: {'_id': {$week: '$runs.date'}, 'total': {$sum: '$runs.distance'}}},
-      {$sort: {'_id': 1}},
-    ])
-  .then(
-    (result) => {
-      result = result.map(run => {
-        run.week = moment().day('Sunday').week(run['_id']+1).toDate();
-        return run;
-      });
-      res.status(201).send(result);
-      }
-    );
+exports.getWeeklyData = async (req, res) => {
+  // console.log(await model.createDataObj(req.headers['_id']));
+  await model.createDataObj(req.headers['_id'])
+  const data = await model.getWeeklyData(req.headers['_id']);
+  res.status(201).send(data);
+
 }
 
  

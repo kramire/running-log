@@ -6,8 +6,17 @@ import '../node_modules/bulma/css/bulma.css';
 import { AddRun } from './components';
 import { Dashboard } from './containers';
 
+import styled from 'styled-components';
+
 
 function App() {
+
+  const Container = styled.div`
+    width: 90vw;
+    height: 100vh;
+    margin: 0 auto;
+  `;
+
 
   const [isModalActive, setModal] = useState(false);
   const serverUrl = 'http://localhost:3001';
@@ -23,11 +32,11 @@ function App() {
   });
 
   return (
-    <div className="App">
+    <Container className="App">
       <button onClick={() => setModal(true)}>Add Run +</button>
       <Dashboard serverUrl={serverUrl} user={user}></Dashboard>
       <AddRun serverUrl={serverUrl} user={user} isModalActive={isModalActive} handleClick={() => setModal('')}></AddRun>
-    </div>
+    </Container>
   );
 }
 
