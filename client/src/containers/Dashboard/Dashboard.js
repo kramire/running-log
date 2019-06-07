@@ -11,8 +11,8 @@ import { Calendar, Kpi } from '../../components';
 function Dashboard({ serverUrl, user }) {
 
   const [runData, setRunData] = useState([]);
-  const [history, setHistory] = useState(28);
-  const [acr, setAcr] = useState(0);
+  const [history, setHistory] = useState(35);
+  const [acrData, setAcrData] = useState(0);
 
   useEffect(() => { 
       fetch(serverUrl, {
@@ -36,12 +36,12 @@ function Dashboard({ serverUrl, user }) {
       }
     })
       .then(res => res.json())
-      .then(data => setAcr(data.acr));
+      .then(data => setAcrData(data));
   }, []);
 
   return (
     <div>
-      <Kpi user={user} runData={runData} acr={acr}></Kpi>
+      <Kpi user={user} runData={runData} acrData={acrData}></Kpi>
       <Calendar user={user} runData={runData} history={history}></Calendar>
     </div>
   )
