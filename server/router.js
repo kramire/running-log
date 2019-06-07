@@ -8,4 +8,7 @@ router.get('/', ctrl.getRuns);
 
 router.get('/acr', ctrl.getCurrentAcr);
 
+
+router.get('/weekly', ctrl.getWeeklyData);
+
 module.exports = router;
