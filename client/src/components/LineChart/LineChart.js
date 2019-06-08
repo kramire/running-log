@@ -1,5 +1,5 @@
 import React from 'react';
-import { Group } from '@vx/group';
+// import { Group } from '@vx/group';
 import { LinePath } from '@vx/shape';
 import { curveNatural } from '@vx/curve';
 import { scaleTime, scaleLinear } from '@vx/scale';
@@ -12,7 +12,7 @@ import styled from 'styled-components';
 const x = d => d.week;
 const y = d => d.total;
 
-function LineChart({ width, height, weeklyData, unitOfMeasure }) {
+function LineChart({ width, height, runData, unitOfMeasure }) {
 
   const Container = styled.div`
     height: 35vh;
@@ -25,7 +25,7 @@ function LineChart({ width, height, weeklyData, unitOfMeasure }) {
   const xMax = width;
   const yMax = height;
 
-  const wkData = weeklyData.map(el => ({
+  const wkData = runData.map(el => ({
     'total': el.total,
     'week': new Date(el.week)
   }))

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import '../../../node_modules/bulma/css/bulma.css';
 import moment from 'moment';
 
@@ -18,6 +18,17 @@ function Calendar({ user, runData }) {
   const DateBox = styled.div`
     background-color: #2E2F2F;
     margin: 2px;
+    color: #CDDDDD;
+
+    &:hover {
+      background-color: ${props => props.hasModal && '#4A4C4C'};
+    }
+  `;
+
+  const FirstBoxKpi = styled.div`
+    background-color: #2E2F2F;
+    margin: 2px;
+    margin-left: 10px;
     color: #CDDDDD;
   `;
 
@@ -39,11 +50,14 @@ function Calendar({ user, runData }) {
             )
           })
         }
-        <DateBox className="column">
+        <FirstBoxKpi className="column">
           <H3>Total</H3>
-        </DateBox>
+        </FirstBoxKpi>
         <DateBox className="column">
           <H3>% of Total</H3>
+        </DateBox>
+        <DateBox className="column">
+          <H3>WoW</H3>
         </DateBox>
       </div>
       <CalContainer>
@@ -52,7 +66,7 @@ function Calendar({ user, runData }) {
             return (
               <Week key={runData['_id']} weekDate={weekData.week} runData={weekData} 
               unit={user.unitOfMeasure} weekDayNums={weekDayNums}
-              DateBox={DateBox} H3={H3}></Week>
+              DateBox={DateBox} H3={H3} FirstBoxKpi={FirstBoxKpi}></Week>
               )
             }
           )

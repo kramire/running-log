@@ -3,11 +3,15 @@ import Calendar from './Calendar';
 import Week from './Week';
 import Kpi from './Kpi';
 import LineChart from './LineChart';
+import DayDetails from './DayDetails';
+import Day from './Day';
 
 export {
   AddRun,
   Calendar,
   Week,
   Kpi,
-  LineChart
+  LineChart,
+  DayDetails,
+  Day
 }

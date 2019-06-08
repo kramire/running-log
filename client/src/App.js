@@ -17,6 +17,11 @@ function App() {
     margin: 0 auto;
   `;
 
+  const H2 = styled.h2`
+    font-size: 40px;
+    color: #CDDDDD;
+  `;
+
 
   const [isModalActive, setModal] = useState(false);
   const serverUrl = 'http://localhost:3001';
@@ -33,8 +38,8 @@ function App() {
 
   return (
     <Container className="App">
-      <Dashboard serverUrl={serverUrl} user={user} setModal={setModal}></Dashboard>
-      <AddRun serverUrl={serverUrl} user={user} isModalActive={isModalActive} handleClick={() => setModal('')}></AddRun>
+      <Dashboard H2={H2} serverUrl={serverUrl} user={user} setModal={setModal}></Dashboard>
+      <AddRun serverUrl={serverUrl} user={user} isModalActive={isModalActive} handleClick={() => setModal(false)}></AddRun>
     </Container>
   );
 }

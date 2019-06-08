@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import '../../../node_modules/bulma/css/bulma.css';
 
-import styled from 'styled-components';
+// import styled from 'styled-components';
 
 import { Calendar, Kpi, LineChart } from '../../components';
 
@@ -10,19 +10,13 @@ import { Calendar, Kpi, LineChart } from '../../components';
 // will need to update the calendar component depending
 // maybe the get request too
 
-function Dashboard({ serverUrl, user, setModal }) {
-
-  const H2 = styled.h2`
-    font-size: 40px;
-    color: #CDDDDD;
-  `;
+function Dashboard({ serverUrl, user, setModal, H2 }) {
 
   const width = 500;
   const height = 500;
 
   const [runData, setRunData] = useState([]);
   const [acrData, setAcrData] = useState(0);
-  // const [weeklyData, setWeeklyData] = useState([]);
 
   useEffect(() => { 
       fetch(serverUrl, {
@@ -48,17 +42,6 @@ function Dashboard({ serverUrl, user, setModal }) {
       .then(data => setAcrData(data));
   }, []);
 
-  // useEffect(() => { 
-  //     fetch(`${serverUrl}/weekly`, {
-  //     'method': 'GET',
-  //     'headers': {
-  //       'Content-Type': 'application/json',
-  //       '_id': user['_id'],
-  //     }
-  //   })
-  //     .then(res => res.json())
-  //     .then(data => setWeeklyData(data));
-  // }, []);
 
   return (
     <div className='tile is-ancestor'>
@@ -72,7 +55,7 @@ function Dashboard({ serverUrl, user, setModal }) {
           <H2 className='tile is-child'>Calendar</H2>
           <Calendar className='tile is-child' user={user} runData={runData}></Calendar>
         </div>
-        {/*<LineChart className='tile is-child' weeklyData={weeklyData} unitOfMeasure={user.unitOfMeasure} width={width} height={height}></LineChart>*/}
+        <LineChart className='tile is-child' runData={runData} unitOfMeasure={user.unitOfMeasure} width={width} height={height}></LineChart>
       </div>
     </div>
   )
