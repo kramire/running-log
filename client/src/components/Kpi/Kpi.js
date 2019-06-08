@@ -2,6 +2,7 @@ import React  from 'react';
 import '../../../node_modules/bulma/css/bulma.css';
 import moment from 'moment';
 import styled from 'styled-components';
+import './Kpi.css';
 
 
 function Kpi({ user, runData, acrData, setModal }) {
@@ -35,6 +36,24 @@ function Kpi({ user, runData, acrData, setModal }) {
     font-size: 40px;
   `
 
+  const Button = styled.button`
+    color: #CDDDDD;
+    background-color: #978CA5;
+    font-size: 20px;
+    margin: 20px 0;
+    border: none;
+    padding: 5px 15px;
+    transition: all .1s ease;
+    
+    :hover {
+      transform: scale(1.15);
+      background-color: #CDDDDD;
+      color: #978CA5;
+      font-weight: bold;
+    }  
+
+  `
+
 
   const currentWeek = moment().startOf('week');
   const weekData = runData.filter(run => moment(run.week).isSame(currentWeek, 'week'))[0];
@@ -55,11 +74,21 @@ function Kpi({ user, runData, acrData, setModal }) {
       <SubContainer>
         <H3>Weekly Mileage</H3>
         <KPI>{`${weekData && weekData.total} ${user.unitOfMeasure}`}</KPI>
-        <button onClick={() => setModal(true)}>Add Run +</button>
+        <Button className='button is-rounded' onClick={() => setModal(true)}>Add Run +</Button>
       </SubContainer>
       <SubContainer>
         <H2>Acute Chronic Ratio</H2>
-        <KPI className={`has-text-${acrAlertClass}`}>{`${acrData.acr}`}</KPI>
+        <KPI className={` has-text-${acrAlertClass}`}>
+          <p className="tooltips" href="#">{`${acrData.acr}`}
+          <span>
+            {"The Acute-to-Chronic Ratio compares last week's mileage "+
+            "against your average mileage for the past four weeks.\n"+
+            "Healthy: Less Than 1.2\n"+
+            "At Risk for Injury: 1.2 - 1.5\n"+
+            "Dangerous: Greater Than 1.5"}
+            </span>
+          </p>
+        </KPI>
         <div>{`${startDate} - ${endDate}`}</div>
       </SubContainer>
     </Container>

@@ -3,6 +3,7 @@ import '../../../node_modules/bulma/css/bulma.css';
 import moment from 'moment';
 
 import styled from 'styled-components';
+import './Calendar.css'
 
 import { Week } from '../';
 
@@ -64,7 +65,7 @@ function Calendar({ user, runData }) {
         {
           runData.map(weekData => {
             return (
-              <Week key={runData['_id']} weekDate={weekData.week} runData={weekData} 
+              <Week key={weekData['_id']} weekDate={weekData.week} runData={weekData} 
               unit={user.unitOfMeasure} weekDayNums={weekDayNums}
               DateBox={DateBox} H3={H3} FirstBoxKpi={FirstBoxKpi}></Week>
               )

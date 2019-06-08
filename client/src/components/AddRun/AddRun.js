@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import '../../../node_modules/bulma/css/bulma.css';
 // import moment from '../../../../moment';
 
 import styled from 'styled-components';
 
-const locationIqUrl = 'https://eu1.locationiq.com/v1/reverse.php?key=236b8b5b6932ec'
+// const locationIqUrl = 'https://eu1.locationiq.com/v1/reverse.php?key=236b8b5b6932ec'
+const locationIqUrl = ''
 const locObj = {
   latitude: '',
   longitude: '',

@@ -22,12 +22,12 @@ function DayDetails({ isDayModalActive, handleClick, runArr, date }) {
       <div className='modal-background'></div>
       <div className='modal-content'>
         <button className='delete is-large' onClick={handleClick}></button>
-        <H2 className=''>Runs Details for {`${date}`}</H2>
-        <ul>
+        <H2 className=''>Runs Details for {`${moment(date).format('MMM Do YYYY')}`}</H2>
+        <ul key={date}>
           {
             runArr.map(run => {
               return (
-                <ul>
+                <ul key={run['_id']}>
                   <Li>{run.distance}</Li>
                   <Li>{run.location}</Li>
                   <Li>{run.note}</Li>

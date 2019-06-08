@@ -1,0 +1,31 @@
+p.tooltips {
+    position: relative;
+    display: inline;
+}
+p.tooltips span {
+    position: absolute;
+    width: 400%;
+    color: #CDDDDD;
+    background: #051014;
+    line-height: 30px;
+    text-align: center;
+    visibility: hidden;
+    border-radius: 6px;
+}
+p.tooltips span:after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: 100%;
+    margin-left: -8px;
+    width: 0; height: 0;
+}
+p:hover.tooltips span {
+    visibility: visible;
+    left: 0%;
+    top: 100px;
+    margin-left: -120px;
+    z-index: 999;
+    font-size: 16px;
+    font-weight: normal;
+}

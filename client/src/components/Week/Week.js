@@ -2,6 +2,7 @@ import React from 'react';
 import '../../../node_modules/bulma/css/bulma.css';
 import moment from 'moment';
 import styled from 'styled-components';
+import './Week.css'
 
 import { Day } from '../';
 
@@ -38,7 +39,7 @@ function Week({ runData, unit, DateBox, H3, weekDayNums, FirstBoxKpi }) {
           const calendarDate = moment(new Date(runData.week)).add(day, 'days');
           const runArr = filterRunsByDate(runData.runs, calendarDate);
           return (
-            <Day DateBox={DateBox} H3={H3} Distance={Distance} Unit={unit} runArr={runArr} 
+            <Day key={calendarDate} DateBox={DateBox} H3={H3} Distance={Distance} Unit={unit} runArr={runArr} 
             calendarDate={calendarDate} unit={unit}></Day>
           )
         })
@@ -47,7 +48,7 @@ function Week({ runData, unit, DateBox, H3, weekDayNums, FirstBoxKpi }) {
          <H3>Week</H3>
          <Distance>
            {`${runData.total}`} 
-           <Unit>{` ${unit}`}</Unit>
+           <Unit>{`${unit}`}</Unit>
          </Distance>
       </FirstBoxKpi>
 

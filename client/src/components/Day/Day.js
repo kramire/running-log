@@ -7,7 +7,13 @@ import styled from 'styled-components';
 import { DayDetails } from '../';
 
 
-function Day({ DateBox, H3, Distance, Unit, runArr, calendarDate, unit }) {
+function Day({ DateBox, H3, Distance, runArr, calendarDate, unit }) {
+
+  const Unit = styled.div`
+    display: inline;
+    font-size: .5em;
+    font-weight: normal;
+  `
 
   const [isDayModalActive, setDayModal] = useState(false);
 
