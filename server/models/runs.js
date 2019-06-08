@@ -25,15 +25,26 @@ const Run = mongoose.model('runs', RunSchema);
 const User = mongoose.model('users', UserSchema);
 
 
-const periodStart = moment().subtract(12, 'weeks').day(0);
+const periodStart = moment().subtract(12, 'weeks').day(0); // this determines how much data we get
 
-function getWeeklyData (userId) {
+
+// for given user, gets array of weekly data objects
+// each week object has: week start date, total mileage, longest run, prct change, array of daily runs
+
+function calcWeeklyData (userId) {
 
   return User.aggregate([
     {$match: {'_id':new mongoose.Types.ObjectId(userId)}},
     {$unwind: '$runs'}, 
+    {$sort: {'runs.date': 1}},
     {$match: {'runs.date': {$gte: periodStart.toDate(), $lte: moment().toDate()}}},
-    {$group: {'_id': {$week: '$runs.date'}, 'total': {$sum: '$runs.distance'}}},
+    {$group: {
+      '_id': {$week: '$runs.date'},
+      'longestRun': {$max: '$runs.distance'},
+      'total': {$sum: '$runs.distance'},
+      'runs': {$push: '$runs'}
+      }
+    },
     {$sort: {'_id': 1}},
   ])
   .then(
@@ -47,44 +58,8 @@ function getWeeklyData (userId) {
   )
 }
 
-
-function getRunsTest  (userId) {
-  return User.findById(userId, 
-    (err, user) => {
-      if(err) {
-        res.status(404).send(err);
-      }
-      return user.runs.filter(run => {
-        (moment(run.date) >= periodStart) && (moment(run.date) <= moment());
-      });
-    }
-  )
-}
-
-async function createDataObj (userId) {
- const allData = await getRunsTest(userId);
- 
- const runData = allData.runs.map(d => d.toObject());
- runData.forEach(el => el.week = moment(el.data).startOf('week').toDate());
-
- const weeklyData = await getWeeklyData (userId);
-
- return {
-
- }
-
-}
-
-
-
-
-
-
-
-
 module.exports = {
   Run, 
   User,
-  getWeeklyData,
-  createDataObj
+  calcWeeklyData
 };

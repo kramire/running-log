@@ -4,11 +4,9 @@ const ctrl = require('./controllers/runs.js');
 
 router.post('/', ctrl.postOneRun);
 
-router.get('/', ctrl.getRuns);
+router.get('/', ctrl.getRunData);
 
 router.get('/acr', ctrl.getCurrentAcr);
 
-
-router.get('/weekly', ctrl.getWeeklyData);
 
 module.exports = router;

@@ -4,39 +4,34 @@ import moment from 'moment';
 import styled from 'styled-components';
 
 
-function Week({ runData, weekStart, unit, dateUpdate, DateBox, H3 }) {
+function Week({ runData, unit, DateBox, H3, weekDayNums }) {
 
   const Distance = styled.div`
-    font-size: 32px;
+    font-size: 2em;
     font-weight: bold;
     text-align: right;
   `
   const Unit = styled.div`
     display: inline;
-    font-size: 24px;
+    font-size: .75em;
     font-weight: normal;
   `
 
-  const distances = runData.map(run => run.distance);
-
-  const total = distances.reduce((acc, cur) => acc + cur, 0);
-  const max = distances.reduce((acc, cur) => Math.max(acc, cur), 0);
-  const maxPrct = Math.round(max/total*100);
   const maxThreshold = 30;
+  const longestPrct = Math.round(runData.longestRun  / runData.total * 100);
 
   return (
-    <div className="columns">
+    <div className="columns is-mobile">
       {
-        dateUpdate.map(el => {
-          let buildDate = moment(weekStart).add(el, 'd');
+        weekDayNums.map(day => {
+          const calendarDate = moment(new Date(runData.week)).add(day, 'days')
           return (
-            <DateBox className="column" key={buildDate}>
-              <H3>{ `${moment(buildDate).format("MMM DD")}` }</H3>
+            <DateBox className="column" key={calendarDate}>
+              <H3>{ `${calendarDate.format("MMM DD")}` }</H3>
               <Distance>
-                { 
-                  runData.filter(run => moment(run.date).isSame(buildDate, 'day'))
-                    .map(run => run.distance)
-                    .reduce((acc, cur) => acc + cur, 0)
+                {runData.runs.filter(run => moment(new Date(run.date)).isSame(calendarDate, 'day'))
+                  .map(run => run.distance)
+                  .reduce((accum, cur) => accum + cur, 0)
                 }
                 <Unit>{` ${unit}`}</Unit>
               </Distance>
@@ -47,14 +42,14 @@ function Week({ runData, weekStart, unit, dateUpdate, DateBox, H3 }) {
       <DateBox className="column">
          <H3>Week</H3>
          <Distance>
-           {`${total}`} 
+           {`${runData.total}`} 
            <Unit>{` ${unit}`}</Unit>
          </Distance>
       </DateBox>
 
-      <DateBox className={`column ${maxPrct > maxThreshold && 'has-background-danger'}`}>
+      <DateBox className={`column ${longestPrct > maxThreshold && 'has-background-danger'}`}>
         <H3>Longest %</H3>
-        {`${maxPrct}% ${unit}`}
+        {`${longestPrct}% ${unit}`}
       </DateBox>
     </div>
   )

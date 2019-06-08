@@ -33,8 +33,7 @@ function App() {
 
   return (
     <Container className="App">
-      <button onClick={() => setModal(true)}>Add Run +</button>
-      <Dashboard serverUrl={serverUrl} user={user}></Dashboard>
+      <Dashboard serverUrl={serverUrl} user={user} setModal={setModal}></Dashboard>
       <AddRun serverUrl={serverUrl} user={user} isModalActive={isModalActive} handleClick={() => setModal('')}></AddRun>
     </Container>
   );

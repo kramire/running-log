@@ -24,25 +24,25 @@ exports.postOneRun = (req, res) => {
 };
 
 
-exports.getRuns = (req, res) => {
-  model.User.findById(req.headers['_id'], 
-    (err, user) => {
-      if(err) {
-        res.status(404).send(err);
-      }
-      const d = new Date();
-      const daysBack = req.headers.history;
+// exports.getRuns = (req, res) => {
+//   model.User.findById(req.headers['_id'], 
+//     (err, user) => {
+//       if(err) {
+//         res.status(404).send(err);
+//       }
+//       const d = new Date();
+//       const daysBack = req.headers.history;
 
-      d.setDate(d.getDate()-daysBack);
+//       d.setDate(d.getDate()-daysBack);
 
-      const runs = user.runs.filter(run => run.date >= d);
-      if (!runs) {
-        res.status(401).send({});
-      }
-      res.status(201).send(runs);
-    }
-  )
-};
+//       const runs = user.runs.filter(run => run.date >= d);
+//       if (!runs) {
+//         res.status(401).send({});
+//       }
+//       res.status(201).send(runs);
+//     }
+//   )
+// };
 
 
 exports.getCurrentAcr = (req, res) => {
@@ -72,10 +72,9 @@ exports.getCurrentAcr = (req, res) => {
 };
 
 
-exports.getWeeklyData = async (req, res) => {
-  // console.log(await model.createDataObj(req.headers['_id']));
-  await model.createDataObj(req.headers['_id'])
-  const data = await model.getWeeklyData(req.headers['_id']);
+exports.getRunData = async (req, res) => {
+  const data = await model.calcWeeklyData(req.headers['_id']);
+  console.log(data);
   res.status(201).send(data);
 
 }

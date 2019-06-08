@@ -7,8 +7,9 @@ import styled from 'styled-components';
 import { Week } from '../';
 
 // start with sunday start. focus on monday start after
-function Calendar({ user, runData, history }) {  
+function Calendar({ user, runData }) {  
 
+  // something with the fact that there are two divs of columns
   const CalContainer = styled.div`
     height: 45vh;
     overflow: scroll;
@@ -24,21 +25,13 @@ function Calendar({ user, runData, history }) {
     text-align: center;
   `;
 
-  const currentWeek = moment().startOf('week');
-  const calendarStart = currentWeek.subtract(history, 'd').startOf('week').toDate();
-
-  const weekUpdate = [];
-  for (let i=0; i<=Math.floor(history/7); i++) {
-    weekUpdate.push(i*7);
-  }
-
-  const dateUpdate = Array.of(0, 1, 2, 3, 4, 5, 6);  
+  const weekDayNums = Array.of(0, 1, 2, 3, 4, 5, 6);  
 
   return (
     <div>
-      <div className="columns">
+      <div className="columns is-mobile">
         {
-          dateUpdate.map(el => {
+          weekDayNums.map(el => {
             return (
               <DateBox className="column" key={el}>
                 <H3>{`${moment.weekdays(el)}`}</H3>
@@ -55,15 +48,11 @@ function Calendar({ user, runData, history }) {
       </div>
       <CalContainer>
         {
-          weekUpdate.map(el => {
-            let weekStart = moment(calendarStart).add(el, 'd')
-            let weekData = runData.filter(run => moment(run.date).isSame(weekStart, 'week'));
-
+          runData.map(weekData => {
             return (
-              <Week DateBox={DateBox} H3={H3} key={weekStart} runData={weekData} dateUpdate={dateUpdate}
-                weekStart={weekStart} unit={user.unitOfMeasure}>
-              }
-              </Week>
+              <Week key={runData['_id']} weekDate={weekData.week} runData={weekData} 
+              unit={user.unitOfMeasure} weekDayNums={weekDayNums}
+              DateBox={DateBox} H3={H3}></Week>
               )
             }
           )

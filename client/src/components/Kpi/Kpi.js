@@ -4,7 +4,7 @@ import moment from 'moment';
 import styled from 'styled-components';
 
 
-function Kpi({ user, runData, acrData }) {
+function Kpi({ user, runData, acrData, setModal }) {
 
   const Container = styled.div`
     color: #CDDDDD;
@@ -13,7 +13,7 @@ function Kpi({ user, runData, acrData }) {
   `;
 
   const SubContainer = styled.div`
-    margin: 20px 0px;
+    margin: 40px 0px;
   `;
 
   const User = styled.div`
@@ -37,9 +37,7 @@ function Kpi({ user, runData, acrData }) {
 
 
   const currentWeek = moment().startOf('week');
-  const weekData = runData.filter(run => moment(run.date).isSame(currentWeek, 'week'));
-  const distances = weekData.map(run => run.distance);
-  const total = distances.reduce((acc, cur) => acc + cur, 0);
+  const weekData = runData.filter(run => moment(run.week).isSame(currentWeek, 'week'))[0];
 
   const startDate = moment(acrData.startDate).format('MMM Do');
   const endDate = moment(acrData.endDate).format('MMM Do');
@@ -56,7 +54,8 @@ function Kpi({ user, runData, acrData }) {
       </SubContainer>
       <SubContainer>
         <H3>Weekly Mileage</H3>
-        <KPI>{`${total} ${user.unitOfMeasure}`}</KPI>
+        <KPI>{`${weekData && weekData.total} ${user.unitOfMeasure}`}</KPI>
+        <button onClick={() => setModal(true)}>Add Run +</button>
       </SubContainer>
       <SubContainer>
         <H2>Acute Chronic Ratio</H2>
