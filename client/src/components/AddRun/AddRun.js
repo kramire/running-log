@@ -1,11 +1,51 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../../../node_modules/bulma/css/bulma.css';
 // import moment from '../../../../moment';
 
 import styled from 'styled-components';
 
+const locationIqUrl = 'https://eu1.locationiq.com/v1/reverse.php?key=236b8b5b6932ec'
+const locObj = {
+  latitude: '',
+  longitude: '',
+  city: '',
+  state: '',
+  country: '',
+}
+
+async function getBrowserLocation(options) {
+  return new Promise((resolve, reject) => {
+    navigator.geolocation.getCurrentPosition(
+      (pos) => resolve(
+        locObj.latitude = pos.coords.latitude, 
+        locObj.longitude = pos.coords.longitude
+        ),
+      (err) => '',
+      {enableHighAccuracy: true, timeout: 5000, maximumAge: 0}
+    )})
+}
+
+async function getLocationDetails() {
+  try {
+    await getBrowserLocation(); 
+    const url = (`${locationIqUrl}&lat=${locObj.latitude}&lon=${locObj.longitude}&format=json`);
+    fetch(url)
+      .then(res => res.json())
+      .then(data => {
+        locObj.city = data.address.city;
+        locObj.state = data.address.state && data.address.city !== data.address.state;
+        locObj.country = data.address.country;
+        console.log(locObj);
+      })
+  } catch (error) {
+    return null;
+  }
+}
+
 
 function AddRun({ serverUrl, user, isModalActive, handleClick }) {
+
+  getLocationDetails();
 
   const CloseButton = styled.button`
     background-color: transparent;
@@ -13,7 +53,6 @@ function AddRun({ serverUrl, user, isModalActive, handleClick }) {
     border: none;
     color: #CDDDDD;
   `
-
   const H1 = styled.h1`
     font-size: 40px;
     text-align: center;
@@ -25,12 +64,18 @@ function AddRun({ serverUrl, user, isModalActive, handleClick }) {
     color: #ACBDBA;
     font-size: 20px;
   `;
+  const options = {
+    enableHighAccuracy: true,
+    timeout: 5000,
+    maximumAge: 0
+  };
 
   const [distance, setDistance] = useState('');
   const [date, setDate] = useState(Date.now());
   const [location, setLocation] = useState('');
   const [note, setNote] = useState('');
   const [runType, setRunType] = useState([]);
+
 
   const runTypeEvent = function (e) {
     const desc = e.target.value;
@@ -41,7 +86,6 @@ function AddRun({ serverUrl, user, isModalActive, handleClick }) {
       setRunType(runType.filter(el => el !== desc));
     }
   }
-
 
   const saveForm = function (e) {
     e.preventDefault();
@@ -58,6 +102,7 @@ function AddRun({ serverUrl, user, isModalActive, handleClick }) {
     .then(data => console.log(data));
     handleClick();
   }
+
 
 
   return (
@@ -87,6 +132,7 @@ function AddRun({ serverUrl, user, isModalActive, handleClick }) {
           <div className='field is-horizontal'>
             <Label className='label field-label'>Location</Label>
               <div className='control field-body'>
+                <Label>{`${locObj.city}, ${locObj.state}, ${locObj.country}`}</Label>
                 <input className='input' type='text' value={location} placeholder='e.g. "New York, NY" or "10021"'
                   onChange={(e) => setLocation(e.target.value)}></input>
               </div>

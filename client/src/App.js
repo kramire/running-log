@@ -40,6 +40,7 @@ function App() {
     <Container className="App">
       <Dashboard H2={H2} serverUrl={serverUrl} user={user} setModal={setModal}></Dashboard>
       <AddRun serverUrl={serverUrl} user={user} isModalActive={isModalActive} handleClick={() => setModal(false)}></AddRun>
+      }
     </Container>
   );
 }
