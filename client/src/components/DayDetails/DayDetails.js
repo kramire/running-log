@@ -27,6 +27,7 @@ const Label = styled.label`
   font-size: 1.3em;
   font-weight: bold;
   margin-right: 10px;
+  text-transform: capitalize;
 `;
 
 const Ul = styled.ul`
@@ -37,7 +38,28 @@ const Ul = styled.ul`
   margin-bottom: 20px;
 `
 
-function DayDetails({ isDayModalActive, handleClick, runArr, date }) {
+const Unit = styled.div`
+    display: inline;
+    font-size: 1em;
+    color: #CDDDDD;
+    font-weight: normal;
+    font-style: italic;
+  `
+
+
+const showElement = function (property, obj, unit) {
+  if (obj[property]) {
+    return (
+      <li>
+        <Label>{property}</Label>
+        <Span>{obj[property]}</Span>
+        {property==='distance' && <Unit>{unit}</Unit>}
+      </li>
+    )
+  }
+}
+
+function DayDetails({ isDayModalActive, handleClick, runArr, date, unit }) {
 
   return (
      <div className={`modal ${isDayModalActive ? 'is-active' : ''}`}>
@@ -50,18 +72,9 @@ function DayDetails({ isDayModalActive, handleClick, runArr, date }) {
             runArr.map(run => {
               return (
                 <Ul key={run['_id']}>
-                  <li>
-                    <Label>Distance</Label>
-                    <Span>{run.distance}</Span>
-                  </li>
-                  <li>
-                    <Label>Location</Label>
-                    <Span>{run.location}</Span>
-                  </li>
-                  <li>
-                    <Label>Notes</Label>
-                    <Span>{run.note}</Span>
-                  </li>
+                  {showElement('distance', run, unit)}
+                  {showElement('location', run)}
+                  {showElement('note', run)}
                 </Ul>
               )
             })

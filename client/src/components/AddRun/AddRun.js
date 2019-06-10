@@ -138,7 +138,7 @@ function AddRun({ serverUrl, user, isModalActive, handleClick, browserLocation }
           <div className='field is-horizontal'>
             <Label className='label field-label'>Distance</Label>
               <div className='control field-body'>
-                <input className='input' type='number' min='0' step="0.01" value={distance} required
+                <input className='input distance' type='number' min='0' step="0.01" value={distance} required
                   onChange={(e) => setDistance(e.target.value)}></input>
                 <Label>Miles</Label>
               </div>

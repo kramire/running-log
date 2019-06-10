@@ -7,7 +7,7 @@ import './Week.css'
 import { Day } from '../';
 
 const Distance = styled.div`
-  font-size: 2em;
+  font-size: 1.7em;
   font-weight: bold;
   text-align: right;
 `
@@ -17,12 +17,13 @@ const Unit = styled.div`
   font-weight: normal;
 `
 const Percentage = styled.div`
-  font-size: 2em;
+  font-size: 1.4em;
   font-style: italic;
   text-align: right;
+  vertical-align: bottom;
 `
 
-function Week({ runData, unit, DateBox, H3, weekDayNums, FirstBoxKpi }) {
+function Week({ runData, unit, DateBox, H3, weekDayNums }) {
 
 
   const maxThreshold = 30;
@@ -44,20 +45,20 @@ function Week({ runData, unit, DateBox, H3, weekDayNums, FirstBoxKpi }) {
           )
         })
       }
-      <FirstBoxKpi className="column">
+      <DateBox className="column firstKpi reAddMargin">
          <H3>Week</H3>
          <Distance>
            {`${runData.total}`} 
            <Unit>{`${unit}`}</Unit>
          </Distance>
-      </FirstBoxKpi>
+      </DateBox>
 
-      <DateBox className={`column ${longestPrct > maxThreshold && 'has-background-danger'}`}>
+      <DateBox className={`column reAddMargin ${longestPrct > maxThreshold && 'has-background-danger'}`}>
         <H3>Longest %</H3>
         <Percentage>{`${longestPrct}%`}</Percentage>
       </DateBox>
 
-      <DateBox className='column'>
+      <DateBox className='column reAddMargin'>
         <H3>WoW</H3>
         <Percentage>{`${Math.round(runData.prctChange*100)}%`}</Percentage>
       </DateBox>

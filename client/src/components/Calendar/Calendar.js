@@ -10,14 +10,12 @@ import { Week } from '../';
 // start with sunday start. focus on monday start after
 // something with the fact that there are two divs of columns
 const CalContainer = styled.div`
-  height: 45vh;
+  height: 40vh;
   overflow: scroll;
 `;
 
 const DateBox = styled.div`
   background-color: #2E2F2F;
-  margin: 2px;
-  padding: 5px;
   color: #CDDDDD;
 
   &:hover {
@@ -25,15 +23,9 @@ const DateBox = styled.div`
   }
 `;
 
-const FirstBoxKpi = styled.div`
-  background-color: #2E2F2F;
-  margin: 2px;
-  margin-left: 10px;
-  color: #CDDDDD;
-`;
-
 const H3 = styled.div`
   text-align: center;
+  font-size: .9em;
 `;
   
 function Calendar({ user, runData }) {  
@@ -47,19 +39,19 @@ function Calendar({ user, runData }) {
         {
           weekDayNums.map(el => {
             return (
-              <DateBox className="column" key={el}>
-                <H3>{`${moment.weekdaysShort(el)}`}</H3>
+              <DateBox className="column reAddMargin" key={el}>
+                <H3>{`${moment.weekdays(el)}`}</H3>
               </DateBox>
             )
           })
         }
-        <FirstBoxKpi className="column">
+        <DateBox className="column reAddMargin firstKpi">
           <H3>Total</H3>
-        </FirstBoxKpi>
-        <DateBox className="column">
+        </DateBox>
+        <DateBox className="column reAddMargin">
           <H3>% of Total</H3>
         </DateBox>
-        <DateBox className="column">
+        <DateBox className="column reAddMargin">
           <H3>WoW</H3>
         </DateBox>
       </div>
@@ -69,7 +61,7 @@ function Calendar({ user, runData }) {
             return (
               <Week key={weekData['_id']} weekDate={weekData.week} runData={weekData} 
               unit={user.unitOfMeasure} weekDayNums={weekDayNums}
-              DateBox={DateBox} H3={H3} FirstBoxKpi={FirstBoxKpi}></Week>
+              DateBox={DateBox} H3={H3}></Week>
               )
             }
           )

@@ -19,7 +19,7 @@ const formatDate = date => format(parseDate(date));
 
 const Container = styled.div`
   height: 35vh;
-  margin: 10px 0;
+  margin: 25px 0 10px 0;
   overflow: hidden;
 `;
 

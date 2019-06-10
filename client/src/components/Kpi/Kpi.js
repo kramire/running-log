@@ -17,7 +17,11 @@ const Container = styled.div`
 `;
 
 const SubContainer = styled.div`
-  margin: 40px 0px;
+  margin: 0px 0px 60px 0px;
+
+  @media (max-width: 800px) {
+    margin: 0 auto;
+  }
 `;
 
 const User = styled.div`
@@ -38,7 +42,7 @@ const H2 = styled.h2`
 
 `
 const H3 = styled.h3`
-  font-size: 1.5em;
+  font-size: 1.4em;
 
   @media (max-width: 800px) {
     font-size: .8em;
