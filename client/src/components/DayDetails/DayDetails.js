@@ -4,38 +4,70 @@ import moment from 'moment';
 
 import styled from 'styled-components';
 
-const H2 = styled.h2`
-  font-size: 40px;
-  color: #CDDDDD;
+const Modal = styled.div`
+  background-color: #0f0f0f;
+  border-radius: 15px;
+  padding: 50px;
 `;
 
-const Li = styled.li`
+const H1 = styled.h1`
+  font-size: 2em;
+  text-align: center;
+  color: #CDDDDD;
+  margin-bottom: 40px;
+`;
+
+const Span = styled.span`
   font-size: 20px;
   color: #CDDDDD;
 `;
+
+const Label = styled.label`
+  color: #ACBDBA;
+  font-size: 1.3em;
+  font-weight: bold;
+  margin-right: 10px;
+`;
+
+const Ul = styled.ul`
+  list-style: none;
+  background-color: #2E2F2F;
+  padding: 10px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+`
 
 function DayDetails({ isDayModalActive, handleClick, runArr, date }) {
 
   return (
      <div className={`modal ${isDayModalActive ? 'is-active' : ''}`}>
       <div className='modal-background'></div>
-      <div className='modal-content'>
+      <Modal className='modal-content'>
         <button className='delete is-large' onClick={handleClick}></button>
-        <H2 className=''>Runs Details for {`${moment(date).format('MMM Do YYYY')}`}</H2>
+        <H1 className=''>{`${moment(date).format('MMM Do YYYY')}`}</H1>
         <ul key={date}>
           {
             runArr.map(run => {
               return (
-                <ul key={run['_id']}>
-                  <Li>{run.distance}</Li>
-                  <Li>{run.location}</Li>
-                  <Li>{run.note}</Li>
-                </ul>
+                <Ul key={run['_id']}>
+                  <li>
+                    <Label>Distance</Label>
+                    <Span>{run.distance}</Span>
+                  </li>
+                  <li>
+                    <Label>Location</Label>
+                    <Span>{run.location}</Span>
+                  </li>
+                  <li>
+                    <Label>Notes</Label>
+                    <Span>{run.note}</Span>
+                  </li>
+                </Ul>
               )
             })
           }
         </ul>
-      </div>
+      </Modal>
     </div>
 
   )

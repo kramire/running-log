@@ -4,7 +4,7 @@ import './AddRun.css';
 
 import styled from 'styled-components';
 
-const Modal = styled.label`
+const Modal = styled.div`
   background-color: #0f0f0f;
   border-radius: 15px;
   padding: 50px;
@@ -105,7 +105,6 @@ function AddRun({ serverUrl, user, isModalActive, handleClick }) {
       body: JSON.stringify({'_id': user['_id'], run: runData})
     })
     .then(res => res.json())
-    .then(data => console.log(data));
     handleClose();
   }
 

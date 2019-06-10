@@ -30,6 +30,8 @@ function App() {
     optInAlerts: true,
   });
 
+  console.log('app loaded');
+
   return (
     <Container className="App">
       <Dashboard serverUrl={serverUrl} user={user} setModal={setModal}></Dashboard>

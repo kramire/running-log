@@ -8,7 +8,7 @@ import './Calendar.css'
 import { Week } from '../';
 
 // start with sunday start. focus on monday start after
-  // something with the fact that there are two divs of columns
+// something with the fact that there are two divs of columns
 const CalContainer = styled.div`
   height: 45vh;
   overflow: scroll;
