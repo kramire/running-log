@@ -12,13 +12,13 @@ import styled from 'styled-components';
 const x = d => d.week;
 const y = d => d.total;
 
+const Container = styled.div`
+  height: 35vh;
+  overflow: hidden;
+`;
+
 function LineChart({ width, height, runData, unitOfMeasure }) {
 
-  const Container = styled.div`
-    height: 35vh;
-    overflow: hidden;
-  `;
-  
   const uom = unitOfMeasure === 'mi' ? 'Miles' : unitOfMeasure === 'km' ? 'Kilometers' : '';
   
   // bounds

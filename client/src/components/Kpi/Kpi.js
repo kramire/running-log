@@ -4,65 +4,109 @@ import moment from 'moment';
 import styled from 'styled-components';
 import './Kpi.css';
 
+const Container = styled.div`
+  color: #CDDDDD;
+  margin: 0 auto;
+  text-align: center;
 
-function Kpi({ user, runData, acrData, setModal }) {
+    @media (max-width: 800px) {
+      display: flex;
+      justify-content: center;
+      margin-right: 0px;
+    }
+`;
 
-  const Container = styled.div`
-    color: #CDDDDD;
-    margin: 0 auto;
-    text-align: center;
-  `;
+const SubContainer = styled.div`
+  margin: 40px 0px;
+`;
 
-  const SubContainer = styled.div`
-    margin: 40px 0px;
-  `;
+const User = styled.div`
+  color: #c6bad6;
+  font-size: 3em;
 
-  const User = styled.div`
-    color: #A599B5;
-    font-size: 48px;
-  `
+  @media (max-width: 800px) {
+    font-size: 1.5em;
+  }
+`
 
-  const H2 = styled.div`
-    font-size: 30px;
+const H2 = styled.h2`
+  font-size: 3em;
 
-  `
-  const H3 = styled.div`
-    font-size: 24px;
-  `
+  @media (max-width: 800px) {
+    font-size: 1.5em;
+  }
 
-  const KPI = styled.div`
-    color: #CDDDDD;
+`
+const H3 = styled.h3`
+  font-size: 1.5em;
+
+  @media (max-width: 800px) {
+    font-size: .8em;
+  }
+`
+
+const H4 = styled.h4`
+  font-size: 1.8em;
+  font-weight: bold;
+  color: #c6bad6;
+  text-transform: capitalize;
+
+  @media (max-width: 800px) {
+    font-size: .7em;
+  }
+`
+
+const P = styled.p`
+  font-size: 1.1em;
+
+  @media (max-width: 800px) {
+    font-size: .5em;
+  }
+`
+
+const KPI = styled.div`
+  color: #CDDDDD;
+  font-weight: bold;
+  font-size: 3em;
+
+  @media (max-width: 800px) {
+    font-size: 1.5em;
+  }
+`
+
+const Button = styled.button`
+  color: #CDDDDD;
+  background-color: #978CA5;
+  font-size: 1em;
+  margin: 20px 0;
+  border: none;
+  padding: 5px 15px;
+  transition: all .1s ease;
+  
+  :hover {
+    transform: scale(1.15);
+    background-color: #CDDDDD;
+    color: #978CA5;
     font-weight: bold;
-    font-size: 40px;
-  `
+  }
 
-  const Button = styled.button`
-    color: #CDDDDD;
-    background-color: #978CA5;
-    font-size: 20px;
-    margin: 20px 0;
-    border: none;
-    padding: 5px 15px;
-    transition: all .1s ease;
-    
-    :hover {
-      transform: scale(1.15);
-      background-color: #CDDDDD;
-      color: #978CA5;
-      font-weight: bold;
-    }  
+  @media (max-width: 800px) {
+    font-size:.5em;
+    margin: 10px 0;
+    padding: 2.5px 8px;
+  }  
+`
 
-  `
-
+function Kpi({ user, runData, setModal }) {
 
   const currentWeek = moment().startOf('week');
   const weekData = runData.filter(run => moment(run.week).isSame(currentWeek, 'week'))[0];
 
-  const startDate = moment(acrData.startDate).format('MMM Do');
-  const endDate = moment(acrData.endDate).format('MMM Do');
+  const acrStartDate = moment(weekData.acrStartDate).format('MMM Do');
+  const acrEndDate = moment(weekData.acrEndDate).format('MMM Do');
   const acrAlertClass = 
-    acrData.acr > 1.5 ? 'danger' : 
-    acrData.acr > 1.2 ? 'warning' : 
+    weekData.acr > 1.5 ? 'danger' : 
+    weekData.acr > 1.2 ? 'warning' : 
     'success';
 
   return(
@@ -77,9 +121,9 @@ function Kpi({ user, runData, acrData, setModal }) {
         <Button className='button is-rounded' onClick={() => setModal(true)}>Add Run +</Button>
       </SubContainer>
       <SubContainer>
-        <H2>Acute Chronic Ratio</H2>
+        <H3>Acute Chronic Ratio</H3>
         <KPI className={` has-text-${acrAlertClass}`}>
-          <p className="tooltips" href="#">{`${acrData.acr}`}
+          <p className="tooltips" href="#">{`${weekData.acr}`}
           <span>
             {"The Acute-to-Chronic Ratio compares last week's mileage "+
             "against your average mileage for the past four weeks.\n"+
@@ -89,7 +133,11 @@ function Kpi({ user, runData, acrData, setModal }) {
             </span>
           </p>
         </KPI>
-        <div>{`${startDate} - ${endDate}`}</div>
+        <P>{`${acrStartDate} - ${acrEndDate}`}</P>
+      </SubContainer>
+      <SubContainer>
+        <H3>Training For</H3>
+        <H4>{user.trainingFor}</H4>
       </SubContainer>
     </Container>
   )

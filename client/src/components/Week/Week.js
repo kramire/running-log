@@ -6,24 +6,24 @@ import './Week.css'
 
 import { Day } from '../';
 
+const Distance = styled.div`
+  font-size: 2em;
+  font-weight: bold;
+  text-align: right;
+`
+const Unit = styled.div`
+  display: inline;
+  font-size: .5em;
+  font-weight: normal;
+`
+const Percentage = styled.div`
+  font-size: 2em;
+  font-style: italic;
+  text-align: right;
+`
 
 function Week({ runData, unit, DateBox, H3, weekDayNums, FirstBoxKpi }) {
 
-  const Distance = styled.div`
-    font-size: 2em;
-    font-weight: bold;
-    text-align: right;
-  `
-  const Unit = styled.div`
-    display: inline;
-    font-size: .5em;
-    font-weight: normal;
-  `
-  const Percentage = styled.div`
-    font-size: 2em;
-    font-style: italic;
-    text-align: right;
-  `
 
   const maxThreshold = 30;
   const longestPrct = Math.round(runData.longestRun  / runData.total * 100);

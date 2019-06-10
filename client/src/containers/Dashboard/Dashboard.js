@@ -1,22 +1,53 @@
 import React, { useState, useEffect } from 'react';
 import '../../../node_modules/bulma/css/bulma.css';
-
-// import styled from 'styled-components';
+import styled from 'styled-components';
+import './Dashboard.css';
 
 import { Calendar, Kpi, LineChart } from '../../components';
 
 // think about how we want to render the dates.
-// for now just hard coding 28
 // will need to update the calendar component depending
 // maybe the get request too
 
-function Dashboard({ serverUrl, user, setModal, H2 }) {
+const Container = styled.div`
+  display: flex;
+  box-sizing: border-box;
+
+  @media (max-width: 800px) {
+    flex-direction: column;
+    justify-content: center;
+  }
+`;
+
+
+const Visuals = styled.div`
+  flex-basis: 75%;
+  margin-left: 50px;
+`;
+
+const H2 = styled.h2`
+  font-size: 40px;
+  color: #CDDDDD;
+`;
+
+const Title = styled.h1`
+  font-size: 2em;
+  color: #CDDDDD;
+  text-align: center;
+  margin-bottom: 15px;
+
+  @media (max-width: 800px) {
+    font-size: .8em;
+  }
+`;
+
+function Dashboard({ serverUrl, user, setModal }) {
+
 
   const width = 500;
   const height = 500;
 
   const [runData, setRunData] = useState([]);
-  const [acrData, setAcrData] = useState(0);
 
   useEffect(() => { 
       fetch(serverUrl, {
@@ -30,34 +61,24 @@ function Dashboard({ serverUrl, user, setModal, H2 }) {
       .then(data => setRunData(data));
   }, []);
 
-  useEffect(() => { 
-      fetch(`${serverUrl}/acr`, {
-      'method': 'GET',
-      'headers': {
-        'Content-Type': 'application/json',
-        '_id': user['_id'],
-      }
-    })
-      .then(res => res.json())
-      .then(data => setAcrData(data));
-  }, []);
+  if (runData.length === 0) 
+    return (
+      <div className='center'>
+        <Title>RUNNING LOG</Title>
+        <progress className="progress is-primary is-small" max="100">15%</progress>
+      </div>
+    )
 
 
   return (
-    <div className='tile is-ancestor'>
-      <div className='tile is-parent is-3'>
-        <div className='tile'>
-          <Kpi user={user} runData={runData} acrData={acrData} setModal={setModal}></Kpi>
-        </div>
-      </div>
-      <div className='tile is-parent is-vertical'>
-        <div className='tile is-parent is-vertical'>
-          <H2 className='tile is-child'>Calendar</H2>
-          <Calendar className='tile is-child' user={user} runData={runData}></Calendar>
-        </div>
-        <LineChart className='tile is-child' runData={runData} unitOfMeasure={user.unitOfMeasure} width={width} height={height}></LineChart>
-      </div>
-    </div>
+    <Container>
+      <Kpi user={user} runData={runData} setModal={setModal}></Kpi>
+      <Visuals>
+        <H2>Calendar</H2>
+        <Calendar user={user} runData={runData}></Calendar>
+        <LineChart runData={runData} unitOfMeasure={user.unitOfMeasure} width={width} height={height}></LineChart>
+      </Visuals>
+    </Container>
   )
 
 }

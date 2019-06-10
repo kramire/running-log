@@ -6,7 +6,4 @@ router.post('/', ctrl.postOneRun);
 
 router.get('/', ctrl.getRunData);
 
-router.get('/acr', ctrl.getCurrentAcr);
-
-
 module.exports = router;
