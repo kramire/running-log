@@ -29,57 +29,19 @@ const options = {
 };
 
 // const locationIqUrl = 'https://eu1.locationiq.com/v1/reverse.php?key=236b8b5b6932ec'
-const locationIqUrl = ''
-const locObj = {
-  latitude: '',
-  longitude: '',
-  city: '',
-  state: '',
-  country: '',
-}
 
-async function getBrowserLocation(options) {
-  return new Promise((resolve, reject) => {
-    navigator.geolocation.getCurrentPosition(
-      (pos) => resolve(
-        locObj.latitude = pos.coords.latitude, 
-        locObj.longitude = pos.coords.longitude
-        ),
-      (err) => '',
-      {enableHighAccuracy: true, timeout: 5000, maximumAge: 0}
-    )})
-}
+function AddRun({ serverUrl, user, isModalActive, handleClick, browserLocation }) {
+  
 
-async function getLocationDetails() {
-  try {
-    await getBrowserLocation(); 
-    const url = (`${locationIqUrl}&lat=${locObj.latitude}&lon=${locObj.longitude}&format=json`);
-    fetch(url)
-      .then(res => res.json())
-      .then(data => {
-        locObj.city = data.address.city;
-        locObj.state = data.address.state && data.address.city !== data.address.state;
-        locObj.country = data.address.country;
-        console.log(locObj);
-      })
-  } catch (error) {
-    return null;
-  }
-}
-
-
-function AddRun({ serverUrl, user, isModalActive, handleClick }) {
-
-  getLocationDetails();
-
-
-  const [distance, setDistance] = useState('');
+  const [distance, setDistance] = useState(0);
   const [date, setDate] = useState('');
   const [location, setLocation] = useState('');
+  const [latitude, setLatitude] = useState('');
+  const [longitude, setlongitude] = useState('');
   const [note, setNote] = useState('');
   const [runType, setRunType] = useState([]);
-
-
+  const [showDefault, setDefault] = useState(false);
+ 
   const types = ['Speed', 'Distance', 'Tempo', 'Easy', 'Intervals', 'Hills', 
   'Recovery', 'Farlek', 'Progression'];
 
@@ -95,7 +57,7 @@ function AddRun({ serverUrl, user, isModalActive, handleClick }) {
 
   const saveForm = function (e) {
     e.preventDefault();
-    const runData = {distance, date, location, note, runType};
+    const runData = {distance, date, location, note, runType, latitude, longitude};
 
     fetch(serverUrl, {
       method: 'POST',
@@ -114,7 +76,54 @@ function AddRun({ serverUrl, user, isModalActive, handleClick }) {
     setLocation('');
     setNote('');
     setRunType([]);
+    checkDefaultLocation();
     handleClick();
+  }
+
+  const handleAgree = function (e) {
+    e.preventDefault();
+    setLocation(formatLoc(browserLocation));
+    setLatitude(browserLocation.latitude);
+    setlongitude(browserLocation.longitude);
+    setDefault(false);
+  }
+
+  const handleDeny = function (e) {
+    e.preventDefault();
+    setDefault(false);
+  }
+
+  const checkDefaultLocation = function (e) {
+    if (browserLocation.city && (browserLocation.state || browserLocation.country)) {
+      setDefault(true);
+    }
+  }
+
+  const formatLoc = function (loc) {
+      if (loc.state) return `${loc.city}, ${loc.state}`;
+      else return `${loc.city}, ${loc.country}`;
+  }
+
+  const toggleLocationInput = function () {
+    if (showDefault) {
+      return (
+        <div className='makeFlex'>
+          <Label>{formatLoc(browserLocation)}</Label>
+          <div>
+            <span>Use this location?</span>
+            <button className='locAgree locButton' onClick={(e) => handleAgree(e)}>Yes</button>
+            <button className='locDeny locButton' onClick={(e) => handleDeny(e)}>No</button>
+          </div>
+        </div>
+      )
+    }
+    else {
+      return (
+        <input className='input' type='text' value={location} placeholder='e.g. "New York, NY" or "10021"'
+            onChange={(e) => setLocation(e.target.value)}>
+        </input>
+      )
+    }
   }
 
   return (
@@ -129,7 +138,7 @@ function AddRun({ serverUrl, user, isModalActive, handleClick }) {
           <div className='field is-horizontal'>
             <Label className='label field-label'>Distance</Label>
               <div className='control field-body'>
-                <input className='input' type='number' min='0' value={distance} required
+                <input className='input' type='number' min='0' step="0.01" value={distance} required
                   onChange={(e) => setDistance(e.target.value)}></input>
                 <Label>Miles</Label>
               </div>
@@ -144,9 +153,7 @@ function AddRun({ serverUrl, user, isModalActive, handleClick }) {
           <div className='field is-horizontal'>
             <Label className='label field-label'>Location</Label>
               <div className='control field-body'>
-                {/*<Label>{`${locObj.city}, ${locObj.state}, ${locObj.country}`}</Label>*/}
-                <input className='input' type='text' value={location} placeholder='e.g. "New York, NY" or "10021"'
-                  onChange={(e) => setLocation(e.target.value)}></input>
+                {toggleLocationInput()}
               </div>
           </div>
           <div className='field is-horizontal'>

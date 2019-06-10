@@ -11,7 +11,9 @@ const RunSchema = new Schema({
   date: {type: Date, required: true, default: Date.now},
   location: String,
   note: String,
-  runType: [String]
+  runType: [String],
+  latitude: Number,
+  longitude: Number
 });
 
 const UserSchema = new Schema({

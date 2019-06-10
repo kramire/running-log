@@ -19,7 +19,6 @@ const Container = styled.div`
   }
 `;
 
-
 const Visuals = styled.div`
   flex-basis: 75%;
   margin-left: 50px;
@@ -30,45 +29,8 @@ const H2 = styled.h2`
   color: #CDDDDD;
 `;
 
-const Title = styled.h1`
-  font-size: 2em;
-  color: #CDDDDD;
-  text-align: center;
-  margin-bottom: 15px;
 
-  @media (max-width: 800px) {
-    font-size: .8em;
-  }
-`;
-
-function Dashboard({ serverUrl, user, setModal }) {
-
-
-  const width = 500;
-  const height = 500;
-
-  const [runData, setRunData] = useState([]);
-
-  useEffect(() => { 
-      fetch(serverUrl, {
-      'method': 'GET',
-      'headers': {
-        'Content-Type': 'application/json',
-        '_id': user['_id'],
-      }
-    })
-      .then(res => res.json())
-      .then(data => setRunData(data));
-  }, []);
-
-  if (runData.length === 0) 
-    return (
-      <div className='center'>
-        <Title>RUNNING LOG</Title>
-        <progress className="progress is-primary is-small" max="100">15%</progress>
-      </div>
-    )
-
+function Dashboard({ serverUrl, user, runData, setModal }) {
 
   return (
     <Container>
@@ -76,7 +38,7 @@ function Dashboard({ serverUrl, user, setModal }) {
       <Visuals>
         <H2>Calendar</H2>
         <Calendar user={user} runData={runData}></Calendar>
-        <LineChart runData={runData} unitOfMeasure={user.unitOfMeasure} width={width} height={height}></LineChart>
+        <LineChart runData={runData} unitOfMeasure={user.unitOfMeasure}></LineChart>
       </Visuals>
     </Container>
   )

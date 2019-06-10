@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 // import { Group } from '@vx/group';
 import { LinePath } from '@vx/shape';
 import { curveNatural } from '@vx/curve';
 import { scaleTime, scaleLinear } from '@vx/scale';
 import { extent, max } from 'd3-array';
 import { AxisLeft, AxisBottom } from '@vx/axis';
+import { timeParse, timeFormat } from 'd3-time-format';
 
 import styled from 'styled-components';
 
@@ -12,18 +13,38 @@ import styled from 'styled-components';
 const x = d => d.week;
 const y = d => d.total;
 
+const parseDate = timeParse('%Y%m%d');
+const format = timeFormat('%b %d');
+const formatDate = date => format(parseDate(date));
+
 const Container = styled.div`
   height: 35vh;
+  margin: 10px 0;
   overflow: hidden;
 `;
 
-function LineChart({ width, height, runData, unitOfMeasure }) {
+
+function LineChart({runData, unitOfMeasure }) {
+
+  const [elWidth, setElWidth] = useState(0);
+  const [elHeight, setElHeight] = useState(0);
+
+  useEffect(() => { 
+    setElWidth(document.body.clientWidth * .3);
+    setElHeight(document.body.clientHeight * .35);
+    // setElWidth(500);
+    // setElHeight(500);
+  }, [])
+
+  console.log(elWidth);
+  console.log(elHeight);
+
 
   const uom = unitOfMeasure === 'mi' ? 'Miles' : unitOfMeasure === 'km' ? 'Kilometers' : '';
   
   // bounds
-  const xMax = width;
-  const yMax = height;
+  const xMax = elWidth;
+  const yMax = elHeight;
 
   const wkData = runData.map(el => ({
     'total': el.total,
@@ -41,7 +62,7 @@ function LineChart({ width, height, runData, unitOfMeasure }) {
 
   return (
     <Container>
-      <svg width={width} height={height}>
+      <svg width={elWidth} height={elHeight}>
           <AxisLeft
             left={65}
             scale={yScale}
@@ -70,12 +91,13 @@ function LineChart({ width, height, runData, unitOfMeasure }) {
             )}
           />
           <AxisBottom
-            top={height-10}
+            top={elHeight-30}
             left={65}
             scale={xScale}
             hideTicks
             stroke="#ffffff"
-            numTicks={10}
+            numTicks={6}
+            tickFormat={formatDate}
             tickLabelProps={(value, index) => ({
               fill: '#CDDDDD',
               textAnchor: 'end',

@@ -17,6 +17,7 @@
   "dependencies": {
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
+    "d3-time-format": "^2.1.3",
     "express": "^4.17.1",
     "moment": "^2.24.0",
     "mongoose": "^5.5.12",
