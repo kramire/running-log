@@ -35,7 +35,7 @@ function Week({ runData, unit, weekDayNums, userId, deleteRun }) {
 
           return (
             <CalBox key={calendarDate} calHeader={calendarDate.format('MMM DD')} distance={distance} hasModal
-            userId={userId} unit={unit} runArr={runArr}></CalBox>
+            userId={userId} unit={unit} runArr={runArr} deleteRun={deleteRun}></CalBox>
           )
 
         })

@@ -28,34 +28,41 @@ const options = {
   maximumAge: 0
 };
 
+const formatLoc = function (loc) {
+    if (loc.state) return `${loc.city}, ${loc.state}`;
+    else return `${loc.city}, ${loc.country}`;
+}
+
+const types = ['Speed', 'Distance', 'Tempo', 'Easy', 'Intervals', 'Hills', 
+  'Recovery', 'Farlek', 'Progression'];
+
 
 function AddRun({ serverUrl, user, isModalActive, handleClick, browserLocation }) {
 
   const [distance, setDistance] = useState(0);
   const [date, setDate] = useState('');
   const [location, setLocation] = useState('');
-  const [latitude, setLatitude] = useState('');
-  const [longitude, setlongitude] = useState('');
+  const [coords, setCoords] = useState({});
   const [note, setNote] = useState('');
   const [runType, setRunType] = useState([]);
   const [showDefault, setDefault] = useState(false);
- 
-  const types = ['Speed', 'Distance', 'Tempo', 'Easy', 'Intervals', 'Hills', 
-  'Recovery', 'Farlek', 'Progression'];
-
-  const runTypeEvent = function (e) {
-    const desc = e.target.value;
-    if (!runType.includes(desc)) {
-      return setRunType([...runType, e.target.value]);
-    }
-    else {
-      setRunType(runType.filter(el => el !== desc));
-    }
-  }
+  
+  const checkDefaultLocation = function () {
+    console.log('checking');
+    (browserLocation.city && (browserLocation.state || browserLocation.country)) && setDefault(true)
+  }; 
 
   const saveForm = function (e) {
     e.preventDefault();
-    const runData = {distance, date, location, note, runType, latitude, longitude};
+    const runData = {
+      distance, 
+      date, 
+      location, 
+      note, 
+      runType, 
+      latitude: coords.latitude, 
+      longitude: coords.longitude
+    };
 
     fetch(serverUrl, {
       method: 'POST',
@@ -66,7 +73,7 @@ function AddRun({ serverUrl, user, isModalActive, handleClick, browserLocation }
     })
     .then(res => res.json())
     handleClose();
-  }
+  };
 
   const handleClose = () => {
     setDistance('');
@@ -76,33 +83,23 @@ function AddRun({ serverUrl, user, isModalActive, handleClick, browserLocation }
     setRunType([]);
     checkDefaultLocation();
     handleClick();
-  }
+  };
 
   const handleAgree = function (e) {
     e.preventDefault();
     setLocation(formatLoc(browserLocation));
-    setLatitude(browserLocation.latitude);
-    setlongitude(browserLocation.longitude);
+    setCoords({
+      'latitude': browserLocation.latitude,
+      'longitude': browserLocation.longitude
+    });
     setDefault(false);
-  }
+  };
 
   const handleDeny = function (e) {
     e.preventDefault();
     setDefault(false);
-  }
+  };
 
-  const checkDefaultLocation = function () {
-    if (browserLocation.city && (browserLocation.state || browserLocation.country)) {
-      console.log('we have a location');
-      setDefault(true);
-    }
-  }
-
-
-  const formatLoc = function (loc) {
-      if (loc.state) return `${loc.city}, ${loc.state}`;
-      else return `${loc.city}, ${loc.country}`;
-  }
 
   const toggleLocationInput = function () {
     if (showDefault) {
@@ -124,11 +121,22 @@ function AddRun({ serverUrl, user, isModalActive, handleClick, browserLocation }
         </input>
       )
     }
+  };
+
+  const runTypeEvent = function (e) {
+    if (!runType.includes(e.target.value)) {
+      return setRunType([...runType, e.target.value]);
+    }
+    else {
+      setRunType(runType.filter(el => el !== e.target.value));
+    }
   }
 
   useEffect(() => { 
     checkDefaultLocation()
   }, []);
+
+
 
   return (
     <div className={`modal ${isModalActive ? 'is-active' : ''}`}>

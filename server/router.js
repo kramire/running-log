@@ -8,4 +8,6 @@ router.get('/', ctrl.getRunData);
 
 router.delete('/', ctrl.deleteOneRun);
 
+router.get('/location', ctrl.getBrowserLocation);
+
 module.exports = router;

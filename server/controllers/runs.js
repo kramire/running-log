@@ -1,4 +1,5 @@
 const model = require('../models/runs.js');
+const api = require('../models/api.js');
 const mongoose = require('mongoose');
 const moment = require('moment');
 
@@ -33,6 +34,17 @@ exports.deleteOneRun = async (req, res) => {
     res.status(201).send(result);
   }
   catch (e) {
+    res.status(400).send(e);
+  }
+}
+
+exports.getBrowserLocation = async (req, res) => {
+  try {
+    const result = await api.getLocationDetails(req.headers.lat, req.headers.long);
+    res.status(201).send(result);
+  }
+  catch (e) {
+    console.log(e);
     res.status(400).send(e);
   }
 }
