@@ -12,7 +12,7 @@ const Container = styled.div`
   height: 100vh;
   margin: 0 auto;
   padding-top: 20px;
-`
+`;
 
 const Title = styled.h1`
   font-size: 2em;
@@ -63,41 +63,71 @@ function App() {
     longitude: '',
     city: '',
     state: '',
-    country: '',
+    country: ''
+  };
+
+
+  async function deleteRun (userId, runId) {
+    await fetch(serverUrl, {
+      'method': 'DELETE',
+      'headers': {
+        'Content-Type': 'application/json',
+        'user_id': userId,
+        'run_id': runId
+      }
+    })
+      .then(res => console.log(res))
   }
 
-async function getBrowserLocation(options) {
-  return new Promise((resolve, reject) => {
-    navigator.geolocation.getCurrentPosition(
-      (pos) => resolve(
-        locObj.latitude = pos.coords.latitude, 
-        locObj.longitude = pos.coords.longitude
-        ),
-      (err) => '',
-      {enableHighAccuracy: true, timeout: 5000, maximumAge: 0}
-    )})
-}
 
-async function getLocationDetails() {
-  try {
-    await getBrowserLocation(); 
-    const url = (`${locationIqUrl}&lat=${locObj.latitude}&lon=${locObj.longitude}&format=json`);
-    fetch(url)
-      .then(res => res.json())
-      .then(data => {
-        locObj.city = data.address.city;
-        locObj.state = data.address.state && data.address.city !== data.address.state;
-        locObj.country = data.address.country;
-      })
-  } catch (error) {
-    return null;
+  async function getBrowserLocation(options) {
+    return new Promise((resolve, reject) => {
+      navigator.geolocation.getCurrentPosition(
+        (pos) => resolve(
+          locObj.latitude = pos.coords.latitude, 
+          locObj.longitude = pos.coords.longitude
+          ),
+        (err) => '',
+        {enableHighAccuracy: true, timeout: 5000, maximumAge: 0}
+      )})
   }
-}
 
-useEffect(() => { 
-  getLocationDetails()
-    .then(setBrowserLocation(locObj));
-}, []);
+  async function getLocationDetails() {
+    try {
+      await getBrowserLocation(); 
+      const url = (`${locationIqUrl}&lat=${locObj.latitude}&lon=${locObj.longitude}&format=json`);
+      fetch(url)
+        .then(res => res.json())
+        .then(data => {
+          locObj.city = data.address.city;
+          locObj.state = data.address.state && data.address.city !== data.address.state;
+          locObj.country = data.address.country;
+        })
+    } catch (error) {
+      return null;
+    }
+  }
+
+  // async function getWeather(lat, long, day) {
+  //   try {
+  //     await getBrowserLocation(); 
+  //     const url = (`${locationIqUrl}&lat=${locObj.latitude}&lon=${locObj.longitude}&format=json`);
+  //     fetch(url)
+  //       .then(res => res.json())
+  //       .then(data => {
+  //         locObj.city = data.address.city;
+  //         locObj.state = data.address.state && data.address.city !== data.address.state;
+  //         locObj.country = data.address.country;
+  //       })
+  //   } catch (error) {
+  //     return null;
+  //   }
+  // }
+
+  useEffect(() => { 
+    getLocationDetails()
+      .then(setBrowserLocation(locObj))
+  }, []);
 
 
   if (runData.length === 0) 
@@ -110,10 +140,9 @@ useEffect(() => {
 
   return (
     <Container className="App">
-      <Dashboard user={user} runData={runData} setModal={setModal}></Dashboard>
+      <Dashboard user={user} runData={runData} setModal={setModal} deleteRun={deleteRun}></Dashboard>
       <AddRun serverUrl={serverUrl} user={user} browserLocation={browserLocation}
         isModalActive={isModalActive} handleClick={() => setModal(false)}></AddRun>
-      }
     </Container>
   );
 }

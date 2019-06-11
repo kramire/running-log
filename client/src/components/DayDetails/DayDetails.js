@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import '../../../node_modules/bulma/css/bulma.css';
 import moment from 'moment';
+import './DayDetails.css';
 
 import styled from 'styled-components';
 
@@ -48,18 +49,35 @@ const Unit = styled.div`
 
 
 const showElement = function (property, obj, unit) {
-  if (obj[property]) {
+  if ((Array.isArray(obj[property]) && obj[property].length > 0)) {
+    return (
+      <li>
+        <Label>{property === 'runType' ? 'Type of Run' : property}</Label>
+        <Span>{(obj[property]).map(el => `${el}  `)}</Span>
+      </li>
+    )
+  }
+  else if (!Array.isArray(obj[property]) && obj[property]) {
     return (
       <li>
         <Label>{property}</Label>
         <Span>{obj[property]}</Span>
-        {property==='distance' && <Unit>{unit}</Unit>}
+        {property==='distance' && <Unit>{unit == 'mi' ? 'miles' : 'kilometers'}</Unit>}
       </li>
     )
   }
 }
 
-function DayDetails({ isDayModalActive, handleClick, runArr, date, unit }) {
+
+function DayDetails({ isDayModalActive, handleClick, runArr, date, unit, userId, deleteRun }) {
+
+  const [runArrTemp, setRunArrTemp] = useState([...runArr]);
+
+  const handleDelete = function (e, runId, userId) {
+    e.preventDefault();
+    const r = window.confirm("Are you sure you want to delete this run?");
+    r && deleteRun(userId, runId) && setRunArrTemp(runArrTemp.filter(run => run['_id'] !== runId));
+  }
 
   return (
      <div className={`modal ${isDayModalActive ? 'is-active' : ''}`}>
@@ -69,13 +87,18 @@ function DayDetails({ isDayModalActive, handleClick, runArr, date, unit }) {
         <H1 className=''>{`${moment(date).format('MMM Do YYYY')}`}</H1>
         <ul key={date}>
           {
-            runArr.map(run => {
+            runArrTemp.map(run => {
               return (
-                <Ul key={run['_id']}>
-                  {showElement('distance', run, unit)}
-                  {showElement('location', run)}
-                  {showElement('note', run)}
-                </Ul>
+                <div key={run['_id']}>
+                  <button className='delete deleteInner is-medium'
+                    onClick={(e) => handleDelete(e, run['_id'], userId)}></button>
+                  <Ul>
+                    {showElement('distance', run, unit)}
+                    {showElement('location', run)}
+                    {showElement('runType', run)}
+                    {showElement('note', run)}
+                  </Ul>
+                </div>
               )
             })
           }

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../../../node_modules/bulma/css/bulma.css';
 import './AddRun.css';
 
@@ -28,10 +28,8 @@ const options = {
   maximumAge: 0
 };
 
-// const locationIqUrl = 'https://eu1.locationiq.com/v1/reverse.php?key=236b8b5b6932ec'
 
 function AddRun({ serverUrl, user, isModalActive, handleClick, browserLocation }) {
-  
 
   const [distance, setDistance] = useState(0);
   const [date, setDate] = useState('');
@@ -93,11 +91,13 @@ function AddRun({ serverUrl, user, isModalActive, handleClick, browserLocation }
     setDefault(false);
   }
 
-  const checkDefaultLocation = function (e) {
+  const checkDefaultLocation = function () {
     if (browserLocation.city && (browserLocation.state || browserLocation.country)) {
+      console.log('we have a location');
       setDefault(true);
     }
   }
+
 
   const formatLoc = function (loc) {
       if (loc.state) return `${loc.city}, ${loc.state}`;
@@ -125,6 +125,10 @@ function AddRun({ serverUrl, user, isModalActive, handleClick, browserLocation }
       )
     }
   }
+
+  useEffect(() => { 
+    checkDefaultLocation()
+  }, []);
 
   return (
     <div className={`modal ${isModalActive ? 'is-active' : ''}`}>
@@ -154,6 +158,7 @@ function AddRun({ serverUrl, user, isModalActive, handleClick, browserLocation }
             <Label className='label field-label'>Location</Label>
               <div className='control field-body'>
                 {toggleLocationInput()}
+                }
               </div>
           </div>
           <div className='field is-horizontal'>

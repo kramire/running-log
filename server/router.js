@@ -6,4 +6,6 @@ router.post('/', ctrl.postOneRun);
 
 router.get('/', ctrl.getRunData);
 
+router.delete('/', ctrl.deleteOneRun);
+
 module.exports = router;

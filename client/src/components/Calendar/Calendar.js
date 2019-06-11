@@ -1,70 +1,53 @@
-import React from 'react';
+import React, { useEffect, useRef }  from 'react';
 import '../../../node_modules/bulma/css/bulma.css';
 import moment from 'moment';
-
 import styled from 'styled-components';
 import './Calendar.css'
 
-import { Week } from '../';
+import { Week, CalBox } from '../';
 
-// start with sunday start. focus on monday start after
-// something with the fact that there are two divs of columns
+
 const CalContainer = styled.div`
   height: 40vh;
   overflow: scroll;
 `;
 
-const DateBox = styled.div`
-  background-color: #2E2F2F;
-  color: #CDDDDD;
-
-  &:hover {
-    background-color: ${props => props.hasModal && '#4A4C4C'};
-  }
-`;
-
-const H3 = styled.div`
-  text-align: center;
-  font-size: .9em;
-`;
   
-function Calendar({ user, runData }) {  
-
+function Calendar({ user, runData, deleteRun }) {  
 
   const weekDayNums = Array.of(0, 1, 2, 3, 4, 5, 6);  
+  
+  // const calEndRef = useRef();
+  
+  // const scrollToBottom = () => {
+  //   calEndRef.current && calEndRef.current.scrollIntoView({ behavior: "smooth" })
+  // }
+
+  // useEffect(scrollToBottom, [runData]);
 
   return (
     <div>
-      <div className="columns is-mobile calendar">
+      <div className="columns is-mobile">
         {
           weekDayNums.map(el => {
             return (
-              <DateBox className="column reAddMargin" key={el}>
-                <H3>{`${moment.weekdays(el)}`}</H3>
-              </DateBox>
+              <CalBox className="column is-narrow" key={el} calHeader={moment.weekdaysShort(el)}></CalBox>
             )
           })
         }
-        <DateBox className="column reAddMargin firstKpi">
-          <H3>Total</H3>
-        </DateBox>
-        <DateBox className="column reAddMargin">
-          <H3>% of Total</H3>
-        </DateBox>
-        <DateBox className="column reAddMargin">
-          <H3>WoW</H3>
-        </DateBox>
+        <CalBox className="column is-narrow firstWeekKpi" calHeader={'Total'}></CalBox>
+        <CalBox className="column is-narrow" calHeader={'% of Total'} longHeader></CalBox>
+        <CalBox className="column is-narrow" calHeader={'Weekly Δ'} longHeader></CalBox>
       </div>
       <CalContainer>
         {
           runData.map(weekData => {
             return (
-              <Week key={weekData['_id']} weekDate={weekData.week} runData={weekData} 
-              unit={user.unitOfMeasure} weekDayNums={weekDayNums}
-              DateBox={DateBox} H3={H3}></Week>
-              )
-            }
-          )
+              <Week key={weekData['_id']} runData={weekData} unit={user.unitOfMeasure} weekDayNums={weekDayNums} 
+              userId={user['_id']} deleteRun={deleteRun}>
+              </Week>
+            )
+          })
         }
       </CalContainer>
     </div>

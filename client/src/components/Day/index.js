@@ -1,2 +1,2 @@
-import Day from './Day.js';
-export default Day;
+import CalBox from './Day.js';
+export default CalBox;

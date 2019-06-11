@@ -3,66 +3,46 @@ import '../../../node_modules/bulma/css/bulma.css';
 import moment from 'moment';
 import styled from 'styled-components';
 import './Week.css'
+import { CalBox } from '../';
 
-import { Day } from '../';
+const filterRunsByDate = function (runArr, date) {
+  return runArr.filter(run => moment(new Date(run.date)).isSame(date, 'day'));
+}
 
-const Distance = styled.div`
-  font-size: 1.7em;
-  font-weight: bold;
-  text-align: right;
-`
-const Unit = styled.div`
-  display: inline;
-  font-size: .5em;
-  font-weight: normal;
-`
-const Percentage = styled.div`
-  font-size: 1.4em;
-  font-style: italic;
-  text-align: right;
-  vertical-align: bottom;
-`
-
-function Week({ runData, unit, DateBox, H3, weekDayNums }) {
-
-
-  const maxThreshold = 30;
-  const longestPrct = Math.round(runData.longestRun  / runData.total * 100);
-
-  function filterRunsByDate(runArr, date) {
-    return runArr.filter(run => moment(new Date(run.date)).isSame(date, 'day'));
+const longRunWarn = function (prct, thres) {
+  if (prct > thres) {
+    return <CalBox className='header' calHeader={'Longest %'} percentage={prct} unit={'%'} warnAlert longHeader></CalBox>
   }
+  else {
+    return <CalBox className='header' calHeader={'Longest %'} percentage={prct} unit={'%'} longHeader></CalBox>
+  }
+}
+
+
+function Week({ runData, unit, weekDayNums, userId, deleteRun }) {
+
+  const longestPrct = Math.round(runData.longestRun  / runData.total * 100);
+  const prctChange = Math.round(runData.prctChange*100);
 
   return (
-    <div className="columns is-mobile">
+    <div className='columns is-mobile'>
       {
         weekDayNums.map(day => {
+          
           const calendarDate = moment(new Date(runData.week)).add(day, 'days');
           const runArr = filterRunsByDate(runData.runs, calendarDate);
+          const distance = runArr.map(run => run.distance).reduce((accum, cur) => accum + cur, 0);
+
           return (
-            <Day key={calendarDate} DateBox={DateBox} H3={H3} Distance={Distance} Unit={unit} runArr={runArr} 
-            calendarDate={calendarDate} unit={unit}></Day>
+            <CalBox key={calendarDate} calHeader={calendarDate.format('MMM DD')} distance={distance} hasModal
+            userId={userId} unit={unit} runArr={runArr}></CalBox>
           )
+
         })
       }
-      <DateBox className="column firstKpi reAddMargin">
-         <H3>Week</H3>
-         <Distance>
-           {`${runData.total}`} 
-           <Unit>{`${unit}`}</Unit>
-         </Distance>
-      </DateBox>
-
-      <DateBox className={`column reAddMargin ${longestPrct > maxThreshold && 'has-background-danger'}`}>
-        <H3>Longest %</H3>
-        <Percentage>{`${longestPrct}%`}</Percentage>
-      </DateBox>
-
-      <DateBox className='column reAddMargin'>
-        <H3>WoW</H3>
-        <Percentage>{`${Math.round(runData.prctChange*100)}%`}</Percentage>
-      </DateBox>
-
+      <CalBox className='firstWeekKpi' calHeader={'Week'} distance={runData.total} unit={unit}></CalBox>
+      {longRunWarn(longestPrct, 30)}      
+      <CalBox calHeader={'% Change'} percentage={prctChange} unit={'%'} longHeader></CalBox>
     </div>
   )
 }

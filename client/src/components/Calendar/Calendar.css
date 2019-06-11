@@ -1,9 +1,32 @@
-.columns {
-  margin: 0;
-  padding: 0;
+/*
+.tooltips {
+    position: relative;
+    display: inline;
+}
+.tooltips .tooltipMsg {
+    position: absolute;
+    width: 250px;
+    color: #CDDDDD;
+    background: #051014;
+    line-height: 20px;
+    text-align: center;
+    visibility: hidden;
+    border-radius: 6px;
+    padding: 2px 10px;
+}
+.tooltips span:after {
+    content: '';
+    position: absolute;
+    margin-left: -8px;
+    width: 0; height: 0;
+}
+:hover.tooltips .tooltipMsg {
+    visibility: visible;
+    left: -250px;
+    top: 0px;
+    z-index: 999;
+    font-size: 14px;
+    font-weight: normal;
 }
 
-.column {
-  margin: 0;
-  padding: 0;
-}
+*/

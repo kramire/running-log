@@ -1,8 +1,8 @@
-p.tooltips {
+div.tooltips {
     position: relative;
     display: inline;
 }
-p.tooltips span {
+div.tooltips span {
     position: absolute;
     width: 400%;
     color: #CDDDDD;
@@ -11,8 +11,9 @@ p.tooltips span {
     text-align: center;
     visibility: hidden;
     border-radius: 6px;
+    padding: 10px;
 }
-p.tooltips span:after {
+div.tooltips span:after {
     content: '';
     position: absolute;
     left: 50%;
@@ -20,7 +21,7 @@ p.tooltips span:after {
     margin-left: -8px;
     width: 0; height: 0;
 }
-p:hover.tooltips span {
+div:hover.tooltips span {
     visibility: visible;
     left: 0%;
     top: 100px;
@@ -28,4 +29,15 @@ p:hover.tooltips span {
     z-index: 999;
     font-size: 16px;
     font-weight: normal;
+}
+
+.toolTipMsg {
+  padding-bottom: 20px;
+}
+
+.range {
+  font-weight: bold;
+  font-style: normal;
+  display: inline;
+  margin-right: 10px;
 }

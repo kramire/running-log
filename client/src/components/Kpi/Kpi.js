@@ -127,15 +127,15 @@ function Kpi({ user, runData, setModal }) {
       <SubContainer>
         <H3>Acute Chronic Ratio</H3>
         <KPI className={` has-text-${acrAlertClass}`}>
-          <p className="tooltips" href="#">{`${weekData.acr}`}
+          <div className="tooltips" href="#">{`${weekData.acr}`}
           <span>
-            {"The Acute-to-Chronic Ratio compares last week's mileage "+
-            "against your average mileage for the past four weeks.\n"+
-            "Healthy: Less Than 1.2\n"+
-            "At Risk for Injury: 1.2 - 1.5\n"+
-            "Dangerous: Greater Than 1.5"}
-            </span>
-          </p>
+            <div className="toolTipMsg">The Acute-to-Chronic Ratio compares last week's mileage
+            against the average weekly mileage for the past four weeks.</div>
+            <div><div className='range has-text-success'>0 - 1.2</div>Healthy</div>
+            <div><div className='range has-text-warning'>1.2 - 1.5</div>At Risk for Injury</div>
+            <div><div className='range has-text-danger'>1.5+</div>Dangerous. Injury Likely</div>
+          </span>
+          </div>
         </KPI>
         <P>{`${acrStartDate} - ${acrEndDate}`}</P>
       </SubContainer>

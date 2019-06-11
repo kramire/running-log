@@ -4,7 +4,12 @@
 }
 
 .column {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
+.firstWeekKpi {
+  margin-left: 10px;
+  margin-right: 8px;
+}

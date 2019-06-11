@@ -29,18 +29,20 @@ const UserSchema = new Schema({
 const Run = mongoose.model('runs', RunSchema);
 const User = mongoose.model('users', UserSchema);
 
-
 const periodStart = moment().subtract(12, 'weeks').day(0); // this determines how much data we get
 
 
+// Delete Run
+function deleteRun (userId, runId) {
+  User.findByIdAndUpdate(userId, 
+    { $pull: { runs: {'_id': new mongoose.Types.ObjectId(runId)}}}, 
+    (result) => {
+      return result;
+    });
+};
+
+
 // For a given user, return an array of weekly data (as objects).
-// Each week object has: 
-//   week start date 
-//   total mileage
-//   longest run
-//   prct change
-//   acr
-//   array of daily runs
 function calcWeeklyData (userId) {
 
   return User.aggregate([
@@ -84,5 +86,6 @@ function calcWeeklyData (userId) {
 module.exports = {
   Run, 
   User,
+  deleteRun,
   calcWeeklyData
 };

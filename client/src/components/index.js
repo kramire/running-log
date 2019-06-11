@@ -4,7 +4,7 @@ import Week from './Week';
 import Kpi from './Kpi';
 import LineChart from './LineChart';
 import DayDetails from './DayDetails';
-import Day from './Day';
+import CalBox from './Day';
 
 export {
   AddRun,
@@ -13,5 +13,5 @@ export {
   Kpi,
   LineChart,
   DayDetails,
-  Day
+  CalBox
 }

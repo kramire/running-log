@@ -26,4 +26,16 @@ exports.getRunData = async (req, res) => {
   res.status(201).send(data);
 }
 
+exports.deleteOneRun = async (req, res) => {
+  
+  try {
+    const result = await model.deleteRun(req.headers['user_id'], req.headers['run_id']);
+    res.status(201).send(result);
+  }
+  catch (e) {
+    res.status(400).send(e);
+  }
+}
+
+
  

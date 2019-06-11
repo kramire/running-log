@@ -30,14 +30,14 @@ const H2 = styled.h2`
 `;
 
 
-function Dashboard({ serverUrl, user, runData, setModal }) {
+function Dashboard({ serverUrl, user, runData, setModal, deleteRun }) {
 
   return (
     <Container>
       <Kpi user={user} runData={runData} setModal={setModal}></Kpi>
       <Visuals>
         <H2>Calendar</H2>
-        <Calendar user={user} runData={runData}></Calendar>
+        <Calendar deleteRun={deleteRun} user={user} runData={runData}></Calendar>
         <LineChart runData={runData} unitOfMeasure={user.unitOfMeasure}></LineChart>
       </Visuals>
     </Container>
