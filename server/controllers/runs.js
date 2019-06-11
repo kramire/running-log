@@ -1,7 +1,6 @@
 const model = require('../models/runs.js');
 const api = require('../models/api.js');
 const mongoose = require('mongoose');
-const moment = require('moment');
 
 // the min of 0 isn't working on the distance
 // something with the fact that the run schema is a child
@@ -41,6 +40,18 @@ exports.deleteOneRun = async (req, res) => {
 exports.getBrowserLocation = async (req, res) => {
   try {
     const result = await api.getLocationDetails(req.headers.lat, req.headers.long);
+    res.status(201).send(result);
+  }
+  catch (e) {
+    console.log(e);
+    res.status(400).send(e);
+  }
+}
+
+exports.getDayWeather = async (req, res) => {
+  const {lat, long, run_date} = req.headers;
+  try {
+    const result = await api.getWeather(lat, long, run_date);
     res.status(201).send(result);
   }
   catch (e) {

@@ -10,4 +10,6 @@ router.delete('/', ctrl.deleteOneRun);
 
 router.get('/location', ctrl.getBrowserLocation);
 
+router.get('/weather', ctrl.getDayWeather);
+
 module.exports = router;

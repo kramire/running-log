@@ -46,6 +46,9 @@ const Unit = styled.div`
     font-weight: normal;
     font-style: italic;
   `
+const Weather = styled.div`
+    display: flex;
+  `
 
 
 const showElement = function (property, obj, unit) {
@@ -71,7 +74,26 @@ const showElement = function (property, obj, unit) {
 
 function DayDetails({ isDayModalActive, handleClick, runArr, date, unit, userId, deleteRun }) {
 
+  const serverUrl = 'http://localhost:3001';
+
+  const getRunWeather = function (lat, long, runDate) {
+    if (lat && long && date && isDayModalActive) {
+      fetch(`${serverUrl}/weather`, {
+            'method': 'GET',
+            'headers': {
+              'Content-Type': 'application/json',
+              'lat': lat,
+              'long': long,
+              'run_date': runDate
+              }
+          })
+        .then(res => res.json())
+        .then(data => setWeather(data))
+    }
+  }
+
   const [runArrTemp, setRunArrTemp] = useState([...runArr]);
+  const [weather, setWeather] = useState({});
 
   const handleDelete = function (e, runId, userId) {
     e.preventDefault();
@@ -93,10 +115,16 @@ function DayDetails({ isDayModalActive, handleClick, runArr, date, unit, userId,
                   <button className='delete deleteInner is-medium'
                     onClick={(e) => handleDelete(e, run['_id'], userId)}></button>
                   <Ul>
+                    {(getRunWeather(run.latitude, run.longitude, run.date))}
                     {showElement('distance', run, unit)}
                     {showElement('location', run)}
                     {showElement('runType', run)}
                     {showElement('note', run)}
+                    <Weather>
+                      {showElement('summary', weather)}
+                      {showElement('tempHigh', weather)}
+                      {showElement('tempLow', weather)}
+                    </Weather>
                   </Ul>
                 </div>
               )

@@ -65,7 +65,7 @@ function CalBox ({ calHeader, distance, percentage, runArr, key, unit, userId, d
     if (runArr && runArr.length > 0) {
       return (
         <DayDetails isDayModalActive={isDayModalActive} handleClick={() => setDayModal(false)}
-        deleteRun={deleteRun} date={key} unit={unit} runArr={runArr} userId={userId}></DayDetails>
+        deleteRun={deleteRun} date={runArr[0].date} unit={unit} runArr={runArr} userId={userId}></DayDetails>
       )
     }
   }

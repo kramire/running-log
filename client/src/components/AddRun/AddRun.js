@@ -37,8 +37,9 @@ const types = ['Speed', 'Distance', 'Tempo', 'Easy', 'Intervals', 'Hills',
   'Recovery', 'Farlek', 'Progression'];
 
 
-function AddRun({ serverUrl, user, isModalActive, handleClick, browserLocation }) {
+function AddRun({ serverUrl, user, isModalActive, handleClick }) {
 
+  const [browserLocation, setBrowserLocation] = useState({});
   const [distance, setDistance] = useState(0);
   const [date, setDate] = useState('');
   const [location, setLocation] = useState('');
@@ -47,11 +48,47 @@ function AddRun({ serverUrl, user, isModalActive, handleClick, browserLocation }
   const [runType, setRunType] = useState([]);
   const [showDefault, setDefault] = useState(false);
   
+  // Get, set, and check browser location
+  async function getBrowserLocation(options) {
+    return new Promise((resolve, reject) => {
+      navigator.geolocation.getCurrentPosition(
+        (pos) => resolve({
+            latitude: pos.coords.latitude, 
+            longitude: pos.coords.longitude
+          }),
+        (err) => '',
+        {enableHighAccuracy: true, timeout: 5000, maximumAge: 0}
+      )})
+  }
+
+  useEffect(() => { 
+    getBrowserLocation()
+      .then(res => {
+        return fetch(`${serverUrl}/location`, {
+          'method': 'GET',
+          'headers': {
+            'Content-Type': 'application/json',
+            'lat': res.latitude,
+            'long': res.longitude
+            }
+          })
+      })
+      .then(res => res.json())
+      .then(data => {
+        setBrowserLocation(data)
+        setDefault(true);
+      });
+  }, []);
+
   const checkDefaultLocation = function () {
-    console.log('checking');
     (browserLocation.city && (browserLocation.state || browserLocation.country)) && setDefault(true)
   }; 
 
+  useEffect(() => {
+    checkDefaultLocation();
+  }, [browserLocation]);
+
+  // Handle form actions
   const saveForm = function (e) {
     e.preventDefault();
     const runData = {
@@ -132,11 +169,6 @@ function AddRun({ serverUrl, user, isModalActive, handleClick, browserLocation }
     }
   }
 
-  useEffect(() => { 
-    checkDefaultLocation()
-  }, []);
-
-
 
   return (
     <div className={`modal ${isModalActive ? 'is-active' : ''}`}>
@@ -166,7 +198,6 @@ function AddRun({ serverUrl, user, isModalActive, handleClick, browserLocation }
             <Label className='label field-label'>Location</Label>
               <div className='control field-body'>
                 {toggleLocationInput()}
-                }
               </div>
           </div>
           <div className='field is-horizontal'>

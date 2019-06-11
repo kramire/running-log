@@ -31,7 +31,6 @@ function App() {
 
   const [runData, setRunData] = useState([]);
   const [isModalActive, setModal] = useState(false);
-  const [browserLocation, setBrowserLocation] = useState({});
   const [madeChange, setMadeChange] = useState(false);
 
   const [user, setUser] = useState({
@@ -55,7 +54,7 @@ function App() {
     })
       .then(res => res.json())
       .then(data => setRunData(data));
-  }, [isModalActive, browserLocation, madeChange]);
+  }, [isModalActive, madeChange]);
 
 
   async function deleteRun (userId, runId) {
@@ -70,47 +69,21 @@ function App() {
       .then(res => setMadeChange(true))
   }
 
-  async function getBrowserLocation(options) {
-    return new Promise((resolve, reject) => {
-      navigator.geolocation.getCurrentPosition(
-        (pos) => resolve({
-            latitude: pos.coords.latitude, 
-            longitude: pos.coords.longitude
-          }),
-        (err) => '',
-        {enableHighAccuracy: true, timeout: 5000, maximumAge: 0}
-      )})
-  }
-
-  useEffect(() => { 
-    getBrowserLocation()
-      .then(res => {
-        return fetch(`${serverUrl}/location`, {
-          'method': 'GET',
-          'headers': {
-            'Content-Type': 'application/json',
-            'lat': res.latitude,
-            'long': res.longitude
-            }
-          })
-      })
-      .then(res => res.json())
-      .then(data => setBrowserLocation(data));
-  }, []);
-
 
   if (runData.length === 0) 
   return (
-    <div className='center'>
-      <Title>RUNNING LOG</Title>
-      <progress className="progress is-primary is-small" max="100">15%</progress>
-    </div>
+    <Container>
+      <div className='center'>
+        <Title>RUNNING LOG</Title>
+        <progress className="progress is-primary is-small" max="100">15%</progress>
+      </div>
+    </Container>
   )
 
   return (
     <Container className="App">
       <Dashboard user={user} runData={runData} setModal={setModal} deleteRun={deleteRun}></Dashboard>
-      <AddRun serverUrl={serverUrl} user={user} browserLocation={browserLocation}
+      <AddRun serverUrl={serverUrl} user={user} serverUrl={serverUrl}
         isModalActive={isModalActive} handleClick={() => setModal(false)}></AddRun>
     </Container>
   );
