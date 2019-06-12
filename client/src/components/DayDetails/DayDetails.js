@@ -48,8 +48,36 @@ const Unit = styled.div`
   `
 const Weather = styled.div`
     display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-top: 10px;
   `
 
+const WeatherHeader = styled.div`
+    font-size: 16px;
+    text-align: center;
+    color: #ACBDBA;
+    text-transform: capitalize;
+  `
+
+const WeatherText = styled.div`
+    font-size: 18px;
+    text-align-center;
+    color: #ACBDBA;
+  `;
+
+const weatherIconObj = {
+  'clear-day': 'fa-sun',
+  'clear-night': 'fa-sun',
+  'rain': 'fa-cloud-rain',
+  'snow': 'fa-snowflake',
+  'sleet': 'fa-cloud-showers-heavy',
+  'wind': 'fa-wind',
+  'fog': 'fa-smog',
+  'cloudy': 'fa-cloud',
+  'partly-cloudy-day': 'fa-cloud-sun',
+  'partly-cloudy-night': 'fa-cloud-sun' //time stamp
+}
 
 const showElement = function (property, obj, unit) {
   if ((Array.isArray(obj[property]) && obj[property].length > 0)) {
@@ -71,6 +99,22 @@ const showElement = function (property, obj, unit) {
   }
 }
 
+const genWeatherEl = function (property, obj, text, format) {
+  if (obj[property]) {  
+    if (property === 'icon') {
+      return <li><i className={`fas ${weatherIconObj[obj[property]]}`}></i></li>
+    }
+    else {
+      return (
+        <li>
+          <WeatherHeader>{text}</WeatherHeader>
+          <WeatherText>{format(obj[property])}</WeatherText>
+        </li>
+      )
+    }
+  }
+}
+
 
 function DayDetails({ isDayModalActive, handleClick, runArr, date, unit, userId, deleteRun }) {
 
@@ -78,6 +122,7 @@ function DayDetails({ isDayModalActive, handleClick, runArr, date, unit, userId,
 
   const getRunWeather = function (lat, long, runDate) {
     if (lat && long && date && isDayModalActive) {
+      console.log('calling');
       fetch(`${serverUrl}/weather`, {
             'method': 'GET',
             'headers': {
@@ -116,14 +161,23 @@ function DayDetails({ isDayModalActive, handleClick, runArr, date, unit, userId,
                     onClick={(e) => handleDelete(e, run['_id'], userId)}></button>
                   <Ul>
                     {showElement('distance', run, unit)}
-                    {showElement('location', run)}
                     {showElement('runType', run)}
                     {showElement('note', run)}
-                    <Weather>
-                      {showElement('summary', weather)}
-                      {showElement('tempHigh', weather)}
-                      {showElement('tempLow', weather)}
-                    </Weather>
+                    {showElement('location', run)}
+                    {run.location !== '' && run.latitude && run.longitude &&
+                      <Weather>
+                      { Object.keys(weather).length === 0 &&
+                        run.latitude && 
+                        run.longitude && 
+                        isDayModalActive===true && 
+                        getRunWeather(run.latitude, run.longitude, run.date)}
+                      {genWeatherEl('icon', weather)}
+                      {genWeatherEl('tempHigh', weather, 'High', (el)=>`${Math.round(el)} F`)}
+                      {genWeatherEl('tempLow', weather, 'Low', (el)=>`${Math.round(el)} F`)}
+                      {genWeatherEl('precipProbability', weather, 'Precip', (el)=>`${Math.round(el*100)}%`)}
+                      {genWeatherEl('windSpeed', weather, 'Wind', (el)=>`${Math.round(el)}mph`)}
+                      {genWeatherEl('humidity', weather, 'Humidity', (el)=>`${Math.round(el*100)}%`)}
+                    </Weather>}
                   </Ul>
                 </div>
               )

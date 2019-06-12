@@ -17,7 +17,7 @@ const Container = styled.div`
 `;
 
 const SubContainer = styled.div`
-  margin: 0px 0px 60px 0px;
+  margin: 0px 0px 40px 0px;
 
   @media (max-width: 800px) {
     margin: 0 auto;
@@ -31,7 +31,7 @@ const User = styled.div`
   @media (max-width: 800px) {
     font-size: 1.5em;
   }
-`
+`;
 
 const H2 = styled.h2`
   font-size: 3em;
@@ -39,15 +39,15 @@ const H2 = styled.h2`
   @media (max-width: 800px) {
     font-size: 1.5em;
   }
+`;
 
-`
 const H3 = styled.h3`
   font-size: 1.4em;
 
   @media (max-width: 800px) {
     font-size: .8em;
   }
-`
+`;
 
 const H4 = styled.h4`
   font-size: 1.8em;
@@ -58,7 +58,7 @@ const H4 = styled.h4`
   @media (max-width: 800px) {
     font-size: .7em;
   }
-`
+`;
 
 const P = styled.p`
   font-size: 1.1em;
@@ -66,7 +66,7 @@ const P = styled.p`
   @media (max-width: 800px) {
     font-size: .5em;
   }
-`
+`;
 
 const KPI = styled.div`
   color: #CDDDDD;
@@ -76,7 +76,7 @@ const KPI = styled.div`
   @media (max-width: 800px) {
     font-size: 1.5em;
   }
-`
+`;
 
 const Button = styled.button`
   color: #CDDDDD;
@@ -99,7 +99,8 @@ const Button = styled.button`
     margin: 10px 0;
     padding: 2.5px 8px;
   }  
-`
+`;
+
 
 function Kpi({ user, runData, setModal }) {
 

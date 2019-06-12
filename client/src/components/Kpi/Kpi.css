@@ -23,8 +23,8 @@ div.tooltips span:after {
 }
 div:hover.tooltips span {
     visibility: visible;
-    left: 0%;
-    top: 100px;
+    left: 250px;
+    bottom: 5px;
     margin-left: -120px;
     z-index: 999;
     font-size: 16px;
