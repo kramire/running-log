@@ -25,7 +25,8 @@ const Visuals = styled.div`
 `;
 
 const H2 = styled.h2`
-  font-size: 40px;
+  font-size: 28px;
+  margin-bottom: 10px;
   color: #CDDDDD;
 `;
 
@@ -38,7 +39,7 @@ function Dashboard({ serverUrl, user, runData, setModal, deleteRun }) {
       <Visuals>
         <H2>Calendar</H2>
         <Calendar deleteRun={deleteRun} user={user} runData={runData}></Calendar>
-        <LineChart runData={runData} unitOfMeasure={user.unitOfMeasure}></LineChart>
+        <LineChart runData={runData} unitOfMeasure={user.unitOfMeasure} H2={H2}></LineChart>
       </Visuals>
     </Container>
   )

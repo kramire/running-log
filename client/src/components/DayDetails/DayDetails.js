@@ -115,7 +115,6 @@ function DayDetails({ isDayModalActive, handleClick, runArr, date, unit, userId,
                   <button className='delete deleteInner is-medium'
                     onClick={(e) => handleDelete(e, run['_id'], userId)}></button>
                   <Ul>
-                    {(getRunWeather(run.latitude, run.longitude, run.date))}
                     {showElement('distance', run, unit)}
                     {showElement('location', run)}
                     {showElement('runType', run)}

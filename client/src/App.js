@@ -66,7 +66,7 @@ function App() {
         'run_id': runId
       }
     })
-      .then(res => setMadeChange(true))
+      .then(res => setMadeChange(!madeChange))
   }
 
 
