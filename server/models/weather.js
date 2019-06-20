@@ -1,16 +1,15 @@
 const mongoose = require('./db.js');
 const moment = require('moment');
-
-// Build Schemas
-
 const Schema = mongoose.Schema;
 
+// Build Schemas
 const WeatherSchema = new Schema (
   {
-    'latitude': Number,
-    'longitude': Number,
-    'date': Date,
-    'daily': {
+    'city': String,
+    'state': String,
+    'country': String,
+    'dailyData': {
+      'date': Date,
       'data': [WeatherDetailsSchema]
     }
   });
@@ -56,7 +55,23 @@ const WeatherDetailsSchema = new Schema ({
     'apparentTemperatureMaxTime': Number
 });
 
+
+const postWeather = function (city, state, country, date, data) {
+  
+  const query = { $or: [ { $and: [ { city: city }, { state: state } ] }, 
+             { $and: [ { city: city }, { country: country } ] } ]};
+
+  WeatherSchema.findOneAndUpdate({ dailyData['date']: date }) 
+
+};
+
+const getCachedWeather = function (city, state, country, date) {
+
+}
+
+
 module.exports = {
   WeatherSchema, 
-  WeatherDetailsSchema
+  WeatherDetailsSchema,
+  postWeather
 };

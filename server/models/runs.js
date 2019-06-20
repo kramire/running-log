@@ -1,11 +1,9 @@
 const mongoose = require('./db.js');
 const moment = require('moment');
+const Schema = mongoose.Schema;
 
 
 // Build Schemas
-
-const Schema = mongoose.Schema;
-
 const RunSchema = new Schema({
   distance: {type: Number, required: true, min: 0},
   date: {type: Date, required: true, default: Date.now},
