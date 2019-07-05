@@ -55,13 +55,15 @@ const WeatherDetailsSchema = new Schema ({
     'apparentTemperatureMaxTime': Number
 });
 
+const Weather = mongoose.model('weather', WeatherSchema);
+
 
 const postWeather = function (city, state, country, date, data) {
   
   const query = { $or: [ { $and: [ { city: city }, { state: state } ] }, 
              { $and: [ { city: city }, { country: country } ] } ]};
 
-  WeatherSchema.findOneAndUpdate({ dailyData['date']: date }) 
+  Weather.findOneAndUpdate({ dailyData['date']: date }) 
 
 };
 

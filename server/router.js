@@ -1,15 +1,16 @@
 const express = require('express');
 const router = express.Router();
-const ctrl = require('./controllers/runs.js');
+const ctrlRun = require('./controllers/runs.js');
+const ctrlApi = require('./controllers/api.js');
 
-router.post('/', ctrl.postOneRun);
+router.post('/', ctrlRun.postOneRun);
 
-router.get('/', ctrl.getRunData);
+router.get('/', ctrlRun.getRunData);
 
-router.delete('/', ctrl.deleteOneRun);
+router.delete('/', ctrlRun.deleteOneRun);
 
-router.get('/location', ctrl.getBrowserLocation);
+router.get('/location', ctrlApi.getBrowserLocation);
 
-router.get('/weather', ctrl.getDayWeather);
+router.get('/weather', ctrlApi.getDayWeather);
 
 module.exports = router;
