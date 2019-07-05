@@ -3,6 +3,7 @@ const app = express();
 const router = require('./router');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const errorHandler = require('./errorHandler');
 
 require('dotenv').config();
 

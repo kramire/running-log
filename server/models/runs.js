@@ -30,6 +30,20 @@ const User = mongoose.model('users', UserSchema);
 const periodStart = moment().subtract(12, 'weeks').day(0); // this determines how much data we get
 
 
+// Post One Run
+function postRun (userId, newRun) {
+  return User.findByIdAndUpdate(userId, 
+    { $push: { runs: new Run(newRun) } }, 
+    {new: true})
+    .then((user) => {
+      return {
+        username: user.username,
+        runs: user.runs
+      }
+  });
+}
+
+
 // Delete Run
 function deleteRun (userId, runId) {
   User.findByIdAndUpdate(userId, 
@@ -84,6 +98,7 @@ function calcWeeklyData (userId) {
 module.exports = {
   Run, 
   User,
+  postRun,
   deleteRun,
   calcWeeklyData
 };
