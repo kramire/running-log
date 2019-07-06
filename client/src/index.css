@@ -1,4 +1,13 @@
+:root {
+  --primary-bg-color: #040505;
+  --secondary-bg-color: #2E2F2F;
+  --tertiary-bg-color: #4A4C4C;
+  --primary-color: #CDDDDD;
+  --secondary-color: #c6bad6;
+  --tertiary-color: #A5C882;
+}
+
 body {
-  background-color: #040505;
+  background-color: var(--primary-bg-color);
   margin: 0;
 }

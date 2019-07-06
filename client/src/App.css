@@ -1,5 +1,5 @@
 .center {
-  background-color: #040505;
+  background-color: var(--primary-bg-color);
   width: 25%;
   position: fixed;
   left: 37.5%;

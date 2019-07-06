@@ -1,13 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import '../../../node_modules/bulma/css/bulma.css';
 import styled from 'styled-components';
 import './Dashboard.css';
-
 import { Calendar, Kpi, LineChart } from '../../components';
-
-// think about how we want to render the dates.
-// will need to update the calendar component depending
-// maybe the get request too
+import { Title } from '../../assests/globalStyledComponents';
 
 const Container = styled.div`
   display: flex;
@@ -24,26 +20,17 @@ const Visuals = styled.div`
   margin-left: 50px;
 `;
 
-const H2 = styled.h2`
-  font-size: 28px;
-  margin-bottom: 10px;
-  color: #CDDDDD;
-`;
-
-
-function Dashboard({ serverUrl, user, runData, setModal, deleteRun }) {
-
+function Dashboard({ user, runData, setModal, deleteRun }) {
   return (
     <Container>
       <Kpi user={user} runData={runData} setModal={setModal}></Kpi>
       <Visuals>
-        <H2>Calendar</H2>
+        <Title>Calendar</Title>
         <Calendar deleteRun={deleteRun} user={user} runData={runData}></Calendar>
-        <LineChart runData={runData} unitOfMeasure={user.unitOfMeasure} H2={H2}></LineChart>
+        <LineChart runData={runData} unitOfMeasure={user.unitOfMeasure}></LineChart>
       </Visuals>
     </Container>
   )
-
 }
 
 export default Dashboard;

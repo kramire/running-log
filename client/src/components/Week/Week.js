@@ -1,7 +1,6 @@
 import React from 'react';
 import '../../../node_modules/bulma/css/bulma.css';
 import moment from 'moment';
-import styled from 'styled-components';
 import './Week.css'
 import { CalBox } from '../';
 
@@ -9,20 +8,10 @@ const filterRunsByDate = function (runArr, date) {
   return runArr.filter(run => moment(new Date(run.date)).isSame(date, 'day'));
 }
 
-const longRunWarn = function (prct, thres) {
-  if (prct > thres) {
-    return <CalBox className='header' calHeader={'Longest %'} percentage={prct} unit={'%'} warnAlert longHeader></CalBox>
-  }
-  else {
-    return <CalBox className='header' calHeader={'Longest %'} percentage={prct} unit={'%'} longHeader></CalBox>
-  }
-}
-
-
 function Week({ runData, unit, weekDayNums, userId, deleteRun }) {
-
   const longestPrct = Math.round(runData.longestRun  / runData.total * 100);
   const prctChange = Math.round(runData.prctChange*100);
+  const warnProp = longestPrct > 30 ? {'warnAlert': 'warnAlert'} : {};
 
   return (
     <div className='columns is-mobile'>
@@ -41,7 +30,7 @@ function Week({ runData, unit, weekDayNums, userId, deleteRun }) {
         })
       }
       <CalBox className='firstWeekKpi' calHeader={'Week'} distance={runData.total} unit={unit}></CalBox>
-      {longRunWarn(longestPrct, 30)}      
+      <CalBox className='header' calHeader={'Longest %'} percentage={longestPrct} unit={'%'} longHeader {...warnProp}></CalBox>   
       <CalBox calHeader={'% Change'} percentage={prctChange} unit={'%'} longHeader></CalBox>
     </div>
   )

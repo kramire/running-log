@@ -1,14 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import '../../../node_modules/bulma/css/bulma.css';
 import './AddRun.css';
-
 import styled from 'styled-components';
-
-const Modal = styled.div`
-  background-color: #0f0f0f;
-  border-radius: 15px;
-  padding: 50px;
-`;
+import { Modal } from '../../assests/globalStyledComponents';
 
 const H1 = styled.h1`
   font-size: 40px;
@@ -22,21 +16,6 @@ const Label = styled.label`
   font-size: 20px;
 `;
 
-const options = {
-  enableHighAccuracy: true,
-  timeout: 5000,
-  maximumAge: 0
-};
-
-const formatLoc = function (loc) {
-    if (loc.state) return `${loc.city}, ${loc.state}`;
-    else return `${loc.city}, ${loc.country}`;
-}
-
-const types = ['Speed', 'Distance', 'Tempo', 'Easy', 'Intervals', 'Hills', 
-  'Recovery', 'Farlek', 'Progression'];
-
-
 function AddRun({ serverUrl, user, isModalActive, handleClick }) {
 
   const [browserLocation, setBrowserLocation] = useState({});
@@ -46,22 +25,36 @@ function AddRun({ serverUrl, user, isModalActive, handleClick }) {
   const [coords, setCoords] = useState({});
   const [note, setNote] = useState('');
   const [runType, setRunType] = useState([]);
-  const [showDefault, setDefault] = useState(false);
+  const [showDefaultLoc, setDefaultLoc] = useState(false);
   
   // Get, set, and check browser location
-  async function getBrowserLocation(options) {
+  const getBrowserLocation = async function () {
     return new Promise((resolve, reject) => {
       navigator.geolocation.getCurrentPosition(
         (pos) => resolve({
-            latitude: pos.coords.latitude, 
-            longitude: pos.coords.longitude
-          }),
-        (err) => '',
-        {enableHighAccuracy: true, timeout: 5000, maximumAge: 0}
-      )})
-  }
+          latitude: pos.coords.latitude,
+          longitude: pos.coords.longitude
+        }),
+        (err) => '', {
+          enableHighAccuracy: true,
+          timeout: 5000,
+          maximumAge: 0
+        }
+      )
+    })
+  };
 
-  useEffect(() => { 
+  // If enough location data, flag that there is a default
+  const checkDefaultLocation = function () {
+    (browserLocation.city && (browserLocation.state || browserLocation.country)) && setDefaultLoc(true)
+  };
+
+  const formatLoc = function (loc) {
+    if (loc.state) return `${loc.city}, ${loc.state}`;
+    else return `${loc.city}, ${loc.country}`;
+  };
+
+  useEffect(() => {
     getBrowserLocation()
       .then(res => {
         return fetch(`${serverUrl}/location`, {
@@ -70,19 +63,15 @@ function AddRun({ serverUrl, user, isModalActive, handleClick }) {
             'Content-Type': 'application/json',
             'lat': res.latitude,
             'long': res.longitude
-            }
-          })
+          }
+        })
       })
       .then(res => res.json())
       .then(data => {
         setBrowserLocation(data)
-        setDefault(true);
+        setDefaultLoc(true);
       });
   }, []);
-
-  const checkDefaultLocation = function () {
-    (browserLocation.city && (browserLocation.state || browserLocation.country)) && setDefault(true)
-  }; 
 
   useEffect(() => {
     checkDefaultLocation();
@@ -92,23 +81,26 @@ function AddRun({ serverUrl, user, isModalActive, handleClick }) {
   const saveForm = function (e) {
     e.preventDefault();
     const runData = {
-      distance, 
-      date, 
-      location, 
-      note, 
-      runType, 
-      latitude: coords.latitude, 
+      distance,
+      date,
+      location,
+      note,
+      runType,
+      latitude: coords.latitude,
       longitude: coords.longitude
     };
 
     fetch(serverUrl, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({'_id': user['_id'], run: runData})
-    })
-    .then(res => res.json())
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          '_id': user['_id'],
+          run: runData
+        })
+      })
+      .then(res => res.json())
     handleClose();
   };
 
@@ -129,17 +121,16 @@ function AddRun({ serverUrl, user, isModalActive, handleClick }) {
       'latitude': browserLocation.latitude,
       'longitude': browserLocation.longitude
     });
-    setDefault(false);
+    setDefaultLoc(false);
   };
 
   const handleDeny = function (e) {
     e.preventDefault();
-    setDefault(false);
+    setDefaultLoc(false);
   };
 
-
   const toggleLocationInput = function () {
-    if (showDefault) {
+    if (showDefaultLoc) {
       return (
         <div className='makeFlex'>
           <Label>{formatLoc(browserLocation)}</Label>
@@ -160,15 +151,30 @@ function AddRun({ serverUrl, user, isModalActive, handleClick }) {
     }
   };
 
+  const types = ['Speed', 'Distance', 'Tempo', 'Easy', 'Intervals', 'Hills',
+    'Recovery', 'Farlek', 'Progression'
+  ];
+
   const runTypeEvent = function (e) {
     if (!runType.includes(e.target.value)) {
       return setRunType([...runType, e.target.value]);
-    }
-    else {
+    } else {
       setRunType(runType.filter(el => el !== e.target.value));
     }
   }
 
+  // Generate formatting for input fields.
+  const generateInput = function (inputDiv, distance=false, buttons=false) {
+    return (
+      <div className='field is-horizontal'>
+        <Label className='label field-label'>Distance</Label>
+          <div className={`control field-body ${buttons && 'buttons is-centered'}`}>
+            {inputDiv}
+            {distance && <Label>Miles</Label>}
+          </div>
+      </div>
+    )
+  }
 
   return (
     <div className={`modal ${isModalActive ? 'is-active' : ''}`}>
@@ -179,43 +185,30 @@ function AddRun({ serverUrl, user, isModalActive, handleClick }) {
           <H1 className=''>Log New Run</H1>
         </div>
         <form className='' onSubmit={(e) => saveForm(e)}>
-          <div className='field is-horizontal'>
-            <Label className='label field-label'>Distance</Label>
-              <div className='control field-body'>
-                <input className='input distance' type='number' min='0' step="0.01" value={distance} required
-                  onChange={(e) => setDistance(e.target.value)}></input>
-                <Label>Miles</Label>
-              </div>
-          </div>
-          <div className='field is-horizontal'>
-            <Label className='label field-label'>Date</Label>
-              <div className='control field-body'>
-                <input className='input' type='date' value={date}
-                  onChange={(e) => setDate(e.target.value)}></input>
-              </div>
-          </div>
-          <div className='field is-horizontal'>
-            <Label className='label field-label'>Location</Label>
-              <div className='control field-body'>
-                {toggleLocationInput()}
-              </div>
-          </div>
-          <div className='field is-horizontal'>
-            <Label className='label field-label'>Notes</Label>
-              <div className='control field-body'>
-                <textarea className='textarea' value={note} placeholder="Anything to note?"
-                  onChange={(e) => setNote(e.target.value)}/>
-              </div>
-          </div>
-          <div className='field is-horizontal'>
-            <Label className='label field-label'>Type of Run</Label>
-              <div className='control field-body buttons is-centered'>
-                {types.map(type => {
-                  return <input key={type} className={`button ${runType.includes(type) && 'selected'}`} 
-                  type='button' value={type} onClick={(e) => runTypeEvent(e)}/>
-                })}
-              </div>
-          </div>
+          {
+            generateInput(
+              <input className='input distance' type='number' min='0' step="0.01" value={distance} required
+              onChange={(e) => setDistance(e.target.value)}></input>
+              , true)
+          }
+          {
+            generateInput(
+              <input className='input' type='date' value={date} onChange={(e) => setDate(e.target.value)}></input>)
+          }
+          {
+            generateInput(toggleLocationInput())
+          }
+          {
+            generateInput(
+              <textarea className='textarea' value={note} placeholder="Anything to note?" 
+              onChange={(e) => setNote(e.target.value)}/>)
+          }
+          {
+            generateInput(types.map(type => {
+              return <input key={type} className={`button ${runType.includes(type) && 'selected'}`} 
+              type='button' value={type} onClick={(e) => runTypeEvent(e)}/>
+            }), false, true)
+          }
           <div className='field'>
             <div className='control has-text-centered'>
                 <input className='button success' type='submit' value='Save Run'></input>

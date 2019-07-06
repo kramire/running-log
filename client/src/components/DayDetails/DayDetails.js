@@ -2,21 +2,9 @@ import React, { useState } from 'react';
 import '../../../node_modules/bulma/css/bulma.css';
 import moment from 'moment';
 import './DayDetails.css';
-
 import styled from 'styled-components';
-
-const Modal = styled.div`
-  background-color: #0f0f0f;
-  border-radius: 15px;
-  padding: 50px;
-`;
-
-const H1 = styled.h1`
-  font-size: 2em;
-  text-align: center;
-  color: #CDDDDD;
-  margin-bottom: 40px;
-`;
+import { Modal, CenteredTitle } from '../../assests/globalStyledComponents';
+import { getRunWeather } from '../../services/weather';
 
 const Span = styled.span`
   font-size: 20px;
@@ -76,7 +64,7 @@ const weatherIconObj = {
   'fog': 'fa-smog',
   'cloudy': 'fa-cloud',
   'partly-cloudy-day': 'fa-cloud-sun',
-  'partly-cloudy-night': 'fa-cloud-sun' //time stamp
+  'partly-cloudy-night': 'fa-cloud-sun'
 }
 
 const showElement = function (property, obj, unit) {
@@ -93,7 +81,7 @@ const showElement = function (property, obj, unit) {
       <li>
         <Label>{property}</Label>
         <Span>{obj[property]}</Span>
-        {property==='distance' && <Unit>{unit == 'mi' ? 'miles' : 'kilometers'}</Unit>}
+        {property==='distance' && <Unit>{unit === 'mi' ? 'miles' : 'kilometers'}</Unit>}
       </li>
     )
   }
@@ -118,22 +106,10 @@ const genWeatherEl = function (property, obj, text, format) {
 
 function DayDetails({ isDayModalActive, handleClick, runArr, date, unit, userId, deleteRun }) {
 
-  const serverUrl = 'http://localhost:3001';
-
-  const getRunWeather = function (lat, long, runDate) {
+  const setRunWeather = function (lat, long, runDate) {
     if (lat && long && date && isDayModalActive) {
-      console.log('calling');
-      fetch(`${serverUrl}/weather`, {
-            'method': 'GET',
-            'headers': {
-              'Content-Type': 'application/json',
-              'lat': lat,
-              'long': long,
-              'run_date': runDate
-              }
-          })
-        .then(res => res.json())
-        .then(data => setWeather(data))
+      getRunWeather(lat, long, runDate)
+        .then(data => setWeather(data));
     }
   }
 
@@ -142,8 +118,8 @@ function DayDetails({ isDayModalActive, handleClick, runArr, date, unit, userId,
 
   const handleDelete = function (e, runId, userId) {
     e.preventDefault();
-    const r = window.confirm("Are you sure you want to delete this run?");
-    r && deleteRun(userId, runId) && setRunArrTemp(runArrTemp.filter(run => run['_id'] !== runId));
+    const confirmDelete = window.confirm("Are you sure you want to delete this run?");
+    confirmDelete && deleteRun(userId, runId) && setRunArrTemp(runArrTemp.filter(run => run['_id'] !== runId));
   }
 
   return (
@@ -151,7 +127,7 @@ function DayDetails({ isDayModalActive, handleClick, runArr, date, unit, userId,
       <div className='modal-background'></div>
       <Modal className='modal-content'>
         <button className='delete is-large' onClick={handleClick}></button>
-        <H1 className=''>{`${moment(date).format('MMM Do YYYY')}`}</H1>
+        <CenteredTitle>{`${moment(date).format('MMM Do YYYY')}`}</CenteredTitle>
         <ul key={date}>
           {
             runArrTemp.map(run => {
@@ -170,7 +146,7 @@ function DayDetails({ isDayModalActive, handleClick, runArr, date, unit, userId,
                         run.latitude && 
                         run.longitude && 
                         isDayModalActive===true && 
-                        getRunWeather(run.latitude, run.longitude, run.date)}
+                        setRunWeather(run.latitude, run.longitude, run.date)}
                       {genWeatherEl('icon', weather)}
                       {genWeatherEl('tempHigh', weather, 'High', (el)=>`${Math.round(el)} F`)}
                       {genWeatherEl('tempLow', weather, 'Low', (el)=>`${Math.round(el)} F`)}
@@ -186,9 +162,7 @@ function DayDetails({ isDayModalActive, handleClick, runArr, date, unit, userId,
         </ul>
       </Modal>
     </div>
-
   )
-
 }
 
 export default DayDetails;
