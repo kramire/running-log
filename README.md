@@ -25,7 +25,7 @@ For Mac users, you can use homebrew to install MongoDB by running `brew install 
 ### To Start
 Begin by starting MongoDB. For Mac users, this can be done by running `brew services start mongodb`.
 
-To start the backend, navigate to the server folder and run `nodemon index.js`. If the server has successfully started, a console log will appear in the terminal stating `Listening on port...`.
+To start the backend, navigate to the server folder and run `nodemon index.js`. If the server has successfully started, a console log will appear in the terminal stating "Listening on port...".
 
 To start the frontend, navigate to the client folder and run `npm start`. This will build the React app, and open it in the browser.
 
