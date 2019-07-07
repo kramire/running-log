@@ -8,9 +8,9 @@ Many smart devices can track and summarize a single workout session. However, th
 
 Furthermore, Running Log provides an outlet for remembering specifics about a run. Users have the option to indicate the type of run they went on, such as speed, distance, etc. There is also the option to select the location, and receive the day's corresponding weather information. There's even a notes section, where users can save anything else they'd like to remember.
 
-![alt text](images/running-log-dashboard.png)
-![alt text](images/running-log-day-view.png)
-![alt text](images/running-log-add-run.png)
+<img src="images/running-log-dashboard.png" alt="Running Log Dashboard View" width="150px" height="150px">
+<img src="images/running-log-day-view.png" alt="Day Details" width="150px" height="150px">
+<img src="images/running-log-add-run.png" alt="Add a New Run Modal" width="150px" height="150px">
 
 
 ## Getting Started
