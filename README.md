@@ -12,7 +12,7 @@ Furthermore, Running Log provides an outlet for remembering specifics about a ru
 
 <p align="center">
     <img src="images/running-log-dashboard.png" width="775px" />
-    <p align="center" font-style="italic">Summary dashboard with high level KPI's, a calendar view, and a line chart showing total distance week over week.'</p>
+    <p align="center" font-style="italic">Summary dashboard with high level KPI's, a calendar view, and a line chart showing total distance week over week.</p>
 </p>
 
 <p align="center">
