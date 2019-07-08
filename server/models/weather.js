@@ -3,16 +3,15 @@ const moment = require('moment');
 const Schema = mongoose.Schema;
 
 // Build Schemas
-const WeatherSchema = new Schema (
-  {
-    'city': String,
-    'state': String,
-    'country': String,
-    'dailyData': {
-      'date': Date,
-      'data': [WeatherDetailsSchema]
-    }
-  });
+const WeatherSchema = new Schema({
+  'city': String,
+  'state': String,
+  'country': String,
+  'dailyData': {
+    'date': Date,
+    'data': [WeatherDetailsSchema]
+  }
+});
 
 const WeatherDetailsSchema = new Schema ({
     'time': Number,
@@ -57,20 +56,11 @@ const WeatherDetailsSchema = new Schema ({
 
 const Weather = mongoose.model('weather', WeatherSchema);
 
+// To-Do: Save Weather.
+const postWeather = function (city, state, country, date, data) {};
 
-const postWeather = function (city, state, country, date, data) {
-  
-  const query = { $or: [ { $and: [ { city: city }, { state: state } ] }, 
-             { $and: [ { city: city }, { country: country } ] } ]};
-
-  Weather.findOneAndUpdate({ dailyData['date']: date }) 
-
-};
-
-const getCachedWeather = function (city, state, country, date) {
-
-}
-
+// To-Do: Build Weather Cache
+const getCachedWeather = function (city, state, country, date) {}
 
 module.exports = {
   WeatherSchema, 
