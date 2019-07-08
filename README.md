@@ -8,11 +8,15 @@ Many smart devices can track and summarize a single workout session. However, th
 
 Furthermore, Running Log provides an outlet for remembering specifics about a run. Users have the option to indicate the type of run they went on, such as speed, distance, etc. There is also the option to select the location, and receive the day's corresponding weather information. There's even a notes section, where users can save anything else they'd like to remember.
 
-
-<img style="margin:0 auto" src="images/running-log-dashboard.png" alt="Running Log Dashboard View" width="250px">
-<img src="images/running-log-day-view.png" alt="Day Details" width="300px">
-<img src="images/running-log-add-run.png" alt="Add a New Run Modal" width="275px">
-
+<p align="center">
+  <img src="images/running-log-dashboard.png" width="350px"/>
+</p>
+<p align="center">
+  <img src="images/running-log-day-view.png" width="350px"/>
+</p>
+<p align="center">
+  <img src="images/running-log-add-run.png" width="350px"/>
+</p>
 
 
 ## Getting Started
@@ -38,11 +42,11 @@ To start the frontend, navigate to the client folder and run `npm start`. This w
 
 ## Tech Stack
 
-React - frontend framework
-Express - backend framework
-MongoDb - database
-LocationIQ API - for reverse geo-coding
-DarkSky API - to gather historical weather information
+* React - frontend framework
+* Express - backend framework
+* MongoDb - database
+* LocationIQ API - for reverse geo-coding
+* DarkSky API - to gather historical weather information
 
 
 
