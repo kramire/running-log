@@ -12,16 +12,17 @@ Furthermore, Running Log provides an outlet for remembering specifics about a ru
 
 <p align="center">
     <img src="images/running-log-dashboard.png" width="775px" />
+    <p align="center" font-style="italic">Summary dashboard with high level KPI's, a calendar view, and a line chart showing total distance week over week.'</p>
 </p>
 
 <p align="center">
-    <img src="images/running-log-add-run.png" width="550px"/>
-    <p>Logging a new run is easy. Simply indicate the distance and the date. There are optional fields as well including the location, the type of run, and any extra notes.</p>
+    <img src="images/running-log-add-run.png" width="500px"/>
+    <p align="center" font-style="italic">Logging a new run is easy. Simply indicate the distance and the date. There are optional fields as well including the location, the type of run, and any extra notes.</p>
 </p>
 
 <p align="center">
-    <img src="images/running-log-day-view.png" width="550px"/>
-    <p>Click on a calendar date to reveal the day's run details. The weather will auto populate if there is a location.</p>
+    <img src="images/running-log-day-view.png" width="500px"/>
+    <p align="center" font-style="italic">Click on a calendar date to reveal the day's run details. The weather will auto populate if there is a location.</p>
 </p>
 
 
