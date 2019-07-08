@@ -8,15 +8,21 @@ Many smart devices can track and summarize a single workout session. However, th
 
 Furthermore, Running Log provides an outlet for remembering specifics about a run. Users have the option to indicate the type of run they went on, such as speed, distance, etc. There is also the option to select the location, and receive the day's corresponding weather information. There's even a notes section, where users can save anything else they'd like to remember.
 
-<p align="center">
-  <img src="images/running-log-dashboard.png" width="350px"/>
-</p>
-<p align="center">
-  <img src="images/running-log-day-view.png" width="350px"/>
-</p>
-<p align="center">
-  <img src="images/running-log-add-run.png" width="350px"/>
-</p>
+
+<figure align="center">
+    <img src="images/running-log-dashboard.png" width="775px" />
+    <figcaption>Caption goes here</figcaption>
+</figure>
+
+<figure align="center">
+    <img src="images/running-log-add-run.png" width="550px"/>
+    <figcaption>Logging a new run is easy. Simply indicate the distance and the date. There are optional fields as well including the location, the type of run, and any extra notes.</figcaption>
+</figure>
+
+<figure align="center">
+    <img src="images/running-log-day-view.png" width="550px"/>
+    <figcaption>Click on a calendar date to reveal the day's run details. The weather will auto populate if there is a location.</figcaption>
+</figure>
 
 
 ## Getting Started
@@ -44,7 +50,7 @@ To start the frontend, navigate to the client folder and run `npm start`. This w
 
 * React - frontend framework
 * Express - backend framework
-* MongoDb - database
+* MongoDB - database
 * LocationIQ API - for reverse geo-coding
 * DarkSky API - to gather historical weather information
 
