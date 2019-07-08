@@ -164,10 +164,10 @@ function AddRun({ serverUrl, user, isModalActive, handleClick }) {
   }
 
   // Generate formatting for input fields.
-  const generateInput = function (inputDiv, distance=false, buttons=false) {
+  const generateInput = function (fieldName, inputDiv, distance=false, buttons=false) {
     return (
       <div className='field is-horizontal'>
-        <Label className='label field-label'>Distance</Label>
+        <Label className='label field-label'>{fieldName}</Label>
           <div className={`control field-body ${buttons && 'buttons is-centered'}`}>
             {inputDiv}
             {distance && <Label>Miles</Label>}
@@ -186,25 +186,25 @@ function AddRun({ serverUrl, user, isModalActive, handleClick }) {
         </div>
         <form className='' onSubmit={(e) => saveForm(e)}>
           {
-            generateInput(
+            generateInput('Distance',
               <input className='input distance' type='number' min='0' step="0.01" value={distance} required
               onChange={(e) => setDistance(e.target.value)}></input>
               , true)
           }
           {
-            generateInput(
+            generateInput('Date',
               <input className='input' type='date' value={date} onChange={(e) => setDate(e.target.value)}></input>)
           }
           {
-            generateInput(toggleLocationInput())
+            generateInput('Location', toggleLocationInput())
           }
           {
-            generateInput(
+            generateInput('Notes',
               <textarea className='textarea' value={note} placeholder="Anything to note?" 
               onChange={(e) => setNote(e.target.value)}/>)
           }
           {
-            generateInput(types.map(type => {
+            generateInput('Run Type', types.map(type => {
               return <input key={type} className={`button ${runType.includes(type) && 'selected'}`} 
               type='button' value={type} onClick={(e) => runTypeEvent(e)}/>
             }), false, true)
