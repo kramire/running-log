@@ -1,12 +1,12 @@
 # Running Log
 
-Running Log is a tool that allows athletes to record daily runs, and receive alerts if he or she is potentially at risk for injury. Overtraining is a common problem amongst runners, and many times it's the result of increasing mileage too quickly. Luckily, there are easy guidelines to follow, and Running Log has this logic built in to the app. 
+Running Log is a tool that leverages data analytics to help runners avoid injury. Overtraining is a common problem amongst runners, and many times it's the result of increasing mileage too quickly. With Running Log, users can record the distance they've ran, and the app will calculate whether or not they are at risk of getting hurt.
 
 ### Why is Running Log Different?
 
-Many smart devices can track and summarize a single workout session. However, they don't quite capture performance overtime. Running Log creates an analytical dashboard from the user's daily mileage to show weekly trends, and alert users as to whether or not they are potentially overtraining. 
+Many smart devices can track and summarize a single workout session. However, they don't quite capture performance overtime. Running Log creates an analytical dashboard based on daily runs to show weekly trends, and alert users as to whether or not they are potentially overtraining. 
 
-Furthermore, Running Log provides an outlet for remembering specifics about a run. Users have the option to indicate the type of run they went on, such as speed, distance, etc. There is also the option to select the location, and receive the day's corresponding weather information. There's even a notes section, where users can save anything else they'd like to remember.
+Furthermore, Running Log becomes a journal for remembering specifics about a run. When logging a new workout, users have the option to indicate the type of run they went on, (speed, distance, etc.) the location, and there's a notes section for anything additional. Running Log can even provide the historical weather information, which can be very beneficial when reviewing prior performance.
 
 
 ## Getting Started
@@ -14,7 +14,7 @@ Furthermore, Running Log provides an outlet for remembering specifics about a ru
 ### Installation
 Begin by forking this repository, and cloning to your computer. 
 
-The project contains the folders `client` and `server`. Both require a `.env` file to be built. Please see the `.env.example` files in each folder to see a guideline on how these should be structured. Please note that the server requires two API keys one for Location IQ, and one for DarkSky.
+The project contains the folders `client` and `server`. Both require a `.env` file to be built. Please see the `.env.example` files in each folder to see a guideline on how these should be structured. There are two optional API keys, one for Location IQ, and one for DarkSky. The first is for gathering the coordinates of the run location, and the second is querying the historical weather. The tool will still work without these keys, but some functionality will be lost.
 
 Next, run `npm i` in both the `client` and `server` folders to install the necessary dependencies.
 
