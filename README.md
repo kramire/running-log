@@ -16,7 +16,7 @@ Furthermore, Running Log provides an outlet for remembering specifics about a ru
 </p>
 
 <p align="center">
-    <img src="images/running-log-add-run.png" width="500px"/>
+    <img src="images/running-log-running-log-addRun.png" width="500px"/>
     <p align="center" font-style="italic">Logging a new run is easy. Simply indicate the distance and the date. There are optional fields as well including the location, the type of run, and any extra notes.</p>
 </p>
 
