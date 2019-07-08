@@ -11,23 +11,30 @@ Furthermore, Running Log becomes a journal for remembering specifics about a run
 
 ## Getting Started
 
+### Prerequesities
+* MongoDB
+* Location IQ API Key
+* DarkSky API Key
+
+*Note that these API keys are optional. If omitted, the application will still work, however, some functionality around the location and weather will be lost.
+
 ### Installation
-Begin by forking this repository, and cloning to your computer. 
 
-The project contains the folders `client` and `server`. Both require a `.env` file to be built. Please see the `.env.example` files in each folder to see a guideline on how these should be structured. There are two optional API keys, one for Location IQ, and one for DarkSky. The first is for gathering the coordinates of the run location, and the second is querying the historical weather. The tool will still work without these keys, but some functionality will be lost.
+1. Begin by forking this repository, and cloning to your computer. 
 
-Next, run `npm i` in both the `client` and `server` folders to install the necessary dependencies.
+2. Prepare a `.env` file following the examples in the folders `client` and `server`. 
 
-This application uses MongoDB as the database. Please ensure this is installed. 
-For Mac users, you can use homebrew to install MongoDB by running `brew install mongodb`.
+3. Install the necessary dependencies.
+Run `npm i` in both the `client` and `server` folders.
+
 
 
 ### To Start
 Begin by starting MongoDB. For Mac users, this can be done by running `brew services start mongodb`.
 
-To start the backend, navigate to the server folder and run `nodemon index.js`. If the server has successfully started, a console log will appear in the terminal stating "Listening on port...".
+To start the backend, navigate to the `server` folder and run `nodemon index.js`. If the server has successfully started, a console log will appear in the terminal stating "Listening on port...".
 
-To start the frontend, navigate to the client folder and run `npm start`. This will build the React app, and open it in the browser.
+To start the frontend, navigate to the `client` folder and run `npm start`. This will build the React app, and open it in the browser.
 
 
 ## Tech Stack
