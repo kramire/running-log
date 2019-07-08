@@ -16,7 +16,8 @@ Furthermore, Running Log becomes a journal for remembering specifics about a run
 * Location IQ API Key
 * DarkSky API Key
 
-*Note that these API keys are optional. If omitted, the application will still work, however, some functionality around the location and weather will be lost.
+*Note that these API keys are optional. If omitted, the application will still work, however some functionality around the location and weather will be lost.
+
 
 ### Installation
 
@@ -28,22 +29,22 @@ Furthermore, Running Log becomes a journal for remembering specifics about a run
 Run `npm i` in both the `client` and `server` folders.
 
 
-
 ### To Start
 Begin by starting MongoDB. For Mac users, this can be done by running `brew services start mongodb`.
 
-To start the backend, navigate to the `server` folder and run `nodemon index.js`. If the server has successfully started, a console log will appear in the terminal stating "Listening on port...".
+To start the backend, navigate to the `server` folder and run `node index.js`. If the server has successfully started, a console log will appear in the terminal stating "Listening on port...".
 
 To start the frontend, navigate to the `client` folder and run `npm start`. This will build the React app, and open it in the browser.
 
 
+
 ## Tech Stack
 
-React - frontend framework
-Express - backend framework
-MongoDb - database
-LocationIQ API - for reverse geo-coding
-DarkSky API - to gather historical weather information
+* React - frontend framework
+* Express - backend framework
+* MongoDb - database
+* LocationIQ API - for reverse geo-coding
+* DarkSky API - to gather historical weather information
 
 
 
