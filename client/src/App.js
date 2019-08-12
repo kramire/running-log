@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { AddRun } from './components';
+import { AddRun, Loading } from './components';
 import { Dashboard } from './containers';
 import './App.css';
 import '../node_modules/bulma/css/bulma.css';
@@ -11,17 +11,6 @@ const Container = styled.div`
   height: 100vh;
   margin: 0 auto;
   padding-top: 20px;
-`;
-
-const Title = styled.h1`
-  font-size: 2em;
-  color: var(--primary-color);
-  text-align: center;
-  margin-bottom: 15px;
-
-  @media (max-width: 800px) {
-    font-size: .8em;
-  }
 `;
 
 function App() {
@@ -58,26 +47,18 @@ function App() {
       .then(res => setMadeChange(!madeChange))
   }
 
-  // Show a loading bar while data loads
-  if (runData.length === 0) {
-    return (
-      <Container>
-        <div className='center'>
-          <Title>RUNNING LOG</Title>
-          <progress className="progress is-primary is-small" max="100">15%</progress>
-        </div>
-      </Container>
-    )
-  }
-  else {
-    return (
-      <Container className="App">
-        <Dashboard user={user} runData={runData} setModal={setModal} deleteRun={deleteRun}></Dashboard>
-        <AddRun serverUrl={serverUrl} user={user} isModalActive={isModalActive} 
-        handleClick={() => setModal(false)}></AddRun>
-      </Container>
-    );
-  }
+  // Show a Loading Page while awaiting data
+  return (
+    <Container>
+      {
+        runData.length === 0 ? <Loading /> :
+        <>
+          <Dashboard user={user} runData={runData} setModal={setModal} deleteRun={deleteRun} />
+          <AddRun serverUrl={serverUrl} user={user} isModalActive={isModalActive} handleClick={() => setModal(false)} />
+        </>
+      }
+    </Container>
+  )
 }
 
 export default App;
