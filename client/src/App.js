@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import './App.css';
-import '../node_modules/bulma/css/bulma.css';
 import { AddRun } from './components';
 import { Dashboard } from './containers';
+import './App.css';
+import '../node_modules/bulma/css/bulma.css';
 import styled from 'styled-components';
+import userData from './assests/userData.json';
 
 const Container = styled.div`
   width: 90vw;
@@ -24,22 +25,12 @@ const Title = styled.h1`
 `;
 
 function App() {
-  
-  const serverUrl = process.env.REACT_APP_WS_URL;
-
   const [runData, setRunData] = useState([]);
   const [isModalActive, setModal] = useState(false);
   const [madeChange, setMadeChange] = useState(false);
-
-  const [user, setUser] = useState({
-    '_id': '5cf8c113155f6c20cc13d56a',
-    username: 'kate11',
-    firstName: 'Katie',
-    unitOfMeasure: 'mi',
-    weekStart: 'Sun',
-    trainingFor: 'half marathon',
-    optInAlerts: true,
-  });
+  const [user, setUser] = useState(userData);
+  
+  const serverUrl = process.env.REACT_APP_WS_URL;
 
   // Get user's running data
   useEffect(() => {
