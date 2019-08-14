@@ -92,39 +92,38 @@ const Button = styled.button`
     padding: 2.5px 8px;
   }  
 `;
-const currentWeek = moment().startOf('week');
-const acrStartDate = moment().subtract(4, 'weeks').day('Sunday').format('MMM Do');
-const acrEndDate = moment().subtract(1, 'weeks').day('Saturday').format('MMM Do');
-
-const getAcrAlert = function (acr) {
-  return acr > 1.5 ? 'danger' : acr > 1.2 ? 'warning' : 'success';
-};
 
 
 function Kpi({ user, runData, setModal }) {
-  
-  const weekData = runData.filter(run => moment(run.week).isSame(currentWeek, 'week'))[0];
-  const acrAlertType = weekData ? getAcrAlert(weekData.acr) : 'success';
+  const { firstName, unitOfMeasure, trainingFor } = user;
+
+  const thisWeek = moment().startOf('week');
+  const thisWeekData = runData.filter(run => moment(run.week).isSame(thisWeek, 'week'))[0];
+  const { total = 0, acr = 0 } = thisWeekData || {};
+
+  const acrStart = moment().subtract(4, 'weeks').day('Sunday').format('MMM Do');
+  const acrEnd = moment().subtract(1, 'weeks').day('Saturday').format('MMM Do');
+  const acrStatus = acr ? (acr => (acr > 1.5) ? 'danger' : (acr > 1.2) ? 'warning' : 'success') : 'success';
 
   return(
     <Container>
       <SubContainer>
         <H3>Welcome Back</H3>
-        <User>{user.firstName}!</User>
+        <User>{firstName}!</User>
       </SubContainer>
       <SubContainer>
         <H3>Weekly Mileage</H3>
-        <KPI>{`${weekData ? weekData.total : 0} ${user.unitOfMeasure}`}</KPI>
+        <KPI>{`${total} ${unitOfMeasure}`}</KPI>
         <Button className='button is-rounded' onClick={() => setModal(true)}>Add Run +</Button>
       </SubContainer>
       <SubContainer>
         <H3>Acute Chronic Ratio</H3>
-        <KPI className={` has-text-${acrAlertType}`}>{weekData ? weekData.acr : 0}</KPI>
-        <P>{`${acrStartDate} - ${acrEndDate}`}</P>
+        <KPI className={` has-text-${acrStatus}`}>{acr}</KPI>
+        <P>{`${acrStart} - ${acrEnd}`}</P>
       </SubContainer>
       <SubContainer>
         <H3>Training For</H3>
-        <H4>{user.trainingFor}</H4>
+        <H4>{trainingFor}</H4>
       </SubContainer>
     </Container>
   )
