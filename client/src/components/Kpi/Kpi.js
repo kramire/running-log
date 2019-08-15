@@ -70,28 +70,6 @@ const KPI = styled.div`
   }
 `;
 
-const Button = styled.button`
-  color: #CDDDDD;
-  background-color: #978CA5;
-  font-size: 1em;
-  margin: 20px 0;
-  border: none;
-  padding: 5px 15px;
-  transition: all .1s ease;
-  
-  :hover {
-    transform: scale(1.15);
-    background-color: #CDDDDD;
-    color: #978CA5;
-    font-weight: bold;
-  }
-
-  @media (max-width: 800px) {
-    font-size:.5em;
-    margin: 10px 0;
-    padding: 2.5px 8px;
-  }  
-`;
 const currentWeek = moment().startOf('week');
 const acrStartDate = moment().subtract(4, 'weeks').day('Sunday').format('MMM Do');
 const acrEndDate = moment().subtract(1, 'weeks').day('Saturday').format('MMM Do');
@@ -115,7 +93,6 @@ function Kpi({ user, runData, handleClick }) {
       <SubContainer>
         <H3>Weekly Mileage</H3>
         <KPI>{`${weekData ? weekData.total : 0} ${user.unitOfMeasure}`}</KPI>
-        <Button className='button is-rounded' onClick={handleClick}>Add Run +</Button>
       </SubContainer>
       <SubContainer>
         <H3>Acute Chronic Ratio</H3>

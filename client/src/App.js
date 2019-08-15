@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { AddRun, Loading } from './components';
+import { Loading } from './components';
 import { Dashboard } from './containers';
 import './App.css';
 import '../node_modules/bulma/css/bulma.css';
 import styled from 'styled-components';
 import userData from './assests/userData.json';
-import { connect } from 'react-redux';
-import { toggleAddRunModal } from './redux/actions';
+
 
 const Container = styled.div`
   width: 90vw;
@@ -15,11 +14,9 @@ const Container = styled.div`
   padding-top: 20px;
 `;
 
-function App({ isModalActive, onModalClick }) {
+function App() {
   const [runData, setRunData] = useState([]);
-  // const [isModalActive, setModal] = useState(false);
   const [madeChange, setMadeChange] = useState(false);
-  const [user, setUser] = useState(userData);
   
   const serverUrl = process.env.REACT_APP_WS_URL;
 
@@ -29,12 +26,12 @@ function App({ isModalActive, onModalClick }) {
         'method': 'GET',
         'headers': {
           'Content-Type': 'application/json',
-          '_id': user['_id'],
+          '_id': userData['_id'],
         }
       })
       .then(res => res.json())
       .then(data => setRunData(data));
-  }, [isModalActive, madeChange]);
+  }, [madeChange]);
 
   // Define delete run function
   const deleteRun = async function (userId, runId) {
@@ -53,25 +50,12 @@ function App({ isModalActive, onModalClick }) {
   return (
     <Container>
       {
-        runData.length === 0 ? <Loading /> :
-        <>
-          <Dashboard user={user} runData={runData} deleteRun={deleteRun} handleClick={onModalClick} />
-          <AddRun serverUrl={serverUrl} user={user} isModalActive={isModalActive} handleClick={onModalClick} />
-        </>
+        runData.length === 0 ? 
+        <Loading /> :
+        <Dashboard runData={runData} deleteRun={deleteRun} />
       }
     </Container>
   )
 }
 
-const mapStateToProps = state => {
-  return {
-    isModalActive: state.isAddRunModalActive
-  };
-}
-
-const mapDispatchToProps = dispatch => {
-  return {
-    onModalClick: () => dispatch(toggleAddRunModal())
-  }
-}
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default App;

@@ -29,7 +29,7 @@ const initialState = {
   endDate: moment().day(6),
   browserLocation: {latitude: null, longitude: null},
   runData: null,
-  isAddRunModalActive: true,
+  isAddRunModalActive: false,
   isDayModalActive: false
 };
 

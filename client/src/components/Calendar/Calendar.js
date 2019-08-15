@@ -4,6 +4,7 @@ import moment from 'moment';
 import styled from 'styled-components';
 import './Calendar.css'
 import { Week, CalBox } from '../';
+import { Title } from '../../assests/globalStyledComponents';
 
 const CalContainer = styled.div`
   height: 40vh;
@@ -15,6 +16,7 @@ function Calendar({ user, runData, deleteRun }) {
   
   return (
     <div>
+      <Title>Calendar</Title>
       <div className="columns is-mobile">
         {weekDayNums.map(el => 
             <CalBox className="column is-narrow" key={el} calHeader={moment.weekdaysShort(el)}></CalBox>
