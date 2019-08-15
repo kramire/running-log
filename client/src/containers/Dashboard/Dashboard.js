@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import '../../../node_modules/bulma/css/bulma.css';
 import styled from 'styled-components';
 import './Dashboard.css';
@@ -47,6 +47,7 @@ const Button = styled.button`
 const serverUrl = process.env.REACT_APP_WS_URL;
 
 function Dashboard({ user, runData, handleClick, deleteRun, isModalActive, onModalClick }) {
+
   return (
     <Container>
       <Kpi user={user} runData={runData} handleClick={handleClick}></Kpi>
@@ -63,7 +64,8 @@ function Dashboard({ user, runData, handleClick, deleteRun, isModalActive, onMod
 const mapStateToProps = state => {
   return {
     isModalActive: state.isAddRunModalActive,
-    user: state.user
+    user: state.user,
+    runData: state.runData.runs
   };
 }
 

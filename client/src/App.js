@@ -5,6 +5,8 @@ import './App.css';
 import '../node_modules/bulma/css/bulma.css';
 import styled from 'styled-components';
 import userData from './assests/userData.json';
+import { fetchRuns } from './redux/actions';
+import { connect } from 'react-redux';
 
 
 const Container = styled.div`
@@ -14,24 +16,13 @@ const Container = styled.div`
   padding-top: 20px;
 `;
 
-function App() {
-  const [runData, setRunData] = useState([]);
+function App({ user, dispatch, fetchingData }) {
   const [madeChange, setMadeChange] = useState(false);
   
   const serverUrl = process.env.REACT_APP_WS_URL;
 
   // Get user's running data
-  useEffect(() => {
-    fetch(serverUrl, {
-        'method': 'GET',
-        'headers': {
-          'Content-Type': 'application/json',
-          '_id': userData['_id'],
-        }
-      })
-      .then(res => res.json())
-      .then(data => setRunData(data));
-  }, [madeChange]);
+  useEffect(() => dispatch(fetchRuns(user['_id'])),[]);
 
   // Define delete run function
   const deleteRun = async function (userId, runId) {
@@ -50,12 +41,19 @@ function App() {
   return (
     <Container>
       {
-        runData.length === 0 ? 
+        fetchingData ? 
         <Loading /> :
-        <Dashboard runData={runData} deleteRun={deleteRun} />
+        <Dashboard deleteRun={deleteRun} />
       }
     </Container>
   )
 }
 
-export default App;
+const mapStateToProps = state => {
+  return {
+    user: state.user,
+    fetchingData: state.runData.isFetching
+  }
+}
+
+export default connect(mapStateToProps)(App);

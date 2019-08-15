@@ -3,6 +3,8 @@ import '../../../node_modules/bulma/css/bulma.css';
 import './AddRun.css';
 import styled from 'styled-components';
 import { Modal } from '../../assests/globalStyledComponents';
+import { postNewRun } from '../../redux/actions';
+import { connect } from 'react-redux';
 
 const H1 = styled.h1`
   font-size: 40px;
@@ -16,7 +18,7 @@ const Label = styled.label`
   font-size: 20px;
 `;
 
-function AddRun({ serverUrl, user, isModalActive, handleClick }) {
+function AddRun({ serverUrl, user, isModalActive, handleClick, saveRun }) {
 
   const [browserLocation, setBrowserLocation] = useState({});
   const [distance, setDistance] = useState(0);
@@ -90,17 +92,7 @@ function AddRun({ serverUrl, user, isModalActive, handleClick }) {
       longitude: coords.longitude
     };
 
-    fetch(serverUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          '_id': user['_id'],
-          run: runData
-        })
-      })
-      .then(res => res.json())
+    saveRun(user['_id'], runData);
     handleClose();
   };
 
@@ -220,4 +212,14 @@ function AddRun({ serverUrl, user, isModalActive, handleClick }) {
   )
 }
 
-export default AddRun;
+const mapStateToProps = state => {
+  return {};
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    saveRun: (userId, runData) => dispatch(postNewRun(userId, runData))
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(AddRun);
