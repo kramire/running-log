@@ -20,10 +20,10 @@ const Visuals = styled.div`
   margin-left: 50px;
 `;
 
-function Dashboard({ user, runData, setModal, deleteRun }) {
+function Dashboard({ user, runData, handleClick, deleteRun }) {
   return (
     <Container>
-      <Kpi user={user} runData={runData} setModal={setModal}></Kpi>
+      <Kpi user={user} runData={runData} handleClick={handleClick}></Kpi>
       <Visuals>
         <Title>Calendar</Title>
         <Calendar deleteRun={deleteRun} user={user} runData={runData}></Calendar>

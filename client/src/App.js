@@ -5,6 +5,8 @@ import './App.css';
 import '../node_modules/bulma/css/bulma.css';
 import styled from 'styled-components';
 import userData from './assests/userData.json';
+import { connect } from 'react-redux';
+import { toggleAddRunModal } from './redux/actions';
 
 const Container = styled.div`
   width: 90vw;
@@ -13,9 +15,9 @@ const Container = styled.div`
   padding-top: 20px;
 `;
 
-function App() {
+function App({ isModalActive, onModalClick }) {
   const [runData, setRunData] = useState([]);
-  const [isModalActive, setModal] = useState(false);
+  // const [isModalActive, setModal] = useState(false);
   const [madeChange, setMadeChange] = useState(false);
   const [user, setUser] = useState(userData);
   
@@ -53,12 +55,23 @@ function App() {
       {
         runData.length === 0 ? <Loading /> :
         <>
-          <Dashboard user={user} runData={runData} setModal={setModal} deleteRun={deleteRun} />
-          <AddRun serverUrl={serverUrl} user={user} isModalActive={isModalActive} handleClick={() => setModal(false)} />
+          <Dashboard user={user} runData={runData} deleteRun={deleteRun} handleClick={onModalClick} />
+          <AddRun serverUrl={serverUrl} user={user} isModalActive={isModalActive} handleClick={onModalClick} />
         </>
       }
     </Container>
   )
 }
 
-export default App;
+const mapStateToProps = state => {
+  return {
+    isModalActive: state.isAddRunModalActive
+  };
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    onModalClick: () => dispatch(toggleAddRunModal())
+  }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(App);

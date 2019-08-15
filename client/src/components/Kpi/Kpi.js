@@ -101,7 +101,7 @@ const getAcrAlert = function (acr) {
 };
 
 
-function Kpi({ user, runData, setModal }) {
+function Kpi({ user, runData, handleClick }) {
   
   const weekData = runData.filter(run => moment(run.week).isSame(currentWeek, 'week'))[0];
   const acrAlertType = weekData ? getAcrAlert(weekData.acr) : 'success';
@@ -115,7 +115,7 @@ function Kpi({ user, runData, setModal }) {
       <SubContainer>
         <H3>Weekly Mileage</H3>
         <KPI>{`${weekData ? weekData.total : 0} ${user.unitOfMeasure}`}</KPI>
-        <Button className='button is-rounded' onClick={() => setModal(true)}>Add Run +</Button>
+        <Button className='button is-rounded' onClick={handleClick}>Add Run +</Button>
       </SubContainer>
       <SubContainer>
         <H3>Acute Chronic Ratio</H3>
