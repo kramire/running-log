@@ -24,26 +24,13 @@ function App({ user, dispatch, fetchingData }) {
   // Get user's running data
   useEffect(() => dispatch(fetchRuns(user['_id'])),[]);
 
-  // Define delete run function
-  const deleteRun = async function (userId, runId) {
-    await fetch(serverUrl, {
-        'method': 'DELETE',
-        'headers': {
-          'Content-Type': 'application/json',
-          'user_id': userId,
-          'run_id': runId
-        }
-      })
-      .then(res => setMadeChange(!madeChange))
-  }
-
   // Show a Loading Page while awaiting data
   return (
     <Container>
       {
         fetchingData ? 
         <Loading /> :
-        <Dashboard deleteRun={deleteRun} />
+        <Dashboard />
       }
     </Container>
   )
@@ -52,7 +39,7 @@ function App({ user, dispatch, fetchingData }) {
 const mapStateToProps = state => {
   return {
     user: state.user,
-    fetchingData: state.runData.isFetching
+    fetchingData: state.data.isFetching
   }
 }
 

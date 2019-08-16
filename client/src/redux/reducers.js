@@ -1,14 +1,3 @@
-// State outline
-
-// const state = {
-//   user = {null},
-//   startDate = Date (default to sunday of 12 weeks ago),
-//   endDate = Date (default to saturday of this week),
-//   browserLocation = {lat: null, long: null},
-//   runData = {}
-// }
-
-
 // a reducer is a pure function that accepts to arguments
 // the current state, and the action type
 // it returns a new version of the state
@@ -18,23 +7,24 @@
 
 import userData from '../assests/userData.json';
 import moment from 'moment';
-import { REQUEST_POST_RUN, RECEIVE_POST_RUN} from './actions';
 import { SET_START_DATE, SET_END_DATE } from './actions';
 import { SET_BROWSER_LOCATION } from './actions';
 import { TOGGLE_ADDRUN_MODAL } from './actions';
 import { REQUEST_RUNS, RECEIVE_RUNS } from './actions';
+import { REQUEST_POST_RUN, RECEIVE_POST_RUN} from './actions';
+import { REQUEST_DELETE_RUN, RECEIVE_DELETE_RUN } from './actions';
 
 const initialState = {
   user: userData,
   startDate: moment().subtract(12, 'weeks').day(0),
   endDate: moment().day(6),
   browserLocation: {latitude: null, longitude: null},
-  runData: {
+  data: {
     isFetching: true,
     isPosting: false,
-    didInvalidate: false,
+    isDeleting: false,
     lastUpdated: null,
-    runs: []
+    weeklyData: []
   },
   isAddRunModalActive: false,
   isDayModalActive: false
@@ -70,36 +60,52 @@ function runningLogReducers(state = initialState, action) {
     case REQUEST_RUNS:
       return {
         ...state,
-        runData: {
-          ...state.runData,
+        data: {
+          ...state.data,
           isFetching: true
         }
       }
     case RECEIVE_RUNS:
       return {
         ...state,
-        runData: {
-          ...state.runData,
+        data: {
+          ...state.data,
           isFetching: false,
           isPosing: false,
-          runs: action.runs,
+          weeklyData: action.runs,
           lastUpdate: action.receivedAt
         }
       }
     case REQUEST_POST_RUN: 
       return {
         ...state,
-        runData: {
-          ...state.runData,
+        data: {
+          ...state.data,
           isPosting: true
         }
       }
     case RECEIVE_POST_RUN:
       return {
         ...state,
-        runData: {
-          ...state.runData,
+        data: {
+          ...state.data,
           isPosting: false
+        }
+      }
+    case REQUEST_DELETE_RUN:
+      return {
+        ...state,
+        data: {
+          ...state.data,
+          isDeleting: true
+        }
+      }
+    case RECEIVE_DELETE_RUN:
+      return {
+        ...state,
+        data: {
+          ...state.data,
+          isDeleting: false,
         }
       }
     default:

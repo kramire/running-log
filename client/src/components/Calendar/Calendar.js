@@ -11,7 +11,7 @@ const CalContainer = styled.div`
   overflow: scroll;
 `;
   
-function Calendar({ user, runData, deleteRun }) {  
+function Calendar({ user, runData }) {  
   const weekDayNums = Array.of(0, 1, 2, 3, 4, 5, 6);  
   
   return (
@@ -28,7 +28,7 @@ function Calendar({ user, runData, deleteRun }) {
       <CalContainer>
         {runData.map(weekData => 
             <Week key={weekData['_id']} runData={weekData} unit={user.unitOfMeasure} weekDayNums={weekDayNums} 
-              userId={user['_id']} deleteRun={deleteRun}></Week>
+              userId={user['_id']}></Week>
         )}
       </CalContainer>
     </div>

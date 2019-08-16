@@ -46,13 +46,13 @@ const Button = styled.button`
 
 const serverUrl = process.env.REACT_APP_WS_URL;
 
-function Dashboard({ user, runData, handleClick, deleteRun, isModalActive, onModalClick }) {
+function Dashboard({ user, runData, handleClick, isModalActive, onModalClick }) {
 
   return (
     <Container>
       <Kpi user={user} runData={runData} handleClick={handleClick}></Kpi>
       <Visuals>
-        <Calendar deleteRun={deleteRun} user={user} runData={runData}></Calendar>
+        <Calendar user={user} runData={runData}></Calendar>
         <Button className='button is-rounded' onClick={onModalClick}>Add Run +</Button>
         <AddRun serverUrl={serverUrl} user={user} isModalActive={isModalActive} handleClick={onModalClick} />
         <LineChart runData={runData} unitOfMeasure={user.unitOfMeasure}></LineChart>
@@ -65,7 +65,7 @@ const mapStateToProps = state => {
   return {
     isModalActive: state.isAddRunModalActive,
     user: state.user,
-    runData: state.runData.runs
+    runData: state.data.weeklyData
   };
 }
 

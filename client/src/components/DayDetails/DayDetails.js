@@ -5,6 +5,8 @@ import './DayDetails.css';
 import styled from 'styled-components';
 import { Modal, CenteredTitle } from '../../assests/globalStyledComponents';
 import { getRunWeather } from '../../services/weather';
+import { connect } from 'react-redux';
+import { deleteRun } from '../../redux/actions';
 
 const Span = styled.span`
   font-size: 20px;
@@ -113,13 +115,12 @@ function DayDetails({ isDayModalActive, handleClick, runArr, date, unit, userId,
     }
   }
 
-  const [runArrTemp, setRunArrTemp] = useState([...runArr]);
   const [weather, setWeather] = useState({});
 
   const handleDelete = function (e, runId, userId) {
     e.preventDefault();
     const confirmDelete = window.confirm("Are you sure you want to delete this run?");
-    confirmDelete && deleteRun(userId, runId) && setRunArrTemp(runArrTemp.filter(run => run['_id'] !== runId));
+    confirmDelete && deleteRun(userId, runId);
   }
 
   return (
@@ -130,7 +131,7 @@ function DayDetails({ isDayModalActive, handleClick, runArr, date, unit, userId,
         <CenteredTitle>{`${moment(date).format('MMM Do YYYY')}`}</CenteredTitle>
         <ul key={date}>
           {
-            runArrTemp.map(run => {
+            runArr.map(run => {
               return (
                 <div key={run['_id']}>
                   <button className='delete deleteInner is-medium'
@@ -165,4 +166,14 @@ function DayDetails({ isDayModalActive, handleClick, runArr, date, unit, userId,
   )
 }
 
-export default DayDetails;
+const mapStateToProps = state => {
+  return {}
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    deleteRun: (userId, runId) => dispatch(deleteRun(userId, runId))
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(DayDetails);

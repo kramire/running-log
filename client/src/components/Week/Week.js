@@ -8,7 +8,7 @@ const filterRunsByDate = function (runArr, date) {
   return runArr.filter(run => moment(new Date(run.date)).isSame(date, 'day'));
 }
 
-function Week({ runData, unit, weekDayNums, userId, deleteRun }) {
+function Week({ runData, unit, weekDayNums, userId }) {
   const longestPrct = Math.round(runData.longestRun  / runData.total * 100);
   const prctChange = Math.round(runData.prctChange*100);
   const warnProp = longestPrct > 30 ? {'warnAlert': 'warnAlert'} : {};
@@ -24,7 +24,7 @@ function Week({ runData, unit, weekDayNums, userId, deleteRun }) {
 
           return (
             <CalBox key={calendarDate} calHeader={calendarDate.format('MMM DD')} distance={distance} hasModal
-            userId={userId} unit={unit} runArr={runArr} deleteRun={deleteRun}></CalBox>
+            userId={userId} unit={unit} runArr={runArr}></CalBox>
           )
 
         })

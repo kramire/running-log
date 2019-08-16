@@ -14,24 +14,27 @@ export const REQUEST_RUNS = 'REQUEST_RUNS';
 export const RECEIVE_RUNS = 'RECEIVE_RUNS';
 export const REQUEST_POST_RUN = 'REQUEST_POST_RUN';
 export const RECEIVE_POST_RUN = 'RECEIVE_POST_RUN';
+export const REQUEST_DELETE_RUN = 'REQUEST_DELETE_RUN';
+export const RECEIVE_DELETE_RUN = 'RECEIVE_DELETE_RUN';
 
 const serverUrl = process.env.REACT_APP_WS_URL;
 
 // action creators
 
 export const requestPostRun = () => ({
-  type: REQUEST_POST_RUN,
+  type: REQUEST_POST_RUN
 });
 
-export const receivePostResponse = data => ({
-  type: RECEIVE_POST_RUN,
-  data
+export const receivePostResponse = () => ({
+  type: RECEIVE_POST_RUN
 });
 
-export const deleteRun = (runId, userId) => ({
-  type: DELETE_RUN,
-  runId,
-  userId
+export const requestDeleteRun = () => {
+  return {type: REQUEST_DELETE_RUN}
+};
+
+export const receiveDeleteResponse = () => ({
+  type: RECEIVE_DELETE_RUN,
 });
 
 export const setStartDate = date => ({
@@ -62,7 +65,7 @@ export const toggleDateModal = (flag, date) => ({
 export const requestRuns = userId => {
   return {
   type: REQUEST_RUNS,
-  data: userId
+  userId
 }};
 
 export const receiveRuns = data => ({
@@ -88,7 +91,7 @@ export const fetchRuns = userId => {
 
 export const postNewRun = (userId, runData) => {
   return dispatch => {
-    dispatch(requestPostRun())
+    dispatch(requestPostRun());
     return fetch(serverUrl, {
       method: 'POST',
       headers: {
@@ -100,7 +103,23 @@ export const postNewRun = (userId, runData) => {
       })
     })
     .then(res => res.json())
-    .then(data => dispatch(receivePostResponse(data)))
+    .then(() => dispatch(receivePostResponse()))
+    .then(() => dispatch(fetchRuns(userId)))
+  }
+};
+
+export const deleteRun = (userId, runId) => {
+  return dispatch => {
+    dispatch(requestDeleteRun());
+    return fetch(serverUrl, {
+      'method': 'DELETE',
+      'headers': {
+        'Content-Type': 'application/json',
+        'user_id': userId,
+        'run_id': runId
+      }
+    })
+    .then(() => dispatch(receiveDeleteResponse()))
     .then(() => dispatch(fetchRuns(userId)))
   }
 };

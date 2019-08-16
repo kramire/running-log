@@ -37,7 +37,7 @@ const Unit = styled.div`
 `;
 
 
-function CalBox ({ calHeader, distance, percentage, runArr, unit, userId, deleteRun, ...props }) {
+function CalBox ({ calHeader, distance, percentage, runArr, unit, userId, ...props }) {
 
   const [isDayModalActive, setDayModal] = useState(false);
 
@@ -63,7 +63,7 @@ function CalBox ({ calHeader, distance, percentage, runArr, unit, userId, delete
     if (runArr && runArr.length > 0) {
       return (
         <DayDetails isDayModalActive={isDayModalActive} handleClick={() => setDayModal(false)}
-        deleteRun={deleteRun} date={runArr[0].date} unit={unit} runArr={runArr} userId={userId}></DayDetails>
+        date={runArr[0].date} unit={unit} runArr={runArr} userId={userId}></DayDetails>
       )
     }
   }
