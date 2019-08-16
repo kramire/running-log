@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Loading } from './components';
 import { Dashboard } from './containers';
 import './App.css';
 import '../node_modules/bulma/css/bulma.css';
 import styled from 'styled-components';
-import userData from './assests/userData.json';
-import { fetchRuns } from './redux/actions';
+import { fetchRuns, getBrowserCoords } from './redux/actions';
 import { connect } from 'react-redux';
 
 
@@ -16,13 +15,13 @@ const Container = styled.div`
   padding-top: 20px;
 `;
 
-function App({ user, dispatch, fetchingData }) {
-  const [madeChange, setMadeChange] = useState(false);
-  
-  const serverUrl = process.env.REACT_APP_WS_URL;
+function App({ user, fetchingData, getRunData, getBrowserLocation }) {
 
   // Get user's running data
-  useEffect(() => dispatch(fetchRuns(user['_id'])),[]);
+  useEffect(() => {
+    getRunData(user['_id'])
+    getBrowserLocation()
+  },[]);
 
   // Show a Loading Page while awaiting data
   return (
@@ -43,4 +42,11 @@ const mapStateToProps = state => {
   }
 }
 
-export default connect(mapStateToProps)(App);
+const mapDispatchToProps = dispatch => {
+  return {
+    getRunData: userId => dispatch(fetchRuns(userId)),
+    getBrowserLocation: () => dispatch(getBrowserCoords())
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
