@@ -178,6 +178,8 @@ function AddRun({ browserLocation, user, isModalActive, handleClick, saveRun }) 
 
 const mapStateToProps = state => {
   return {
+    isModalActive: state.isAddRunModalActive,
+    user: state.user,
     browserLocation: state.browserLocation
   };
 }

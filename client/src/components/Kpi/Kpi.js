@@ -71,16 +71,13 @@ const KPI = styled.div`
 `;
 
 const currentWeek = moment().startOf('week');
-const acrStartDate = moment().subtract(4, 'weeks').day('Sunday').format('MMM Do');
-const acrEndDate = moment().subtract(1, 'weeks').day('Saturday').format('MMM Do');
+const acrStart = moment().subtract(4, 'weeks').day('Sunday').format('MMM Do');
+const acrEnd = moment().subtract(1, 'weeks').day('Saturday').format('MMM Do');
 
-const getAcrAlert = function (acr) {
-  return acr > 1.5 ? 'danger' : acr > 1.2 ? 'warning' : 'success';
-};
+const getAcrAlert = acr => acr > 1.5 ? 'danger' : acr > 1.2 ? 'warning' : 'success';
 
-
-function Kpi({ user, runData, handleClick }) {
-  
+function Kpi({ user, runData }) {
+  const { firstName, unitOfMeasure, trainingFor } = user;
   const weekData = runData.filter(run => moment(run.week).isSame(currentWeek, 'week'))[0];
   const acrAlertType = weekData ? getAcrAlert(weekData.acr) : 'success';
 
@@ -88,20 +85,20 @@ function Kpi({ user, runData, handleClick }) {
     <Container>
       <SubContainer>
         <H3>Welcome Back</H3>
-        <User>{user.firstName}!</User>
+        <User>{firstName}!</User>
       </SubContainer>
       <SubContainer>
         <H3>Weekly Mileage</H3>
-        <KPI>{`${weekData ? weekData.total : 0} ${user.unitOfMeasure}`}</KPI>
+        <KPI>{`${weekData ? weekData.total : 0} ${unitOfMeasure}`}</KPI>
       </SubContainer>
       <SubContainer>
         <H3>Acute Chronic Ratio</H3>
         <KPI className={` has-text-${acrAlertType}`}>{weekData ? weekData.acr : 0}</KPI>
-        <P>{`${acrStartDate} - ${acrEndDate}`}</P>
+        <P>{`${acrStart} - ${acrEnd}`}</P>
       </SubContainer>
       <SubContainer>
         <H3>Training For</H3>
-        <H4>{user.trainingFor}</H4>
+        <H4>{trainingFor}</H4>
       </SubContainer>
     </Container>
   )

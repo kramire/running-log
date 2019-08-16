@@ -1,11 +1,10 @@
 import React, { useEffect } from 'react';
 import { Loading } from './components';
 import { Dashboard } from './containers';
-import './App.css';
-import '../node_modules/bulma/css/bulma.css';
-import styled from 'styled-components';
-import { fetchRuns, getBrowserCoords } from './redux/actions';
 import { connect } from 'react-redux';
+import { fetchRuns, getBrowserCoords } from './redux/actions';
+import styled from 'styled-components';
+import './App.css';
 
 
 const Container = styled.div`
@@ -17,7 +16,7 @@ const Container = styled.div`
 
 function App({ user, fetchingData, getRunData, getBrowserLocation }) {
 
-  // Get user's running data
+  // Fetch user's run data, and browser location.
   useEffect(() => {
     getRunData(user['_id'])
     getBrowserLocation()
@@ -40,13 +39,13 @@ const mapStateToProps = state => {
     user: state.user,
     fetchingData: state.data.isFetching
   }
-}
+};
 
 const mapDispatchToProps = dispatch => {
   return {
     getRunData: userId => dispatch(fetchRuns(userId)),
     getBrowserLocation: () => dispatch(getBrowserCoords())
   }
-}
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
