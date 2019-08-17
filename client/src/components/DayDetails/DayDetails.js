@@ -37,7 +37,7 @@ const Unit = styled.div`
 `;
 
 
-function DayDetails({ showDayModal, toggleDayModal, runArr, date, unit, userId, deleteRun }) {
+function DayDetails({ showDayModal, toggleDayModal, runData, date, unit, userId, deleteRun }) {
   
   const handleArray = data => (Array.isArray(data) && data.length > 0) ? data.map(el => `${el}  `) : data;
   
@@ -53,20 +53,19 @@ function DayDetails({ showDayModal, toggleDayModal, runArr, date, unit, userId, 
       <Modal className='modal-content'>
         <button className='delete is-large' onClick={toggleDayModal}></button>
         <CenteredTitle>{`${moment(date).format('MMM Do YYYY')}`}</CenteredTitle>
-        <ul key={date}>
-          {runArr.map(run => {
+        <ul>
+          {runData.map(run => {
             const { distance, runType, note, location } = run;
             return (
-              <div key={run['_id']}>
-                <button className='delete deleteInner is-medium'
-                  onClick={(e) => handleDelete(e, run['_id'], userId)} />
+              <li key={run['_id']}>
+                <button className='delete deleteInner is-medium' onClick={(e) => handleDelete(e, run['_id'], userId)} />
                 <Ul>
                   <li><Label>Distance</Label><Span>{distance}<Unit>{unit}</Unit></Span></li>
                   <li><Label>Run Type</Label><Span>{handleArray(runType)}</Span></li>
                   <li><Label>Notes</Label><Span>{note}</Span></li>
                   <li><Label>Location</Label><Span>{location}</Span></li>
                 </Ul>
-              </div>
+              </li>
             )
           })}
         </ul>
@@ -79,7 +78,7 @@ const mapStateToProps = state => {
   return {
     showDayModal: state.appUI.isDayModalActive,
     date: state.appUI.dayModalDetails.date,
-    runArr: state.appUI.dayModalDetails.runs,
+    runData: state.appUI.dayModalDetails.runs,
     unit: state.appUI.dayModalDetails.unit,
     userId: state.appUI.user['_id']
   }

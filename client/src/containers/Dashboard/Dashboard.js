@@ -45,7 +45,7 @@ const Button = styled.button`
 `;
 
 
-function Dashboard({ user, runData, showAddRun, toggleDayModal }) {
+function Dashboard({ user, runData, showAddRun }) {
   return (
     <Container>
       <Kpi user={user} runData={runData} />

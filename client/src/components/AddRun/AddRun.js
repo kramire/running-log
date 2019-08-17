@@ -54,7 +54,6 @@ function AddRun({ browserLocation, user, isModalActive, handleClick, saveRun }) 
       latitude: browserLocation.latitude,
       longitude: browserLocation.longitude
     };
-    console.log(browserLocation);
     saveRun(user['_id'], runData);
     handleClose();
   };

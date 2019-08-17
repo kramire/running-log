@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import '../../../node_modules/bulma/css/bulma.css';
 import styled from 'styled-components';
 import './CalBox.css'
@@ -38,7 +38,7 @@ const Unit = styled.div`
 `;
 
 
-function CalBox({ calHeader, distance, percentage, runArr, unit, userId, toggleDayModal, setDayDetails, ...props }) {
+function CalBox({ calHeader, distance, percentage, runArr, unit, toggleDayModal, setDayDetails, ...props }) {
 
   const generateKpi = () => {
     if (distance >= 0) {
@@ -67,7 +67,7 @@ function CalBox({ calHeader, distance, percentage, runArr, unit, userId, toggleD
 
   return (
     <div className="column">
-      <DateBox className='column' key={calHeader} {...props} onClick={() => handleClick(runArr, unit)} >
+      <DateBox className='column' key={calHeader} hasModal {...props} onClick={() => handleClick(runArr, unit)} >
         <BoxHeader{...props}>{calHeader}</BoxHeader>
         {generateKpi()}
       </DateBox>

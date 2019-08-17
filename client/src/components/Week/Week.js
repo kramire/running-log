@@ -8,7 +8,7 @@ const filterRunsByDate = function (runArr, date) {
   return runArr.filter(run => moment(new Date(run.date)).isSame(date, 'day'));
 }
 
-function Week({ runData, unit, weekDayNums, userId }) {
+function Week({ runData, unit, weekDayNums }) {
   const longestPrct = Math.round(runData.longestRun  / runData.total * 100);
   const prctChange = Math.round(runData.prctChange*100);
   const warnProp = longestPrct > 30 ? {'warnAlert': 'warnAlert'} : {};
@@ -18,15 +18,11 @@ function Week({ runData, unit, weekDayNums, userId }) {
       {
         weekDayNums.map(day => {
           
-          const calendarDate = moment(new Date(runData.week)).add(day, 'days');
-          const runArr = filterRunsByDate(runData.runs, calendarDate);
+          const calDate = moment(new Date(runData.week)).add(day, 'days');
+          const runArr = filterRunsByDate(runData.runs, calDate);
           const distance = runArr.map(run => run.distance).reduce((accum, cur) => accum + cur, 0);
 
-          return (
-            <CalBox key={calendarDate} calHeader={calendarDate.format('MMM DD')} distance={distance} hasModal
-            userId={userId} unit={unit} runArr={runArr}></CalBox>
-          )
-
+          return <CalBox key={calDate} calHeader={calDate.format('MMM DD')} distance={distance} unit={unit} runArr={runArr}></CalBox>
         })
       }
       <CalBox className='firstWeekKpi' calHeader={'Week'} distance={runData.total} unit={unit}></CalBox>
