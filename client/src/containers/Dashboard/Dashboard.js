@@ -62,8 +62,8 @@ function Dashboard({ user, runData, showAddRun, toggleDayModal }) {
 
 const mapStateToProps = state => {
   return {
-    user: state.user,
-    runData: state.data.weeklyData
+    user: state.appUI.user,
+    runData: state.runData.weeklyData
   };
 }
 

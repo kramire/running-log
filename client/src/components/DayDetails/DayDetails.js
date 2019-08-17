@@ -77,11 +77,11 @@ function DayDetails({ showDayModal, toggleDayModal, runArr, date, unit, userId, 
 
 const mapStateToProps = state => {
   return {
-    showDayModal: state.isDayModalActive,
-    date: state.dayDetails.date,
-    runArr: state.dayDetails.runs,
-    unit: state.dayDetails.unit,
-    userId: state.user['_id']
+    showDayModal: state.appUI.isDayModalActive,
+    date: state.appUI.dayModalDetails.date,
+    runArr: state.appUI.dayModalDetails.runs,
+    unit: state.appUI.dayModalDetails.unit,
+    userId: state.appUI.user['_id']
   }
 };
 

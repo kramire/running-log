@@ -1,26 +1,44 @@
-// action types
-
-export const SET_START_DATE = 'SET_START_DATE';
-export const SET_END_DATE = 'SET_END_DATE';
-
-export const TOGGLE_ADDRUN_MODAL = 'TOGGLE_ADDRUN_MODAL';
-export const TOGGLE_DAY_MODAL = 'TOGGLE_DATE_MODAL';
-
-export const SET_BROWSER_COORDS = 'SET_BROWSER_COORDS'; 
-export const SET_BROWSER_LOCATION = 'SET_BROWSER_LOCATION'; 
-
-export const REQUEST_RUNS = 'REQUEST_RUNS';
-export const RECEIVE_RUNS = 'RECEIVE_RUNS';
-export const REQUEST_POST_RUN = 'REQUEST_POST_RUN';
-export const RECEIVE_POST_RUN = 'RECEIVE_POST_RUN';
-export const REQUEST_DELETE_RUN = 'REQUEST_DELETE_RUN';
-export const RECEIVE_DELETE_RUN = 'RECEIVE_DELETE_RUN';
-
-export const SET_DAY_MODAL_DETAILS = 'SET_DAY_MODAL_DETAILS';
-
 const serverUrl = process.env.REACT_APP_WS_URL;
 
-// action creators
+// ------------------------------------------------------
+// GET RUNS
+// ------------------------------------------------------
+export const REQUEST_GET_RUNS = 'REQUEST_GET_RUNS';
+export const RECEIVE_GET_RUNS = 'RECEIVE_GET_RUNS';
+
+export const requestRuns = userId => {
+  return {
+    type: REQUEST_GET_RUNS,
+    userId
+  }
+};
+
+export const receiveRuns = data => ({
+  type: RECEIVE_GET_RUNS,
+  runs: data,
+  receivedAt: Date.now()
+});
+
+export const fetchRuns = userId => {
+  return dispatch => {
+    dispatch(requestRuns(userId))
+    return fetch(serverUrl, {
+      'method': 'GET',
+      'headers': {
+        'Content-Type': 'application/json',
+        '_id': userId,
+      }
+    })
+      .then(res => res.json())
+      .then(data => dispatch(receiveRuns(data)))
+  }
+};
+
+// ------------------------------------------------------
+// POST RUN
+// ------------------------------------------------------
+export const REQUEST_POST_RUN = 'REQUEST_POST_RUN';
+export const RECEIVE_POST_RUN = 'RECEIVE_POST_RUN';
 
 export const requestPostRun = () => ({
   type: REQUEST_POST_RUN
@@ -30,13 +48,47 @@ export const receivePostResponse = () => ({
   type: RECEIVE_POST_RUN
 });
 
-export const requestDeleteRun = () => {
-  return {type: REQUEST_DELETE_RUN}
+export const postNewRun = (userId, runData) => {
+  return dispatch => {
+    dispatch(requestPostRun());
+    return fetch(serverUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        '_id': userId,
+        run: runData
+      })
+    })
+      .then(res => res.json())
+      .then(() => dispatch(receivePostResponse()))
+      .then(() => dispatch(fetchRuns(userId)))
+  }
 };
+
+// ------------------------------------------------------
+// DELETE RUN
+// ------------------------------------------------------
+export const REQUEST_DELETE_RUN = 'REQUEST_DELETE_RUN';
+export const RECEIVE_DELETE_RUN = 'RECEIVE_DELETE_RUN';
+
+export const requestDeleteRun = () => ({
+  type: REQUEST_DELETE_RUN
+});
 
 export const receiveDeleteResponse = () => ({
   type: RECEIVE_DELETE_RUN,
 });
+
+// ------------------------------------------------------
+// APP UI
+// ------------------------------------------------------
+export const SET_START_DATE = 'SET_START_DATE';
+export const SET_END_DATE = 'SET_END_DATE';
+export const TOGGLE_ADDRUN_MODAL = 'TOGGLE_ADDRUN_MODAL';
+export const TOGGLE_DAY_MODAL = 'TOGGLE_DAY_MODAL';
+export const SET_DAY_MODAL_DETAILS = 'SET_DAY_MODAL_DETAILS';
 
 export const setStartDate = date => ({
   type: SET_START_DATE,
@@ -63,52 +115,6 @@ export const setDayModalDetails = (date, runs, unit) => ({
   unit
 });
 
-export const requestRuns = userId => {
-  return {
-  type: REQUEST_RUNS,
-  userId
-}};
-
-export const receiveRuns = data => ({
-  type: RECEIVE_RUNS,
-  runs: data,
-  receivedAt: Date.now()
-});
-
-export const fetchRuns = userId => {
-  return dispatch => {
-    dispatch(requestRuns(userId))
-    return fetch(serverUrl, {
-      'method': 'GET',
-      'headers': {
-        'Content-Type': 'application/json',
-        '_id': userId,
-      }
-    })
-      .then(res => res.json())
-      .then(data => dispatch(receiveRuns(data)))
-  }
-};
-
-export const postNewRun = (userId, runData) => {
-  return dispatch => {
-    dispatch(requestPostRun());
-    return fetch(serverUrl, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        '_id': userId,
-        run: runData
-      })
-    })
-    .then(res => res.json())
-    .then(() => dispatch(receivePostResponse()))
-    .then(() => dispatch(fetchRuns(userId)))
-  }
-};
-
 export const deleteRun = (userId, runId) => {
   return dispatch => {
     dispatch(requestDeleteRun());
@@ -120,14 +126,20 @@ export const deleteRun = (userId, runId) => {
         'run_id': runId
       }
     })
-    .then(() => dispatch(receiveDeleteResponse()))
-    .then(() => dispatch(toggleDayModal()))
-    .then(() => dispatch(fetchRuns(userId)))
+      .then(() => dispatch(receiveDeleteResponse()))
+      .then(() => dispatch(toggleDayModal()))
+      .then(() => dispatch(fetchRuns(userId)))
   }
 };
 
+// ------------------------------------------------------
+// BROWSER COORDINATES
+// ------------------------------------------------------
+
 export const REQUEST_BROWSER_COORDS = 'REQUEST_BROWSER_COORDS';
 export const RECEIVE_BROWSER_COORDS = 'RECEIVE_BROWSER_COORDS';
+export const SET_BROWSER_COORDS = 'SET_BROWSER_COORDS';
+export const SET_BROWSER_LOCATION = 'SET_BROWSER_LOCATION';
 
 export const requestBrowserCoords = () => ({
   type: REQUEST_BROWSER_COORDS
@@ -146,7 +158,6 @@ export const setBrowserLocation = data => ({
   type: SET_BROWSER_LOCATION,
   data
 });
-
 
 export const getBrowserCoords = () => {
   const coords = {latitude: null, longitude: null};
@@ -175,6 +186,10 @@ export const getBrowserCoords = () => {
   }
 }
 
+// ------------------------------------------------------
+// LOCATION DEATILS
+// ------------------------------------------------------
+
 export const REQUEST_LOCATION = 'REQUEST_LOCATION';
 export const RECEIVE_LOCATION = 'RECEIVE_LOCATION';
 
@@ -201,6 +216,10 @@ export const getLocationDetails = coords => {
     .then(data => dispatch(setBrowserLocation(data)))
   }
 }
+
+// ------------------------------------------------------
+// WEATHER DEATILS
+// ------------------------------------------------------
 
 export const REQUEST_WEATHER = 'REQUEST_WEATHER';
 export const RECEIVE_WEATHER = 'RECEIVE_WEATHER';

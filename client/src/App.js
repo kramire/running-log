@@ -36,8 +36,8 @@ function App({ user, fetchingData, getRunData, getBrowserLocation }) {
 
 const mapStateToProps = state => {
   return {
-    user: state.user,
-    fetchingData: state.data.isFetching
+    user: state.appUI.user,
+    fetchingData: state.runData.isFetching
   }
 };
 
