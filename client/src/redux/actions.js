@@ -4,7 +4,7 @@ export const SET_START_DATE = 'SET_START_DATE';
 export const SET_END_DATE = 'SET_END_DATE';
 
 export const TOGGLE_ADDRUN_MODAL = 'TOGGLE_ADDRUN_MODAL';
-export const TOGGLE_DATE_MODAL = 'TOGGLE_DATE_MODAL';
+export const TOGGLE_DAY_MODAL = 'TOGGLE_DATE_MODAL';
 
 export const SET_BROWSER_COORDS = 'SET_BROWSER_COORDS'; 
 export const SET_BROWSER_LOCATION = 'SET_BROWSER_LOCATION'; 
@@ -15,6 +15,8 @@ export const REQUEST_POST_RUN = 'REQUEST_POST_RUN';
 export const RECEIVE_POST_RUN = 'RECEIVE_POST_RUN';
 export const REQUEST_DELETE_RUN = 'REQUEST_DELETE_RUN';
 export const RECEIVE_DELETE_RUN = 'RECEIVE_DELETE_RUN';
+
+export const SET_DAY_MODAL_DETAILS = 'SET_DAY_MODAL_DETAILS';
 
 const serverUrl = process.env.REACT_APP_WS_URL;
 
@@ -47,13 +49,18 @@ export const setEndDate = date => ({
 });
 
 export const toggleAddRunModal = () => ({
-  type: TOGGLE_ADDRUN_MODAL,
+  type: TOGGLE_ADDRUN_MODAL
 });
 
-export const toggleDateModal = (flag, date) => ({
-  type: TOGGLE_ADDRUN_MODAL,
-  flag,
-  date
+export const toggleDayModal = () => ({
+  type: TOGGLE_DAY_MODAL
+});
+
+export const setDayModalDetails = (date, runs, unit) => ({
+  type: SET_DAY_MODAL_DETAILS,
+  date,
+  runs,
+  unit
 });
 
 export const requestRuns = userId => {
@@ -114,6 +121,7 @@ export const deleteRun = (userId, runId) => {
       }
     })
     .then(() => dispatch(receiveDeleteResponse()))
+    .then(() => dispatch(toggleDayModal()))
     .then(() => dispatch(fetchRuns(userId)))
   }
 };
@@ -141,7 +149,7 @@ export const setBrowserLocation = data => ({
 
 
 export const getBrowserCoords = () => {
-  const coords = {lat: null, long: null};
+  const coords = {latitude: null, longitude: null};
   return dispatch => {
     dispatch(requestBrowserCoords())
     return new Promise((resolve, reject) => {
@@ -158,8 +166,8 @@ export const getBrowserCoords = () => {
       )
     })
     .then(res => {
-      coords.lat = res.latitude 
-      coords.long = res.longitude
+      coords.latitude = res.latitude 
+      coords.longitude = res.longitude
     })
     .then(() => dispatch(receiveBrowserCoords()))
     .then(() => dispatch(setBrowserCoords(coords)))
@@ -185,11 +193,51 @@ export const getLocationDetails = coords => {
       'method': 'GET',
       'headers': {
         'Content-Type': 'application/json',
-        lat: coords.lat,
-        long: coords.long
+        lat: coords.latitude,
+        long: coords.longitude
       }
     })
     .then(res => res.json())
     .then(data => dispatch(setBrowserLocation(data)))
   }
 }
+
+export const REQUEST_WEATHER = 'REQUEST_WEATHER';
+export const RECEIVE_WEATHER = 'RECEIVE_WEATHER';
+export const STORE_WEATHER = 'STORE_WEATHER';
+
+export const requestWeather = () => ({
+  type: REQUEST_WEATHER
+});
+
+export const receiveWeather = () => ({
+  type: RECEIVE_WEATHER
+});
+
+export const storeWeather = (lat, long, date, data) => ({
+  type: STORE_WEATHER,
+  lat,
+  long,
+  date,
+  data
+});
+
+export const getWeather = (lat, long, date) => {
+  if (lat !== undefined && long !== undefined && date !== undefined) {
+    return dispatch => {
+      dispatch(requestWeather())
+      return fetch(`${serverUrl}/weather`, {
+        'method': 'GET',
+        'headers': {
+          'Content-Type': 'application/json',
+          'lat': lat,
+          'long': long,
+          'run_date': date
+        }
+      })
+      .then(res => res.json())
+      .then(data => dispatch(storeWeather(lat, long, date, data)))
+      .then(() => dispatch(receiveWeather()))
+    }
+  }
+};

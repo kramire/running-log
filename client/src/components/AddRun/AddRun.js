@@ -23,7 +23,6 @@ function AddRun({ browserLocation, user, isModalActive, handleClick, saveRun }) 
   const [distance, setDistance] = useState(0);
   const [date, setDate] = useState('');
   const [location, setLocation] = useState('');
-  const [coords, setCoords] = useState({});
   const [note, setNote] = useState('');
   const [runType, setRunType] = useState([]);
   const [showDefaultLoc, setDefaultLoc] = useState(false);
@@ -52,10 +51,10 @@ function AddRun({ browserLocation, user, isModalActive, handleClick, saveRun }) 
       location,
       note,
       runType,
-      latitude: coords.latitude,
-      longitude: coords.longitude
+      latitude: browserLocation.latitude,
+      longitude: browserLocation.longitude
     };
-
+    console.log(browserLocation);
     saveRun(user['_id'], runData);
     handleClose();
   };
@@ -73,10 +72,6 @@ function AddRun({ browserLocation, user, isModalActive, handleClick, saveRun }) 
   const handleAgree = function (e) {
     e.preventDefault();
     setLocation(formatLoc(browserLocation));
-    setCoords({
-      'latitude': browserLocation.latitude,
-      'longitude': browserLocation.longitude
-    });
     setDefaultLoc(false);
   };
 

@@ -2,8 +2,8 @@ import React, { useEffect } from 'react';
 import '../../../node_modules/bulma/css/bulma.css';
 import styled from 'styled-components';
 import './Dashboard.css';
-import { AddRun, Calendar, Kpi, LineChart } from '../../components';
-import { toggleAddRunModal } from '../../redux/actions';
+import { AddRun, Calendar, Kpi, LineChart, DayDetails } from '../../components';
+import { toggleAddRunModal, toggleDayModal } from '../../redux/actions';
 import { connect } from 'react-redux';
 
 const Container = styled.div`
@@ -45,16 +45,17 @@ const Button = styled.button`
 `;
 
 
-function Dashboard({ user, runData, onModalClick }) {
+function Dashboard({ user, runData, showAddRun, toggleDayModal }) {
   return (
     <Container>
       <Kpi user={user} runData={runData} />
       <Visuals>
         <Calendar user={user} runData={runData} />
-        <Button className='button is-rounded' onClick={onModalClick}>Add Run +</Button>
-        <AddRun handleClick={onModalClick} />
+        <Button className='button is-rounded' onClick={showAddRun}>Add Run +</Button>
         <LineChart runData={runData} unitOfMeasure={user.unitOfMeasure} />
       </Visuals>
+      <AddRun handleClick={showAddRun} />
+      <DayDetails />
     </Container>
   )
 }
@@ -68,7 +69,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onModalClick: () => dispatch(toggleAddRunModal())
+    showAddRun: () => dispatch(toggleAddRunModal()),
   }
 }
 

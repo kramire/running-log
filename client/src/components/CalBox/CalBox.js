@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import '../../../node_modules/bulma/css/bulma.css';
 import styled from 'styled-components';
 import './CalBox.css'
-import { DayDetails } from '..';
+import { connect } from 'react-redux';
+import { setDayModalDetails, toggleDayModal } from '../../redux/actions';
 
 const DateBox = styled.div`
   background-color: ${props => props.warnAlert ? '#c4817d' : 'var(--secondary-bg-color)'};
@@ -37,9 +38,7 @@ const Unit = styled.div`
 `;
 
 
-function CalBox ({ calHeader, distance, percentage, runArr, unit, userId, ...props }) {
-
-  const [isDayModalActive, setDayModal] = useState(false);
+function CalBox({ calHeader, distance, percentage, runArr, unit, userId, toggleDayModal, setDayDetails, ...props }) {
 
   const generateKpi = () => {
     if (distance >= 0) {
@@ -59,24 +58,32 @@ function CalBox ({ calHeader, distance, percentage, runArr, unit, userId, ...pro
     else return;
   }
 
-  const generateModal = () => {
-    if (runArr && runArr.length > 0) {
-      return (
-        <DayDetails isDayModalActive={isDayModalActive} handleClick={() => setDayModal(false)}
-        date={runArr[0].date} unit={unit} runArr={runArr} userId={userId}></DayDetails>
-      )
+  const handleClick = (runs, unit) => {
+    if (runs.length > 0) {
+      toggleDayModal();
+      setDayDetails(runs[0].date, runs, unit);
     }
-  }
+  };
 
   return (
     <div className="column">
-      <DateBox className='column' key={calHeader} {...props} onClick={() => setDayModal(true)} >
+      <DateBox className='column' key={calHeader} {...props} onClick={() => handleClick(runArr, unit)} >
         <BoxHeader{...props}>{calHeader}</BoxHeader>
         {generateKpi()}
       </DateBox>
-      {generateModal()}
     </div>
   )
 }
 
-export default CalBox;
+const mapStateToProps = state => {
+  return {}
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    toggleDayModal: () => dispatch(toggleDayModal()),
+    setDayDetails: (date, runs, unit) => dispatch(setDayModalDetails(date, runs, unit))
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(CalBox);
