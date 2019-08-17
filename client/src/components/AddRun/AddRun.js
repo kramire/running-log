@@ -3,6 +3,8 @@ import '../../../node_modules/bulma/css/bulma.css';
 import './AddRun.css';
 import styled from 'styled-components';
 import { Modal } from '../../assests/globalStyledComponents';
+import { postNewRun } from '../../redux/actions';
+import { connect } from 'react-redux';
 
 const H1 = styled.h1`
   font-size: 40px;
@@ -16,33 +18,14 @@ const Label = styled.label`
   font-size: 20px;
 `;
 
-function AddRun({ serverUrl, user, isModalActive, handleClick }) {
+function AddRun({ browserLocation, user, isModalActive, handleClick, saveRun }) {
 
-  const [browserLocation, setBrowserLocation] = useState({});
   const [distance, setDistance] = useState(0);
   const [date, setDate] = useState('');
   const [location, setLocation] = useState('');
-  const [coords, setCoords] = useState({});
   const [note, setNote] = useState('');
   const [runType, setRunType] = useState([]);
   const [showDefaultLoc, setDefaultLoc] = useState(false);
-  
-  // Get, set, and check browser location
-  const getBrowserLocation = async function () {
-    return new Promise((resolve, reject) => {
-      navigator.geolocation.getCurrentPosition(
-        (pos) => resolve({
-          latitude: pos.coords.latitude,
-          longitude: pos.coords.longitude
-        }),
-        (err) => '', {
-          enableHighAccuracy: true,
-          timeout: 5000,
-          maximumAge: 0
-        }
-      )
-    })
-  };
 
   // If enough location data, flag that there is a default
   const checkDefaultLocation = function () {
@@ -55,27 +38,9 @@ function AddRun({ serverUrl, user, isModalActive, handleClick }) {
   };
 
   useEffect(() => {
-    getBrowserLocation()
-      .then(res => {
-        return fetch(`${serverUrl}/location`, {
-          'method': 'GET',
-          'headers': {
-            'Content-Type': 'application/json',
-            'lat': res.latitude,
-            'long': res.longitude
-          }
-        })
-      })
-      .then(res => res.json())
-      .then(data => {
-        setBrowserLocation(data)
-        setDefaultLoc(true);
-      });
-  }, []);
-
-  useEffect(() => {
     checkDefaultLocation();
   }, [browserLocation]);
+
 
   // Handle form actions
   const saveForm = function (e) {
@@ -86,21 +51,10 @@ function AddRun({ serverUrl, user, isModalActive, handleClick }) {
       location,
       note,
       runType,
-      latitude: coords.latitude,
-      longitude: coords.longitude
+      latitude: browserLocation.latitude,
+      longitude: browserLocation.longitude
     };
-
-    fetch(serverUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          '_id': user['_id'],
-          run: runData
-        })
-      })
-      .then(res => res.json())
+    saveRun(user['_id'], runData);
     handleClose();
   };
 
@@ -117,10 +71,6 @@ function AddRun({ serverUrl, user, isModalActive, handleClick }) {
   const handleAgree = function (e) {
     e.preventDefault();
     setLocation(formatLoc(browserLocation));
-    setCoords({
-      'latitude': browserLocation.latitude,
-      'longitude': browserLocation.longitude
-    });
     setDefaultLoc(false);
   };
 
@@ -220,4 +170,18 @@ function AddRun({ serverUrl, user, isModalActive, handleClick }) {
   )
 }
 
-export default AddRun;
+const mapStateToProps = state => {
+  return {
+    isModalActive: state.appUI.isAddRunModalActive,
+    user: state.appUI.user,
+    browserLocation: state.browserLocation
+  };
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    saveRun: (userId, runData) => dispatch(postNewRun(userId, runData))
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(AddRun);
