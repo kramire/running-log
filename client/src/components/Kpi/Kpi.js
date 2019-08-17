@@ -70,6 +70,7 @@ const KPI = styled.div`
   }
 `;
 
+<<<<<<< HEAD
 const Button = styled.button`
   color: #CDDDDD;
   background-color: #978CA5;
@@ -92,8 +93,15 @@ const Button = styled.button`
     padding: 2.5px 8px;
   }  
 `;
+=======
+const currentWeek = moment().startOf('week');
+const acrStart = moment().subtract(4, 'weeks').day('Sunday').format('MMM Do');
+const acrEnd = moment().subtract(1, 'weeks').day('Saturday').format('MMM Do');
+>>>>>>> ddf6e5f61ac24ac1f1fbedc2b5800dbf6677eee4
 
+const getAcrAlert = acr => acr > 1.5 ? 'danger' : acr > 1.2 ? 'warning' : 'success';
 
+<<<<<<< HEAD
 function Kpi({ user, runData, setModal }) {
   const { firstName, unitOfMeasure, trainingFor } = user;
 
@@ -104,6 +112,12 @@ function Kpi({ user, runData, setModal }) {
   const acrStart = moment().subtract(4, 'weeks').day('Sunday').format('MMM Do');
   const acrEnd = moment().subtract(1, 'weeks').day('Saturday').format('MMM Do');
   const acrStatus = acr ? (acr => (acr > 1.5) ? 'danger' : (acr > 1.2) ? 'warning' : 'success') : 'success';
+=======
+function Kpi({ user, runData }) {
+  const { firstName, unitOfMeasure, trainingFor } = user;
+  const weekData = runData.filter(run => moment(run.week).isSame(currentWeek, 'week'))[0];
+  const acrAlertType = weekData ? getAcrAlert(weekData.acr) : 'success';
+>>>>>>> ddf6e5f61ac24ac1f1fbedc2b5800dbf6677eee4
 
   return(
     <Container>
@@ -113,12 +127,20 @@ function Kpi({ user, runData, setModal }) {
       </SubContainer>
       <SubContainer>
         <H3>Weekly Mileage</H3>
+<<<<<<< HEAD
         <KPI>{`${total} ${unitOfMeasure}`}</KPI>
         <Button className='button is-rounded' onClick={() => setModal(true)}>Add Run +</Button>
       </SubContainer>
       <SubContainer>
         <H3>Acute Chronic Ratio</H3>
         <KPI className={` has-text-${acrStatus}`}>{acr}</KPI>
+=======
+        <KPI>{`${weekData ? weekData.total : 0} ${unitOfMeasure}`}</KPI>
+      </SubContainer>
+      <SubContainer>
+        <H3>Acute Chronic Ratio</H3>
+        <KPI className={` has-text-${acrAlertType}`}>{weekData ? weekData.acr : 0}</KPI>
+>>>>>>> ddf6e5f61ac24ac1f1fbedc2b5800dbf6677eee4
         <P>{`${acrStart} - ${acrEnd}`}</P>
       </SubContainer>
       <SubContainer>

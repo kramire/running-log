@@ -59,6 +59,7 @@ To start the frontend, navigate to the `client` folder and run `npm start`. This
 ## Tech Stack
 
 * React - frontend framework
+* Redux - state management
 * Express - backend framework
 * MongoDb - database
 * LocationIQ API - for reverse geo-coding
