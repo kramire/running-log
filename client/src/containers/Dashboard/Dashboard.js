@@ -9,16 +9,21 @@ import { connect } from 'react-redux';
 const Container = styled.div`
   display: flex;
   box-sizing: border-box;
+  flex-direction: column;
+  justify-content: center;
 
-  @media (max-width: 800px) {
-    flex-direction: column;
-    justify-content: center;
+  @media (min-width: 1000px) {
+    flex-direction: row;
+    justify-content: space-between;
   }
 `;
 
 const Visuals = styled.div`
   flex-basis: 75%;
-  margin-left: 50px;
+  
+  @media (min-width: 1000px) {
+    margin-left: 50px;
+  }
 `;
 
 const Button = styled.button`

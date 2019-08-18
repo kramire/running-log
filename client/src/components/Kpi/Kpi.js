@@ -2,151 +2,96 @@ import React  from 'react';
 import '../../../node_modules/bulma/css/bulma.css';
 import moment from 'moment';
 import styled from 'styled-components';
-import './Kpi.css';
 
 const Container = styled.div`
-  color: #CDDDDD;
-  margin: 0 auto;
   text-align: center;
-
-    @media (max-width: 800px) {
-      display: flex;
-      justify-content: center;
-      margin-right: 0px;
-    }
-`;
-
-const SubContainer = styled.div`
-  margin: 0px 0px 40px 0px;
-
-  @media (max-width: 800px) {
-    margin: 0 auto;
-  }
-`;
-
-const User = styled.div`
-  color: #c6bad6;
-  font-size: 3em;
-
-  @media (max-width: 800px) {
-    font-size: 1.5em;
+  color: var(--primary-color);
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-content: center;
+  
+  @media (min-width: 1000px) {
+    flex-direction: column;
+    align-content: space-around;
   }
 `;
 
 const H3 = styled.h3`
-  font-size: 1.4em;
+  font-size: 14px;
+  letter-spacing: 1.5px;
 
-  @media (max-width: 800px) {
-    font-size: .8em;
+  @media (min-width: 800px) {
+    font-size: 16px;
   }
-`;
-
-const H4 = styled.h4`
-  font-size: 1.8em;
-  font-weight: bold;
-  color: #c6bad6;
-  text-transform: capitalize;
-
-  @media (max-width: 800px) {
-    font-size: .7em;
+  @media (min-width: 1000px) {
+    font-size: 18px;
   }
 `;
 
 const P = styled.p`
-  font-size: 1.1em;
-
-  @media (max-width: 800px) {
-    font-size: .5em;
+  font-style: italic;
+  font-size: 10px;
+  
+  @media (min-width: 800px) {
+    font-size: 12px;
+  }
+  @media (min-width: 1000px) {
+    font-size: 14px;
   }
 `;
 
 const KPI = styled.div`
-  color: #CDDDDD;
+  color: var(--secondary-color);
   font-weight: bold;
-  font-size: 3em;
+  text-transform: uppercase;
+  margin: 5px 0 2px 0;
 
-  @media (max-width: 800px) {
-    font-size: 1.5em;
+  @media (max-width: 600px) {
+    font-size: ${props => (props.small ? '16px' : '25px')};
+  }
+
+  @media (min-width: 600px) {
+    font-size: ${props => (props.small ? '20px' : '30px')};
+  }
+
+  @media (min-width: 800px) {
+    font-size: ${props => (props.small ? '20px' : '35px')};
+  }
+
+  @media (min-width: 1000px) {
+    font-size: ${props => (props.small ? '20px' : '40px')};
   }
 `;
 
-<<<<<<< HEAD
-const Button = styled.button`
-  color: #CDDDDD;
-  background-color: #978CA5;
-  font-size: 1em;
-  margin: 20px 0;
-  border: none;
-  padding: 5px 15px;
-  transition: all .1s ease;
-  
-  :hover {
-    transform: scale(1.15);
-    background-color: #CDDDDD;
-    color: #978CA5;
-    font-weight: bold;
-  }
 
-  @media (max-width: 800px) {
-    font-size:.5em;
-    margin: 10px 0;
-    padding: 2.5px 8px;
-  }  
-`;
-=======
-const currentWeek = moment().startOf('week');
-const acrStart = moment().subtract(4, 'weeks').day('Sunday').format('MMM Do');
-const acrEnd = moment().subtract(1, 'weeks').day('Saturday').format('MMM Do');
->>>>>>> ddf6e5f61ac24ac1f1fbedc2b5800dbf6677eee4
-
-const getAcrAlert = acr => acr > 1.5 ? 'danger' : acr > 1.2 ? 'warning' : 'success';
-
-<<<<<<< HEAD
-function Kpi({ user, runData, setModal }) {
-  const { firstName, unitOfMeasure, trainingFor } = user;
-
-  const thisWeek = moment().startOf('week');
-  const thisWeekData = runData.filter(run => moment(run.week).isSame(thisWeek, 'week'))[0];
-  const { total = 0, acr = 0 } = thisWeekData || {};
+function Kpi({ user, runData }) {
+  const currentWeek = moment().startOf('week');
+  const weekData = runData.filter(run => moment(run.week).isSame(currentWeek, 'week'))[0];
 
   const acrStart = moment().subtract(4, 'weeks').day('Sunday').format('MMM Do');
   const acrEnd = moment().subtract(1, 'weeks').day('Saturday').format('MMM Do');
-  const acrStatus = acr ? (acr => (acr > 1.5) ? 'danger' : (acr > 1.2) ? 'warning' : 'success') : 'success';
-=======
-function Kpi({ user, runData }) {
-  const { firstName, unitOfMeasure, trainingFor } = user;
-  const weekData = runData.filter(run => moment(run.week).isSame(currentWeek, 'week'))[0];
-  const acrAlertType = weekData ? getAcrAlert(weekData.acr) : 'success';
->>>>>>> ddf6e5f61ac24ac1f1fbedc2b5800dbf6677eee4
+  const getAcrAlert = acr => acr > 1.5 ? 'danger' : acr > 1.2 ? 'warning' : 'success';
+
+  const { unitOfMeasure, trainingFor } = user;
+  const { total, acr } = weekData === undefined ? {} : weekData;
+  const acrStatus = weekData ? getAcrAlert(acr) : 'success';
 
   return(
     <Container>
-      <SubContainer>
-        <H3>Welcome Back</H3>
-        <User>{firstName}!</User>
-      </SubContainer>
-      <SubContainer>
-        <H3>Weekly Mileage</H3>
-<<<<<<< HEAD
-        <KPI>{`${total} ${unitOfMeasure}`}</KPI>
-        <Button className='button is-rounded' onClick={() => setModal(true)}>Add Run +</Button>
-      </SubContainer>
-      <SubContainer>
-        <H3>Acute Chronic Ratio</H3>
-        <KPI className={` has-text-${acrStatus}`}>{acr}</KPI>
-=======
-        <KPI>{`${weekData ? weekData.total : 0} ${unitOfMeasure}`}</KPI>
-      </SubContainer>
-      <SubContainer>
-        <H3>Acute Chronic Ratio</H3>
-        <KPI className={` has-text-${acrAlertType}`}>{weekData ? weekData.acr : 0}</KPI>
->>>>>>> ddf6e5f61ac24ac1f1fbedc2b5800dbf6677eee4
+      <div>
+        <H3>This Week</H3>
+        <KPI>{`${weekData ? total : 0} ${unitOfMeasure}`}</KPI>
+      </div>
+      <div>
+        <H3>ACR</H3>
+        <KPI className={` has-text-${acrStatus}`}>{weekData ? acr : 0}</KPI>
         <P>{`${acrStart} - ${acrEnd}`}</P>
-      </SubContainer>
-      <SubContainer>
+      </div>
+      <div>
         <H3>Training For</H3>
-        <H4>{trainingFor}</H4>
-      </SubContainer>
+        <KPI small>{trainingFor}</KPI>
+      </div>
     </Container>
   )
 }
