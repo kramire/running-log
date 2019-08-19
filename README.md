@@ -11,7 +11,7 @@ Furthermore, Running Log becomes a journal for remembering specifics about a run
 
 ## Screenshots
 <p align="center">
-    <img src="images/running-log-mobile-screens.png" width="300px" />
+    <img src="images/running-log-mobile-screens.png" width="775px" />
 </p>
 
 <p align="center">
