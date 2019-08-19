@@ -10,22 +10,9 @@ Furthermore, Running Log becomes a journal for remembering specifics about a run
 
 
 ## Screenshots
-<div style="display:flex; justify-content:space-around">
 <p align="center">
-    <img src="images/running-log-mobile.png" width="300px" />
-    <p align="center" font-style="italic">Summary dashboard mobile view.</p>
+    <img src="images/running-log-mobile-screens.png" width="300px" />
 </p>
-
-<p align="center">
-    <img src="images/running-log-mobile-addRun.png" width="300px"/>
-    <p align="center" font-style="italic">Add new run mobile view.</p>
-</p>
-
-<p align="center">
-    <img src="images/running-log-mobile-day-view.png" width="300px"/>
-    <p align="center" font-style="italic">See day details mobile view.</p>
-</p>
-</div>
 
 <p align="center">
     <img src="images/running-log-dashboard.png" width="775px" />
