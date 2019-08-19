@@ -10,7 +10,7 @@ Furthermore, Running Log becomes a journal for remembering specifics about a run
 
 
 ## Screenshots
-<div display="flex" justify-content"space-around">
+<div style="display:flex; justify-content:space-around">
 <p align="center">
     <img src="images/running-log-mobile.png" width="300px" />
     <p align="center" font-style="italic">Summary dashboard mobile view.</p>
