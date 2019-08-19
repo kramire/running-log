@@ -7,15 +7,31 @@ import { postNewRun } from '../../redux/actions';
 import { connect } from 'react-redux';
 
 const H1 = styled.h1`
-  font-size: 40px;
   text-align: center;
-  color: #CDDDDD;
-  margin-bottom: 40px;
+  color: var(--primary-color);
+  font-size: 28px;
+  margin-bottom: 28px;
+
+  @media (min-width: 800px) {
+    font-size: 32px;
+    margin-bottom: 32px;
+  }
+  @media (min-width: 1000px) {
+    font-size: 40px;
+    margin-bottom: 40px;
+  }
 `;
 
 const Label = styled.label`
   color: #ACBDBA;
-  font-size: 20px;
+  font-size: 16px;
+  
+  @media (min-width: 800px) {
+    font-size: 18px;
+  }
+  @media (min-width: 1000px) {
+    font-size: 20px;
+  }
 `;
 
 function AddRun({ browserLocation, user, isModalActive, handleClick, saveRun }) {
@@ -82,9 +98,9 @@ function AddRun({ browserLocation, user, isModalActive, handleClick, saveRun }) 
   const toggleLocationInput = function () {
     if (showDefaultLoc) {
       return (
-        <div className='makeFlex'>
+        <div className='makeFlex maxWidth'>
           <Label>{formatLoc(browserLocation)}</Label>
-          <div>
+          <div className='makeFlex'>
             <span>Use this location?</span>
             <button className='locAgree locButton' onClick={(e) => handleAgree(e)}>Yes</button>
             <button className='locDeny locButton' onClick={(e) => handleDeny(e)}>No</button>
@@ -118,7 +134,7 @@ function AddRun({ browserLocation, user, isModalActive, handleClick, saveRun }) 
     return (
       <div className='field is-horizontal'>
         <Label className='label field-label'>{fieldName}</Label>
-          <div className={`control field-body ${buttons && 'buttons is-centered'}`}>
+          <div className={`makeFlex control field-body ${buttons && 'buttons is-centered'}`}>
             {inputDiv}
             {distance && <Label>Miles</Label>}
           </div>

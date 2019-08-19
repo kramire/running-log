@@ -8,16 +8,30 @@ import { connect } from 'react-redux';
 import { deleteRun, toggleDayModal } from '../../redux/actions';
 
 const Span = styled.span`
-  font-size: 20px;
   color: #CDDDDD;
+  font-size: 12px;
+
+  @media (min-width: 600px) {
+    font-size: 16px;
+  }
+  @media (min-width: 1000px) {
+    font-size: 20px;
+  }
 `;
 
 const Label = styled.label`
   color: #ACBDBA;
-  font-size: 1.3em;
   font-weight: bold;
   margin-right: 10px;
   text-transform: capitalize;
+  font-size: 12px;
+
+  @media (min-width: 600px) {
+    font-size: 16px;
+  }
+  @media (min-width: 1000px) {
+    font-size: 20px;
+  }
 `;
 
 const Ul = styled.ul`
@@ -30,10 +44,17 @@ const Ul = styled.ul`
 
 const Unit = styled.div`
   display: inline;
-  font-size: 1em;
   color: #CDDDDD;
   font-weight: normal;
   font-style: italic;
+  font-size: 10px;
+
+  @media (min-width: 600px) {
+    font-size: 12px;
+  }
+  @media (min-width: 1000px) {
+    font-size: 16px;
+  }
 `;
 
 
