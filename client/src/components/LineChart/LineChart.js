@@ -6,9 +6,18 @@ import styled from 'styled-components';
 import { Title } from '../../assests/globalStyledComponents';
 
 const Container = styled.div`
-  margin: 25px 0 10px 0;
-  width: 500px;
+  max-width: 500px;
+  max-height: 30vh;
+  margin: 20px 0;
   color: var(--primary-color);
+
+  @media (min-width: 1000px) {
+    max-height: inherit;
+  }
+`;
+
+const LineChartTile = styled(Title)`
+  margin-bottom: 20px;
 `;
 
 function LineChart({runData, unitOfMeasure }) {
@@ -41,7 +50,7 @@ function LineChart({runData, unitOfMeasure }) {
         ticks: {
           minRotation: 45,
           fontColor: '#CDDDDD',
-          fontSize: 14
+          fontSize: 12
         }
       }],
       yAxes: [{
@@ -52,7 +61,7 @@ function LineChart({runData, unitOfMeasure }) {
         },
         ticks: {
           fontColor: '#CDDDDD',
-          fontSize: 14,
+          fontSize: 12,
           beginAtZero: true,
           lineHeight: 1.5
         }
@@ -60,13 +69,14 @@ function LineChart({runData, unitOfMeasure }) {
     },
     legend: {
       display: false
-    }
+    },
+    responsive: true
   }
 
   return (
     <Container>
-       <Title>Weekly Mileage</Title>
-        <Line data={data} options={options} />
+      <LineChartTile>Weekly Mileage</LineChartTile>
+      <Line data={data} options={options} />
     </Container>
   );
 };

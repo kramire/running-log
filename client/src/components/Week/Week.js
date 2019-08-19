@@ -3,6 +3,13 @@ import '../../../node_modules/bulma/css/bulma.css';
 import moment from 'moment';
 import './Week.css'
 import { CalBox } from '../';
+import styled from 'styled-components';
+
+
+const Container = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
 
 const filterRunsByDate = function (runArr, date) {
   return runArr.filter(run => moment(new Date(run.date)).isSame(date, 'day'));
@@ -14,7 +21,7 @@ function Week({ runData, unit, weekDayNums }) {
   const warnProp = longestPrct > 30 ? {'warnAlert': 'warnAlert'} : {};
 
   return (
-    <div className='columns is-mobile'>
+    <Container>
       {
         weekDayNums.map(day => {
           
@@ -26,9 +33,9 @@ function Week({ runData, unit, weekDayNums }) {
         })
       }
       <CalBox className='firstWeekKpi' calHeader={'Week'} distance={runData.total} unit={unit}></CalBox>
-      <CalBox className='header' calHeader={'Longest %'} percentage={longestPrct} unit={'%'} longHeader {...warnProp}></CalBox>   
+      <CalBox calHeader={'Long Run'} percentage={longestPrct} unit={'%'} longHeader {...warnProp}></CalBox>   
       <CalBox calHeader={'% Change'} percentage={prctChange} unit={'%'} longHeader></CalBox>
-    </div>
+    </Container>
   )
 }
 

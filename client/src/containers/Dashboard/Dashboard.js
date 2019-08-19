@@ -11,6 +11,7 @@ const Container = styled.div`
   box-sizing: border-box;
   flex-direction: column;
   justify-content: center;
+  overflow-x: scroll;
 
   @media (min-width: 1000px) {
     flex-direction: row;
@@ -26,29 +27,6 @@ const Visuals = styled.div`
   }
 `;
 
-const Button = styled.button`
-  color: #CDDDDD;
-  background-color: #978CA5;
-  font-size: 1em;
-  margin: 20px 0;
-  border: none;
-  padding: 5px 15px;
-  transition: all .1s ease;
-  
-  :hover {
-    transform: scale(1.15);
-    background-color: #CDDDDD;
-    color: #978CA5;
-    font-weight: bold;
-  }
-
-  @media (max-width: 800px) {
-    font-size:.5em;
-    margin: 10px 0;
-    padding: 2.5px 8px;
-  }  
-`;
-
 
 function Dashboard({ user, runData, showAddRun }) {
   return (
@@ -56,7 +34,6 @@ function Dashboard({ user, runData, showAddRun }) {
       <Kpi user={user} runData={runData} />
       <Visuals>
         <Calendar user={user} runData={runData} />
-        <Button className='button is-rounded' onClick={showAddRun}>Add Run +</Button>
         <LineChart runData={runData} unitOfMeasure={user.unitOfMeasure} />
       </Visuals>
       <AddRun handleClick={showAddRun} />

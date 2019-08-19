@@ -1,37 +1,95 @@
 import React  from 'react';
-import '../../../node_modules/bulma/css/bulma.css';
 import moment from 'moment';
 import styled from 'styled-components';
-import './Calendar.css'
 import { Week, CalBox } from '../';
 import { Title } from '../../assests/globalStyledComponents';
+import { toggleAddRunModal } from '../../redux/actions';
+import { connect } from 'react-redux';
+
+
+const WeekdayHeaders = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  overflow-x: scroll;
+`;
 
 const CalContainer = styled.div`
-  height: 40vh;
-  overflow: scroll;
+  overflow-y: scroll;
+  height: 28vh;
+
+  @media (min-width: 600px) {
+    height: 30vh;
+  }
+
+  @media (min-width: 800px) {
+    height: 35vh;
+  }
 `;
+
+const Header = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 20px 0 10px 0;
+  `;
   
-function Calendar({ user, runData }) {  
+const Button = styled.button`
+  color: #CDDDDD;
+  background-color: #978CA5;
+  font-size: 10px;
+  border: none;
+  padding: 5px;
+  transition: all .1s ease;
+  height: 100%
+  border-radius: 20px;
+  
+  :hover {
+    transform: scale(1.15);
+    background-color: #CDDDDD;
+    color: #978CA5;
+    font-weight: bold;
+  }
+
+  @media (min-width: 800px) {
+    font-size: 16px;
+    padding: 10px;
+  }  
+`;
+
+function Calendar({ user, runData, showAddRun }) {  
   const weekDayNums = Array.of(0, 1, 2, 3, 4, 5, 6);  
-  const weekDayHeaders = weekDayNums.map(el => <CalBox className="column is-narrow" key={el} calHeader={moment.weekdaysShort(el)} />);
+  const weekDayHeaders = weekDayNums.map(el => <CalBox key={el} calHeader={moment.weekdaysShort(el)} />);
   
   return (
     <div>
-      <Title>Calendar</Title>
-      <div className="columns is-mobile">
+      <Header>
+        <Title>Calendar</Title>
+        <Button onClick={showAddRun}>Add Run +</Button>
+      </Header>
+      <WeekdayHeaders>
         {weekDayHeaders}
-        <CalBox className="column is-narrow firstWeekKpi" calHeader={'Total'}></CalBox>
-        <CalBox className="column is-narrow" calHeader={'% of Total'} longHeader></CalBox>
-        <CalBox className="column is-narrow" calHeader={'Weekly Δ'} longHeader></CalBox>
-      </div>
+        <CalBox className='firstWeekKpi' calHeader={'Total'} />
+        <CalBox calHeader={'% of Total'} longHeader />
+        <CalBox calHeader={'Weekly Δ'} longHeader />
+      </WeekdayHeaders>
       <CalContainer>
         {runData.map(weekData => 
-            <Week key={weekData['_id']} runData={weekData} unit={user.unitOfMeasure} weekDayNums={weekDayNums} 
-              userId={user['_id']}></Week>
+            <Week key={weekData['_id']} runData={weekData} unit={user.unitOfMeasure} weekDayNums={weekDayNums} />
         )}
       </CalContainer>
     </div>
   )
 }
 
-export default Calendar;
+const mapStateToProps = state => {
+  return {};
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    showAddRun: () => dispatch(toggleAddRunModal()),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Calendar);

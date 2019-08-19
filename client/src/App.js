@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { Loading } from './components';
 import { Dashboard } from './containers';
+import { LogoSmall } from './assests/globalStyledComponents';
 import { connect } from 'react-redux';
 import { fetchRuns, getBrowserCoords } from './redux/actions';
 import styled from 'styled-components';
@@ -28,7 +29,10 @@ function App({ user, fetchingData, getRunData, getBrowserLocation }) {
       {
         fetchingData ? 
         <Loading /> :
-        <Dashboard />
+        <>
+          <LogoSmall>RUNNING LOG</LogoSmall>
+          <Dashboard />
+        </>
       }
     </Container>
   )

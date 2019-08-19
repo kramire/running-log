@@ -3,17 +3,24 @@ import '../../../node_modules/bulma/css/bulma.css';
 import moment from 'moment';
 import styled from 'styled-components';
 
-const Container = styled.div`
+const Wrapper = styled.div`
+  max-height: 15vh;
   text-align: center;
   color: var(--primary-color);
   display: flex;
   flex-direction: row;
   justify-content: space-around;
-  align-content: center;
+  align-items: flex-start;
+  margin: 15px 0 10px 0;
+
+  > div {
+    flex-basis: 30%;
+  }
   
   @media (min-width: 1000px) {
+    max-height: inherit;
     flex-direction: column;
-    align-content: space-around;
+    align-items: center;
   }
 `;
 
@@ -46,13 +53,14 @@ const KPI = styled.div`
   font-weight: bold;
   text-transform: uppercase;
   margin: 5px 0 2px 0;
+  overflow: wrap;
 
   @media (max-width: 600px) {
-    font-size: ${props => (props.small ? '16px' : '25px')};
+    font-size: ${props => (props.small ? '12px' : '25px')};
   }
 
   @media (min-width: 600px) {
-    font-size: ${props => (props.small ? '20px' : '30px')};
+    font-size: ${props => (props.small ? '16px' : '30px')};
   }
 
   @media (min-width: 800px) {
@@ -78,7 +86,7 @@ function Kpi({ user, runData }) {
   const acrStatus = weekData ? getAcrAlert(acr) : 'success';
 
   return(
-    <Container>
+    <Wrapper>
       <div>
         <H3>This Week</H3>
         <KPI>{`${weekData ? total : 0} ${unitOfMeasure}`}</KPI>
@@ -92,7 +100,7 @@ function Kpi({ user, runData }) {
         <H3>Training For</H3>
         <KPI small>{trainingFor}</KPI>
       </div>
-    </Container>
+    </Wrapper>
   )
 }
 
